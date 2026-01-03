@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayStack Payment Diagnostic</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 { color: #10b981; margin-top: 0; }
+        h2 { color: #059669; font-size: 18px; }
+        .status { 
+            padding: 8px 16px; 
+            border-radius: 4px; 
+            display: inline-block;
+            font-weight: 600;
+        }
+        .status.success { background: #d1fae5; color: #065f46; }
+        .status.error { background: #fee2e2; color: #991b1b; }
+        .status.pending { background: #fef3c7; color: #92400e; }
+        pre {
+            background: #f9fafb;
+            padding: 12px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        button {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        button:hover { background: #059669; }
+        button.secondary {
+            background: #6366f1;
+        }
+        button.secondary:hover {
+            background: #4f46e5;
+        }
+        .input-group {
+            margin: 16px 0;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #374151;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🔍 PayStack Payment Diagnostic Tool</h1>
+        <p>Use this tool to diagnose payment verification issues.</p>
+    </div>
+
+    <div class="card">
+        <h2>Step 1: Check Edge Function Status</h2>
+        <button onclick="checkEdgeFunction()">Check Edge Function</button>
+        <div id="edge-status" style="margin-top: 16px;"></div>
+    </div>
+
+    <div class="card">
+        <h2>Step 2: Verify a Payment Reference</h2>
+        <div class="input-group">
+            <label>Enter Payment Reference:</label>
+            <input type="text" id="payment-ref" placeholder="SUB_1234567890_ABC123" />
+        </div>
+        <button onclick="verifyPayment()">Verify Payment</button>
+        <div id="verify-status" style="margin-top: 16px;"></div>
+    </div>
+
+    <div class="card">
+        <h2>Step 3: Check Database (Payments Table)</h2>
+        <p style="color: #6b7280; font-size: 14px;">
+            Go to your Supabase Dashboard → Table Editor → payments table
+            <br>Look for your payment reference and check the status column.
+        </p>
+        <button class="secondary" onclick="openSupabase()">Open Supabase Dashboard</button>
+    </div>
+
+    <div class="card">
+        <h2>Step 4: Check Edge Function Logs</h2>
+        <p style="color: #6b7280; font-size: 14px;">Run this command in your terminal:</p>
+        <pre>cd supabase
+supabase functions logs payments-simple --follow</pre>
+        <p style="color: #6b7280; font-size: 14px;">
+            Then try making a test payment and watch the logs in real-time.
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>Common Issues & Solutions</h2>
+        <ul style="color: #374151;">
+            <li><strong>Edge Function not deployed:</strong> Run <code>cd supabase && supabase functions deploy payments-simple</code></li>
+            <li><strong>Wrong callback URL:</strong> Check that FRONTEND_URL environment variable matches your deployed site</li>
+            <li><strong>PayStack keys not set:</strong> Check that PAYSTACK_SECRET_KEY is set in Supabase Edge Function secrets</li>
+            <li><strong>Test card not working:</strong> Use <code>4084 0840 8408 4081</code> with any future expiry and any CVV</li>
+        </ul>
+    </div>
+
+    <script>
+        // Replace with your actual Supabase project ID
+        const PROJECT_ID = 'ajvbefzqcmkdpskjdkui'; // Update this!
+        const API_BASE = `https://${PROJECT_ID}.supabase.co/functions/v1/payments-simple`;
+
+        async function checkEdgeFunction() {
+            const statusDiv = document.getElementById('edge-status');
+            statusDiv.innerHTML = '<span class="status pending">Checking...</span>';
+
+            try {
+                const response = await fetch(API_BASE);
+                const data = await response.json();
+
+                if (response.ok && data.status === 'ok') {
+                    statusDiv.innerHTML = `
+                        <span class="status success">✅ Edge Function is Running!</span>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    statusDiv.innerHTML = `
+                        <span class="status error">❌ Edge Function Error</span>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <span class="status error">❌ Cannot Connect to Edge Function</span>
+                    <pre>${error.message}</pre>
+                    <p style="margin-top: 12px; color: #991b1b;">
+                        <strong>Solution:</strong> Deploy the Edge Function:
+                        <pre>cd supabase
+supabase functions deploy payments-simple</pre>
+                    </p>
+                `;
+            }
+        }
+
+        async function verifyPayment() {
+            const reference = document.getElementById('payment-ref').value.trim();
+            const statusDiv = document.getElementById('verify-status');
+
+            if (!reference) {
+                statusDiv.innerHTML = '<span class="status error">Please enter a payment reference</span>';
+                return;
+            }
+
+            statusDiv.innerHTML = '<span class="status pending">Verifying...</span>';
+
+            try {
+                const response = await fetch(`${API_BASE}/paystack/verify/${reference}`);
+                const data = await response.json();
+
+                console.log('Verification response:', data);
+
+                if (response.ok && data.success) {
+                    statusDiv.innerHTML = `
+                        <span class="status success">✅ Payment Verified Successfully!</span>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    statusDiv.innerHTML = `
+                        <span class="status error">❌ Verification Failed</span>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <p style="margin-top: 12px; color: #991b1b;">
+                            <strong>Possible reasons:</strong>
+                            <ul>
+                                <li>Payment not completed on PayStack</li>
+                                <li>Invalid reference</li>
+                                <li>PAYSTACK_SECRET_KEY not configured in Edge Function</li>
+                            </ul>
+                        </p>
+                    `;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <span class="status error">❌ Error</span>
+                    <pre>${error.message}</pre>
+                `;
+            }
+        }
+
+        function openSupabase() {
+            window.open(`https://supabase.com/dashboard/project/${PROJECT_ID}/editor`, '_blank');
+        }
+
+        // Auto-fill reference from URL if present
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const reference = urlParams.get('reference');
+            if (reference) {
+                document.getElementById('payment-ref').value = reference;
+                // Auto-verify if reference is present
+                setTimeout(() => verifyPayment(), 500);
+            }
+        });
+    </script>
+</body>
+</html>
