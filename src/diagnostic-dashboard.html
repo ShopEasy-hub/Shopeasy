@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopEasy Payment Diagnostic Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .header {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+    .subtitle {
+      color: #666;
+      font-size: 16px;
+    }
+    .actions {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    button:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .card h2 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .status-badge.success {
+      background: #10b981;
+      color: white;
+    }
+    .status-badge.error {
+      background: #ef4444;
+      color: white;
+    }
+    .status-badge.warning {
+      background: #f59e0b;
+      color: white;
+    }
+    .status-badge.info {
+      background: #3b82f6;
+      color: white;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .info-item {
+      background: #f9fafb;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+    }
+    .info-item.error {
+      border-left-color: #ef4444;
+      background: #fef2f2;
+    }
+    .info-item.success {
+      border-left-color: #10b981;
+      background: #f0fdf4;
+    }
+    .info-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 5px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .info-value {
+      font-size: 16px;
+      color: #111827;
+      font-weight: 500;
+      word-break: break-all;
+    }
+    .recommendations {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .recommendations.success {
+      background: #dcfce7;
+      border-left-color: #10b981;
+    }
+    .recommendations h3 {
+      color: #92400e;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    .recommendations.success h3 {
+      color: #166534;
+    }
+    .recommendations ul {
+      list-style: none;
+      padding: 0;
+    }
+    .recommendations li {
+      padding: 8px 0;
+      color: #78350f;
+    }
+    .recommendations.success li {
+      color: #166534;
+    }
+    .code-block {
+      background: #1f2937;
+      color: #10b981;
+      padding: 15px;
+      border-radius: 8px;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 14px;
+      overflow-x: auto;
+      margin-top: 10px;
+    }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #6b7280;
+    }
+    .spinner {
+      border: 3px solid #f3f4f6;
+      border-top: 3px solid #667eea;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 15px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .icon {
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🔍 ShopEasy Payment Diagnostic Dashboard</h1>
+      <p class="subtitle">Check Edge Function configuration and environment variables</p>
+    </div>
+
+    <div class="actions">
+      <button onclick="runDiagnostics()">🔄 Run Diagnostics</button>
+      <button onclick="testCallbackUrl()">🧪 Test Callback URL</button>
+      <button onclick="openPaystackDashboard()">📊 Open Paystack Dashboard</button>
+    </div>
+
+    <div id="results"></div>
+  </div>
+
+  <script>
+    const PROJECT_REF = 'pkzpifdocmmzowvjopup';
+    const DIAGNOSTIC_URL = `https://${PROJECT_REF}.supabase.co/functions/v1/diagnostic`;
+    const APP_URL = 'https://shopeasy-lemon.vercel.app';
+
+    async function runDiagnostics() {
+      const resultsDiv = document.getElementById('results');
+      
+      // Show loading
+      resultsDiv.innerHTML = `
+        <div class="card">
+          <div class="loading">
+            <div class="spinner"></div>
+            <p>Running diagnostics...</p>
+          </div>
+        </div>
+      `;
+
+      try {
+        const response = await fetch(DIAGNOSTIC_URL);
+        const data = await response.json();
+
+        // Show raw response first for debugging
+        console.log('Diagnostic response:', data);
+
+        if (data.status === 'error') {
+          resultsDiv.innerHTML = `
+            <div class="card">
+              <h2><span class="icon">❌</span> Diagnostic Failed</h2>
+              <div class="info-item error">
+                <div class="info-label">Error</div>
+                <div class="info-value">${data.error || 'Unknown error'}</div>
+              </div>
+              <div class="recommendations">
+                <h3>Possible Issues:</h3>
+                <ul>
+                  <li>• Diagnostic function not deployed</li>
+                  <li>• Run: <code>npx supabase functions deploy diagnostic</code></li>
+                  <li>• Or the function is not accessible</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h2><span class="icon">📋</span> Raw Response</h2>
+                <div class="code-block">${JSON.stringify(data, null, 2)}</div>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        displayResults(data);
+      } catch (error) {
+        resultsDiv.innerHTML = `
+          <div class="card">
+            <h2><span class="icon">❌</span> Connection Failed</h2>
+            <div class="info-item error">
+              <div class="info-label">Error</div>
+              <div class="info-value">${error.message}</div>
+            </div>
+            <div class="recommendations">
+              <h3>Fix:</h3>
+              <ul>
+                <li>• Deploy the diagnostic function first</li>
+                <li>• Run in terminal: <code>npx supabase functions deploy diagnostic</code></li>
+              </ul>
+            </div>
+            <div class="code-block">npx supabase functions deploy diagnostic</div>
+          </div>
+        `;
+      }
+    }
+
+    function displayResults(data) {
+      const resultsDiv = document.getElementById('results');
+      
+      // Add safety checks for data structure
+      if (!data || !data.environment || !data.checks) {
+        resultsDiv.innerHTML = `
+          <div class="card">
+            <h2><span class="icon">⚠️</span> Unexpected Response</h2>
+            <div class="info-item error">
+              <div class="info-label">Issue</div>
+              <div class="info-value">Diagnostic function returned unexpected data structure</div>
+            </div>
+            <div class="card">
+              <h2><span class="icon">📋</span> Raw Response</h2>
+              <div class="code-block">${JSON.stringify(data, null, 2)}</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const overallStatus = data.checks.frontendUrlValid && data.checks.paystackConfigured;
+      
+      resultsDiv.innerHTML = `
+        <div class="card">
+          <h2>
+            <span class="icon">${overallStatus ? '✅' : '⚠️'}</span>
+            Overall Status
+            <span class="status-badge ${overallStatus ? 'success' : 'warning'}">
+              ${overallStatus ? 'CONFIGURED' : 'NEEDS ATTENTION'}
+            </span>
+          </h2>
+          <div class="info-grid">
+            <div class="info-item ${data.environment.FRONTEND_URL.exists ? 'success' : 'error'}">
+              <div class="info-label">FRONTEND_URL</div>
+              <div class="info-value">${data.environment.FRONTEND_URL.value}</div>
+            </div>
+            <div class="info-item ${data.environment.PAYSTACK_SECRET_KEY.exists ? 'success' : 'error'}">
+              <div class="info-label">PAYSTACK_SECRET_KEY</div>
+              <div class="info-value">${data.environment.PAYSTACK_SECRET_KEY.preview}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><span class="icon">🔍</span> Environment Details</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Protocol</div>
+              <div class="info-value">${data.environment.FRONTEND_URL.protocol}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Is Localhost?</div>
+              <div class="info-value">${data.environment.FRONTEND_URL.isLocalhost ? '❌ YES' : '✅ NO'}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Trailing Slash?</div>
+              <div class="info-value">${data.environment.FRONTEND_URL.hasTrailingSlash ? '❌ YES' : '✅ NO'}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Paystack Mode</div>
+              <div class="info-value">
+                ${data.environment.PAYSTACK_SECRET_KEY.isLive ? '🔴 LIVE' : 
+                  data.environment.PAYSTACK_SECRET_KEY.isTest ? '🟡 TEST' : 'NOT SET'}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        ${data.sampleCallbackUrl ? `
+          <div class="card">
+            <h2><span class="icon">🔗</span> Sample Callback URL</h2>
+            <div class="info-item success">
+              <div class="info-label">What Paystack will use</div>
+              <div class="info-value">${data.sampleCallbackUrl}</div>
+            </div>
+            <button onclick="window.open('${data.sampleCallbackUrl}', '_blank')" style="margin-top: 15px;">
+              🧪 Test This URL
+            </button>
+          </div>
+        ` : ''}
+
+        <div class="card">
+          <h2><span class="icon">✔️</span> Configuration Checks</h2>
+          <div class="info-grid">
+            <div class="info-item ${data.checks.frontendUrlConfigured ? 'success' : 'error'}">
+              <div class="info-label">FRONTEND_URL Configured</div>
+              <div class="info-value">${data.checks.frontendUrlConfigured ? '✅ YES' : '❌ NO'}</div>
+            </div>
+            <div class="info-item ${data.checks.frontendUrlValid ? 'success' : 'error'}">
+              <div class="info-label">FRONTEND_URL Valid</div>
+              <div class="info-value">${data.checks.frontendUrlValid ? '✅ YES' : '❌ NO'}</div>
+            </div>
+            <div class="info-item ${data.checks.paystackConfigured ? 'success' : 'error'}">
+              <div class="info-label">Paystack Configured</div>
+              <div class="info-value">${data.checks.paystackConfigured ? '✅ YES' : '❌ NO'}</div>
+            </div>
+            <div class="info-item ${data.checks.allConfigured ? 'success' : 'error'}">
+              <div class="info-label">All Configured</div>
+              <div class="info-value">${data.checks.allConfigured ? '✅ YES' : '❌ NO'}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="recommendations ${overallStatus ? 'success' : ''}">
+          <h3>${overallStatus ? '✅ Recommendations' : '⚠️ Action Required'}</h3>
+          <ul>
+            ${data.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2><span class="icon">📋</span> Raw Response</h2>
+          <div class="code-block">${JSON.stringify(data, null, 2)}</div>
+        </div>
+      `;
+    }
+
+    function testCallbackUrl() {
+      const testUrl = `${APP_URL}/?payment-callback=true&reference=SUB_TEST_${Date.now()}`;
+      window.open(testUrl, '_blank');
+    }
+
+    function openPaystackDashboard() {
+      window.open('https://dashboard.paystack.com/#/transactions', '_blank');
+    }
+
+    // Run diagnostics on page load
+    runDiagnostics();
+  </script>
+</body>
+</html>
