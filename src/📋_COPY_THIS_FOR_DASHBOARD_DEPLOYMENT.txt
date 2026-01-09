@@ -1,0 +1,81 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 EDGE FUNCTION DEPLOYMENT - COPY & PASTE METHOD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If you prefer to deploy via Supabase Dashboard instead of CLI:
+
+STEPS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to Supabase Dashboard:
+   https://supabase.com/dashboard/project/pkzpifdocmmzowvjopup/functions
+
+2. Find the "payments-simple" function in the list
+
+3. Click the ⋮ (three dots) menu on the right
+
+4. Select "Update Function"
+
+5. Delete ALL existing code in the editor
+
+6. Open this file: /supabase/functions/payments-simple/index.ts
+
+7. Copy ALL the code from that file
+
+8. Paste it into the Supabase Dashboard editor
+
+9. Click "Deploy" button
+
+10. Wait for deployment to complete (about 10-20 seconds)
+
+11. ✅ DONE! Your function is now deployed with dynamic URL support!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+VERIFY DEPLOYMENT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After deployment, test the health endpoint in a new browser tab:
+
+https://pkzpifdocmmzowvjopup.supabase.co/functions/v1/payments-simple/health
+
+You should see:
+
+{
+  "status": "ok",
+  "service": "ShopEasy Payment Service",
+  "version": "6.0.0-BULLETPROOF",
+  "message": "Simplified version - guaranteed to work!",
+  "timestamp": "2026-01-06T..."
+}
+
+✅ If you see this, deployment was successful!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT CHANGED IN THE CODE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Line 122: Added callback_url to destructuring
+   const { email, amount, currency, reference, metadata, callback_url } = await req.json();
+
+Line 133-134: Dynamic callback URL
+   const callbackUrl = callback_url || Deno.env.get('FRONTEND_URL') || 'http://localhost:5173';
+   console.log('🔗 Callback URL:', callbackUrl);
+
+Line 150: Use dynamic callback URL
+   callback_url: callbackUrl, // Dynamic callback URL from frontend
+
+These changes make the app work with ANY URL including Figma Make!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+IMPORTANT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Make sure you copy the ENTIRE file content, not just the changed lines!
+
+The file is located at:
+/supabase/functions/payments-simple/index.ts
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

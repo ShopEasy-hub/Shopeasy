@@ -1,0 +1,3 @@
+# Disable JWT verification for this Edge Function
+# This allows public access to payment verification endpoints
+verify_jwt = false

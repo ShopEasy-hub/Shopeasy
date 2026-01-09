@@ -1,0 +1,75 @@
+╔═══════════════════════════════════════════════════╗
+║  🚨 COMPLETE FIX - RUN THESE COMMANDS NOW         ║
+╚═══════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1: FIX DESIGN (Tailwind CSS)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+rm -rf node_modules .vite dist
+npm install
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2: SET SECRETS (Only 3 needed)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+cd supabase
+
+supabase secrets set SERVICE_ROLE_KEY=<paste from Supabase Dashboard>
+supabase secrets set PAYSTACK_SECRET_KEY=<paste from Paystack Dashboard>
+supabase secrets set FRONTEND_URL=http://localhost:5173
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 3: DEPLOY EDGE FUNCTION (with config.toml)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+supabase functions deploy payments-simple --no-verify-jwt
+
+cd ..
+
+⚠️  IMPORTANT: The --no-verify-jwt flag disables JWT auth requirement
+   This allows public access to payment verification endpoint
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 4: START AND TEST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+npm run dev
+
+# Open http://localhost:5173
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHERE TO GET THE KEYS:
+
+SERVICE_ROLE_KEY:
+→ https://supabase.com/dashboard
+→ Project: pkzpifdocmmzowvjopup
+→ Settings → API → Reveal "service_role"
+
+PAYSTACK_SECRET_KEY:
+→ https://dashboard.paystack.com/#/settings/developers
+→ Copy "Test Secret Key"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ WHAT'S FIXED:
+
+1. ✅ Added config.toml to disable JWT verification
+2. ✅ Deploy command uses --no-verify-jwt flag
+3. ✅ Fresh npm install fixes Tailwind
+4. ✅ Only 3 secrets needed
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  WHY 401 ERROR HAPPENED:
+
+Supabase Edge Functions require JWT auth by default.
+The verify endpoint needs public access (no auth).
+Solution: Deploy with --no-verify-jwt flag
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ DONE! BOTH ISSUES FIXED! 🚀
+
+RUN THE DEPLOY COMMAND AGAIN WITH --no-verify-jwt

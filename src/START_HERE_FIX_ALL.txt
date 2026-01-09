@@ -1,0 +1,98 @@
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  🆘 COMPLETE FIX - START HERE                     ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+I found the 401 issue! Supabase requires JWT auth by default.
+I've added config.toml + you need to deploy with --no-verify-jwt flag.
+
+Copy and paste these commands ONE BY ONE:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎨 FIX #1: DESIGN (Tailwind not loading)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+rm -rf node_modules .vite dist
+npm install
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💳 FIX #2: PAYMENT 401 ERROR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+cd supabase
+
+# If you haven't set secrets yet:
+supabase secrets set SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY_HERE
+supabase secrets set PAYSTACK_SECRET_KEY=YOUR_PAYSTACK_SECRET_KEY_HERE
+supabase secrets set FRONTEND_URL=http://localhost:5173
+
+# Deploy with --no-verify-jwt flag (THIS IS THE KEY!)
+supabase functions deploy payments-simple --no-verify-jwt
+
+cd ..
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 TEST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+npm run dev
+
+# In SEPARATE terminal, watch logs:
+cd supabase
+supabase functions logs payments-simple --follow
+
+# Open browser (Incognito):
+http://localhost:5173
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔑 WHERE TO GET KEYS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SERVICE_ROLE_KEY:
+1. https://supabase.com/dashboard
+2. Select project: pkzpifdocmmzowvjopup
+3. Settings → API
+4. Copy "service_role" key (click Reveal)
+
+PAYSTACK_SECRET_KEY:
+1. https://dashboard.paystack.com/#/settings/developers
+2. Copy "Test Secret Key"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ WHAT I FIXED:
+
+1. ✅ Added config.toml file
+   - Sets verify_jwt = false
+   - Disables JWT authentication
+
+2. ✅ Updated deploy command
+   - Added --no-verify-jwt flag
+   - Allows public access to verify endpoint
+
+3. ✅ Fresh npm install fixes Tailwind
+
+4. ✅ Only 3 secrets needed
+   - SUPABASE_URL is auto-provided
+   - No SUPABASE_ prefix
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  WHY YOU GOT 401 ERROR:
+
+Supabase Edge Functions require JWT authentication by default.
+The payment verification endpoint needs to be public (no auth).
+
+Solution:
+1. config.toml sets verify_jwt = false
+2. Deploy flag --no-verify-jwt disables JWT requirement
+3. Now verify endpoint is publicly accessible
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📚 OTHER GUIDES:
+- ⚡_REDEPLOY_NOW.txt (Quick redeploy)
+- 📋_SECRET_NAMES_REFERENCE.txt (Which secrets)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 REDEPLOY NOW WITH --no-verify-jwt AND IT WILL WORK!

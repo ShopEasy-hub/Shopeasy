@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Payment Callback URL</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #10b981;
+            margin-top: 0;
+        }
+        .info {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .url {
+            background: #1e293b;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 10px 0;
+        }
+        button {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #059669;
+        }
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .test-links {
+            margin-top: 30px;
+        }
+        a {
+            color: #10b981;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🧪 Payment Callback URL Tester</h1>
+        
+        <div class="info">
+            <strong>Current URL:</strong>
+            <div class="url" id="currentUrl"></div>
+        </div>
+
+        <div class="info">
+            <strong>Callback URL that will be sent to Paystack:</strong>
+            <div class="url" id="callbackUrl"></div>
+        </div>
+
+        <h2>Test Payment Callback Detection</h2>
+        <p>Click these links to test if your app detects payment callbacks correctly:</p>
+        
+        <div class="test-links">
+            <h3>Paystack Callback Format:</h3>
+            <p><a href="?trxref=SUB_1234567890_TEST&reference=SUB_1234567890_TEST" target="_blank">
+                Test Paystack Callback (trxref + reference)
+            </a></p>
+            
+            <h3>Flutterwave Callback Format:</h3>
+            <p><a href="?tx_ref=SUB_1234567890_TEST&transaction_id=123456&status=successful" target="_blank">
+                Test Flutterwave Callback (tx_ref + status)
+            </a></p>
+        </div>
+
+        <div class="warning">
+            <strong>⚠️ Important:</strong><br>
+            Before testing payments, make sure you've deployed the updated Edge Function to Supabase!
+            <br><br>
+            See: <code>🚀_DEPLOY_EDGE_FUNCTION.md</code>
+        </div>
+
+        <h2>Quick Actions:</h2>
+        <button onclick="copyCallbackUrl()">📋 Copy Callback URL</button>
+        <button onclick="openConsole()">🔍 Open Browser Console</button>
+        
+        <h2>Expected Console Logs:</h2>
+        <div class="info">
+            When you click a test link above, you should see in the browser console:<br><br>
+            <code>
+                🌐 APP INIT - URL INFO: {...}<br>
+                🔍 Payment callback check: {...}<br>
+                💳 ✅ Payment callback detected - routing to payment-callback page<br>
+                🔥 PaymentCallback component mounted
+            </code>
+        </div>
+    </div>
+
+    <script>
+        // Get current URL
+        const currentUrl = window.location.origin;
+        const callbackUrl = currentUrl; // This is what gets sent to Paystack
+        
+        document.getElementById('currentUrl').textContent = window.location.href;
+        document.getElementById('callbackUrl').textContent = callbackUrl;
+        
+        function copyCallbackUrl() {
+            navigator.clipboard.writeText(callbackUrl).then(() => {
+                alert('✅ Callback URL copied to clipboard!\n\n' + callbackUrl);
+            }).catch(err => {
+                alert('❌ Failed to copy. URL is:\n\n' + callbackUrl);
+            });
+        }
+        
+        function openConsole() {
+            alert('Press F12 or Right-Click → Inspect → Console to view logs');
+        }
+        
+        // Log current URL on load
+        console.log('🧪 Test Page Loaded');
+        console.log('📍 Current URL:', window.location.href);
+        console.log('🔗 Callback URL for Paystack:', callbackUrl);
+        console.log('🔍 URL Parameters:', Object.fromEntries(new URLSearchParams(window.location.search).entries()));
+    </script>
+</body>
+</html>

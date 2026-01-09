@@ -1,0 +1,42 @@
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  ⚡ QUICK FIX - COPY & PASTE                      ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+🎨 FIX DESIGN:
+──────────────
+rm -rf node_modules .vite dist && npm install
+
+💳 FIX PAYMENT 401:
+──────────────────
+cd supabase
+
+# Only 3 secrets needed (SUPABASE_URL is auto-provided!)
+# Get SERVICE_ROLE_KEY from Supabase Dashboard → Settings → API
+# Get PAYSTACK_SECRET_KEY from Paystack Dashboard → Settings → Developers
+
+supabase secrets set SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY_HERE
+supabase secrets set PAYSTACK_SECRET_KEY=YOUR_PAYSTACK_SECRET_KEY_HERE
+supabase secrets set FRONTEND_URL=http://localhost:5173
+
+supabase functions deploy payments-simple
+
+cd ..
+
+🧪 TEST:
+────────
+npm run dev
+
+# Open: http://localhost:5173
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ ONLY 3 SECRETS NEEDED:
+- SERVICE_ROLE_KEY (from Supabase)
+- PAYSTACK_SECRET_KEY (from Paystack)
+- FRONTEND_URL (http://localhost:5173)
+
+❌ DON'T SET THESE (reserved by Supabase):
+- SUPABASE_URL (auto-provided)
+- SUPABASE_* (anything starting with SUPABASE_)
+
+✅ DONE! 🚀

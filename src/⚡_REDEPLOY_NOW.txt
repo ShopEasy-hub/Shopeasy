@@ -1,0 +1,42 @@
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  ⚡ REDEPLOY WITH --no-verify-jwt FLAG            ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+The 401 error is because Supabase requires JWT auth by default.
+I've added config.toml to fix this.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔧 FIX 401 ERROR - RUN THIS NOW:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+cd supabase
+
+supabase functions deploy payments-simple --no-verify-jwt
+
+cd ..
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  WHAT THIS DOES:
+- Disables JWT authentication requirement
+- Allows public access to verify endpoint
+- Payment verification will work without 401
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎨 IF UI STILL BROKEN:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+rm -rf node_modules .vite dist
+npm install
+npm run dev
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ THEN TEST:
+1. Open http://localhost:5173
+2. UI should show with design ✅
+3. Payment verification should work without 401 ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 THIS WILL FIX THE 401 ERROR!

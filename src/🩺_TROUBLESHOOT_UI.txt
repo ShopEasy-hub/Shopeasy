@@ -1,0 +1,148 @@
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  🩺 UI NOT SHOWING - TROUBLESHOOT                 ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+If UI is still showing only text (no colors/design), follow these steps:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1: CHECK BROWSER CONSOLE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open browser (http://localhost:5173)
+2. Press F12 to open DevTools
+3. Go to Console tab
+4. Look for errors
+
+Common errors:
+❌ "Failed to load /styles/globals.css"
+❌ "Unexpected token '<'" in CSS
+❌ "Failed to fetch dynamically imported module"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2: VERIFY FILES EXIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ls -la styles/globals.css
+ls -la tailwind.config.js
+ls -la postcss.config.js
+
+All 3 should exist. If any missing, let me know.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 3: CLEAR CACHE AND REBUILD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Stop dev server (Ctrl+C)
+
+# Clear everything
+rm -rf node_modules
+rm -rf .vite
+rm -rf dist
+rm -rf package-lock.json
+
+# Fresh install
+npm install
+
+# Start again
+npm run dev
+
+# Open in INCOGNITO mode (Ctrl+Shift+N)
+http://localhost:5173
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 4: CHECK NETWORK TAB
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. F12 → Network tab
+2. Refresh page
+3. Look for globals.css
+4. Check status:
+   ✅ 200 = Good
+   ❌ 404 = File not found
+   ❌ 500 = Server error
+
+If 404, check if file exists:
+cat styles/globals.css
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 5: VERIFY TAILWIND IS PROCESSING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+In browser, inspect any element (right-click → Inspect)
+
+Look at computed styles. Should see CSS custom properties:
+✅ --primary: #0d7c8d
+✅ --background: #ffffff
+✅ --foreground: oklch(...)
+
+If you see these, Tailwind is loading correctly.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 6: CHECK IF VITE IS RUNNING CORRECTLY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+When you run npm run dev, you should see:
+
+  VITE v6.x.x  ready in XXX ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+
+If you see errors during startup, share them.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 7: TEST WITH SIMPLE TAILWIND CLASS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+In browser console, run:
+
+document.body.className = "bg-red-500 text-white p-8"
+
+If the page turns red with white text, Tailwind IS working.
+If nothing changes, Tailwind is not being processed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 8: CHECK NODE VERSION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+node --version
+
+Should be v18+ or v20+
+If older, update Node.js
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 9: CHECK PORT CONFLICT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If you see "Port 5173 already in use", kill it:
+
+# Find process
+lsof -ti:5173
+
+# Kill it (replace PID with number from above)
+kill -9 <PID>
+
+# Or use different port
+npm run dev -- --port 5174
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 10: LAST RESORT - SHARE ERRORS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If still broken, share:
+1. Browser console errors (F12)
+2. Terminal output from npm run dev
+3. Network tab screenshot (F12 → Network)
+4. What you see on the page
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔧 MOST COMMON FIXES:
+1. Clear cache + rebuild (Step 3)
+2. Open in Incognito mode
+3. Check browser console for errors
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 TIP: Always test in Incognito mode to avoid cache issues!

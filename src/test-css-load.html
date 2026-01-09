@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>CSS Test</title>
+  <style>
+    /* Inline Tailwind directives for testing */
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+    
+    :root {
+      --primary: 84 81% 44%;
+    }
+  </style>
+  <link rel="stylesheet" href="/styles/globals.css">
+</head>
+<body>
+  <div class="min-h-screen bg-background p-8">
+    <h1 class="text-4xl font-bold text-foreground mb-4">Direct CSS Test</h1>
+    <div class="bg-primary text-white p-4 rounded-lg">
+      This should be lemon green
+    </div>
+    <div style="background-color: hsl(84, 81%, 44%)" class="p-4 mt-4 rounded-lg text-white">
+      This uses inline HSL (should also be lemon green)
+    </div>
+  </div>
+  
+  <script>
+    // Check if CSS is loaded
+    const link = document.querySelector('link[href*="globals.css"]');
+    console.log('CSS link element:', link);
+    console.log('CSS loaded:', link?.sheet ? 'YES' : 'NO');
+    if (link?.sheet) {
+      console.log('Number of CSS rules:', link.sheet.cssRules?.length || 0);
+    }
+    
+    // Check computed styles
+    const body = document.body;
+    const computedStyle = window.getComputedStyle(body);
+    console.log('Body background color:', computedStyle.backgroundColor);
+    console.log('Body font family:', computedStyle.fontFamily);
+    
+    // Try to access Tailwind classes
+    const testDiv = document.createElement('div');
+    testDiv.className = 'bg-red-500 p-4';
+    document.body.appendChild(testDiv);
+    const testStyle = window.getComputedStyle(testDiv);
+    console.log('Test div bg (should be red):', testStyle.backgroundColor);
+    console.log('Test div padding (should be 1rem):', testStyle.padding);
+  </script>
+</body>
+</html>

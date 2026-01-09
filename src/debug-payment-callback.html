@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Callback Debugger</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+    }
+    .section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 6px;
+      border-left: 4px solid #4CAF50;
+    }
+    .section.error {
+      border-left-color: #f44336;
+      background: #ffebee;
+    }
+    .section.warning {
+      border-left-color: #ff9800;
+      background: #fff3e0;
+    }
+    h2 {
+      margin-top: 0;
+      color: #333;
+      font-size: 18px;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .result {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .result.success {
+      background: #e8f5e9;
+      border: 1px solid #4CAF50;
+      color: #2e7d32;
+    }
+    .result.error {
+      background: #ffebee;
+      border: 1px solid #f44336;
+      color: #c62828;
+    }
+    .result.info {
+      background: #e3f2fd;
+      border: 1px solid #2196F3;
+      color: #1565c0;
+    }
+    .check {
+      margin: 10px 0;
+      padding: 10px;
+      background: white;
+      border-radius: 4px;
+    }
+    .check.pass {
+      border-left: 4px solid #4CAF50;
+    }
+    .check.fail {
+      border-left: 4px solid #f44336;
+    }
+    .icon {
+      display: inline-block;
+      margin-right: 8px;
+      font-weight: bold;
+    }
+    .icon.pass { color: #4CAF50; }
+    .icon.fail { color: #f44336; }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #555;
+    }
+    .note {
+      font-size: 12px;
+      color: #666;
+      font-style: italic;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Payment Callback Debugger</h1>
+    <p class="subtitle">Diagnose why payment callbacks aren't working</p>
+
+    <!-- Current URL Check -->
+    <div class="section">
+      <h2>1️⃣ Current URL Analysis</h2>
+      <div id="urlAnalysis"></div>
+    </div>
+
+    <!-- Edge Function Check -->
+    <div class="section">
+      <h2>2️⃣ Edge Function Health Check</h2>
+      <label for="projectRef">Supabase Project Ref:</label>
+      <input 
+        type="text" 
+        id="projectRef" 
+        placeholder="pkzpifdocmmzowvjopup"
+        value="pkzpifdocmmzowvjopup"
+      >
+      <button onclick="checkEdgeFunction()">Check Edge Function</button>
+      <div id="edgeFunctionResult"></div>
+    </div>
+
+    <!-- FRONTEND_URL Comparison -->
+    <div class="section">
+      <h2>3️⃣ FRONTEND_URL Verification</h2>
+      <label for="frontendUrl">FRONTEND_URL (from Supabase secrets):</label>
+      <input 
+        type="text" 
+        id="frontendUrl" 
+        placeholder="https://your-app.vercel.app"
+      >
+      <p class="note">Go to Supabase → Settings → Edge Functions → Secrets → Reveal FRONTEND_URL and paste here</p>
+      
+      <label for="vercelUrl">Actual Vercel URL:</label>
+      <input 
+        type="text" 
+        id="vercelUrl" 
+        placeholder="https://your-app.vercel.app"
+      >
+      <p class="note">Go to Vercel Dashboard → Your project → Copy URL from top</p>
+      
+      <button onclick="compareUrls()">Compare URLs</button>
+      <div id="urlComparisonResult"></div>
+    </div>
+
+    <!-- Callback URL Test -->
+    <div class="section">
+      <h2>4️⃣ Test Callback URL Routing</h2>
+      <label for="testCallbackUrl">Your App URL:</label>
+      <input 
+        type="text" 
+        id="testCallbackUrl" 
+        placeholder="https://your-app.vercel.app"
+      >
+      <button onclick="testCallbackRouting()">Test Callback Routing</button>
+      <div id="callbackRoutingResult"></div>
+    </div>
+
+    <!-- Paystack Transaction Check -->
+    <div class="section warning">
+      <h2>5️⃣ Paystack Transaction Manual Check</h2>
+      <p>Go to <a href="https://dashboard.paystack.com/" target="_blank">Paystack Dashboard</a> (TEST mode)</p>
+      <ol>
+        <li>Click on <strong>Transactions</strong></li>
+        <li>Find your most recent payment</li>
+        <li>Look for <strong>Callback URL</strong> or <strong>Redirect URL</strong></li>
+        <li>Paste it below:</li>
+      </ol>
+      <input 
+        type="text" 
+        id="paystackCallbackUrl" 
+        placeholder="Paste callback URL from Paystack here"
+      >
+      <button onclick="analyzePaystackUrl()">Analyze Paystack Callback URL</button>
+      <div id="paystackUrlResult"></div>
+    </div>
+  </div>
+
+  <script>
+    // 1. Analyze Current URL
+    function analyzeCurrentUrl() {
+      const urlAnalysis = document.getElementById('urlAnalysis');
+      const currentUrl = window.location.href;
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      const hasPaymentCallback = urlParams.get('payment-callback') === 'true';
+      const hasReference = urlParams.get('reference') || urlParams.get('tx_ref');
+      
+      let html = `<div class="result info">
+<strong>Current URL:</strong>
+${currentUrl}
+
+<strong>Payment Callback Parameter:</strong> ${urlParams.get('payment-callback') || 'NOT FOUND'}
+<strong>Reference Parameter:</strong> ${hasReference || 'NOT FOUND'}
+</div>`;
+
+      if (hasPaymentCallback && hasReference) {
+        html += `<div class="check pass">
+  <span class="icon pass">✅</span>
+  <strong>URL has correct callback parameters!</strong>
+  <br>This page should route to payment verification.
+</div>`;
+      } else {
+        html += `<div class="check fail">
+  <span class="icon fail">❌</span>
+  <strong>URL does NOT have callback parameters</strong>
+  <br>This is normal if you opened this page directly. After payment, URL should have ?payment-callback=true&reference=SUB_xxx
+</div>`;
+      }
+      
+      urlAnalysis.innerHTML = html;
+    }
+
+    // 2. Check Edge Function
+    async function checkEdgeFunction() {
+      const projectRef = document.getElementById('projectRef').value;
+      const resultDiv = document.getElementById('edgeFunctionResult');
+      
+      if (!projectRef) {
+        resultDiv.innerHTML = '<div class="result error">Please enter your Supabase project ref</div>';
+        return;
+      }
+      
+      resultDiv.innerHTML = '<div class="result info">Checking Edge Function...</div>';
+      
+      try {
+        const url = `https://${projectRef}.supabase.co/functions/v1/payments-simple`;
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (response.ok && data.status === 'ok') {
+          resultDiv.innerHTML = `<div class="result success">
+✅ Edge Function is DEPLOYED and ACCESSIBLE!
+
+Response:
+${JSON.stringify(data, null, 2)}
+
+Function URL:
+${url}
+</div>`;
+        } else {
+          resultDiv.innerHTML = `<div class="result error">
+❌ Edge Function returned unexpected response
+
+Status: ${response.status}
+Response: ${JSON.stringify(data, null, 2)}
+</div>`;
+        }
+      } catch (error) {
+        resultDiv.innerHTML = `<div class="result error">
+❌ Edge Function is NOT ACCESSIBLE!
+
+Error: ${error.message}
+
+This means:
+- Function not deployed, OR
+- Wrong project ref, OR
+- Network issue
+
+Fix: Run this in terminal:
+npx supabase functions deploy payments-simple
+</div>`;
+      }
+    }
+
+    // 3. Compare URLs
+    function compareUrls() {
+      const frontendUrl = document.getElementById('frontendUrl').value.trim();
+      const vercelUrl = document.getElementById('vercelUrl').value.trim();
+      const resultDiv = document.getElementById('urlComparisonResult');
+      
+      if (!frontendUrl || !vercelUrl) {
+        resultDiv.innerHTML = '<div class="result error">Please enter both URLs</div>';
+        return;
+      }
+      
+      // Clean URLs for comparison
+      const cleanFrontend = frontendUrl.replace(/\/$/, '');
+      const cleanVercel = vercelUrl.replace(/\/$/, '');
+      
+      let html = `<div class="result info">
+<strong>FRONTEND_URL (Supabase):</strong>
+${frontendUrl}
+
+<strong>Vercel URL (Actual):</strong>
+${vercelUrl}
+</div>`;
+
+      // Check if they match
+      if (cleanFrontend === cleanVercel) {
+        html += `<div class="check pass">
+  <span class="icon pass">✅</span>
+  <strong>URLs MATCH PERFECTLY!</strong>
+  <br>FRONTEND_URL is set correctly.
+</div>`;
+      } else {
+        html += `<div class="check fail">
+  <span class="icon fail">❌</span>
+  <strong>URLs DO NOT MATCH!</strong>
+  <br><br>This is the problem! Update FRONTEND_URL in Supabase to match your Vercel URL exactly.
+</div>`;
+      }
+
+      // Check for common issues
+      if (frontendUrl.endsWith('/')) {
+        html += `<div class="check fail">
+  <span class="icon fail">⚠️</span>
+  <strong>FRONTEND_URL has trailing slash!</strong>
+  <br>Remove the / at the end
+</div>`;
+      }
+
+      if (frontendUrl.includes('localhost')) {
+        html += `<div class="check fail">
+  <span class="icon fail">⚠️</span>
+  <strong>FRONTEND_URL is set to localhost!</strong>
+  <br>Change to your production Vercel URL
+</div>`;
+      }
+
+      if (frontendUrl.startsWith('http://')) {
+        html += `<div class="check fail">
+  <span class="icon fail">⚠️</span>
+  <strong>FRONTEND_URL uses http:// instead of https://</strong>
+  <br>Change to https://
+</div>`;
+      }
+
+      resultDiv.innerHTML = html;
+    }
+
+    // 4. Test Callback Routing
+    function testCallbackRouting() {
+      const baseUrl = document.getElementById('testCallbackUrl').value.trim();
+      const resultDiv = document.getElementById('callbackRoutingResult');
+      
+      if (!baseUrl) {
+        resultDiv.innerHTML = '<div class="result error">Please enter your app URL</div>';
+        return;
+      }
+      
+      const testUrl = `${baseUrl}?payment-callback=true&reference=SUB_TEST_DEBUG_123`;
+      
+      resultDiv.innerHTML = `<div class="result info">
+<strong>Test URL:</strong>
+${testUrl}
+
+Click the button below to test if your app routes to the payment callback page.
+
+Expected behavior:
+- Should navigate to your app
+- Should show "Verifying Payment..." page
+- Then will fail verification (test reference)
+- But proves routing works!
+</div>`;
+
+      resultDiv.innerHTML += `<button onclick="window.open('${testUrl}', '_blank')" style="margin-top: 15px;">
+  Open Test Callback URL
+</button>`;
+    }
+
+    // 5. Analyze Paystack URL
+    function analyzePaystackUrl() {
+      const paystackUrl = document.getElementById('paystackCallbackUrl').value.trim();
+      const resultDiv = document.getElementById('paystackUrlResult');
+      
+      if (!paystackUrl) {
+        resultDiv.innerHTML = '<div class="result error">Please paste the callback URL from Paystack</div>';
+        return;
+      }
+      
+      let html = `<div class="result info">
+<strong>Paystack Callback URL:</strong>
+${paystackUrl}
+</div>`;
+
+      // Check for issues
+      if (paystackUrl.includes('localhost')) {
+        html += `<div class="check fail">
+  <span class="icon fail">❌</span>
+  <strong>Paystack is redirecting to LOCALHOST!</strong>
+  <br><br>This is the problem!
+  <br><br>Fix:
+  <br>1. Update FRONTEND_URL in Supabase to your Vercel URL
+  <br>2. Run: npx supabase functions deploy payments-simple
+  <br>3. Try payment again
+</div>`;
+      } else if (paystackUrl.includes('payment-callback=true')) {
+        html += `<div class="check pass">
+  <span class="icon pass">✅</span>
+  <strong>Callback URL looks CORRECT!</strong>
+  <br>Has payment-callback=true parameter
+</div>`;
+      } else {
+        html += `<div class="check fail">
+  <span class="icon fail">⚠️</span>
+  <strong>Callback URL might be malformed</strong>
+  <br>Should contain: ?payment-callback=true&reference=SUB_xxx
+</div>`;
+      }
+
+      if (paystackUrl.startsWith('http://')) {
+        html += `<div class="check fail">
+  <span class="icon fail">⚠️</span>
+  <strong>Using HTTP instead of HTTPS</strong>
+  <br>Should use https://
+</div>`;
+      }
+
+      resultDiv.innerHTML = html;
+    }
+
+    // Run URL analysis on page load
+    analyzeCurrentUrl();
+  </script>
+</body>
+</html>

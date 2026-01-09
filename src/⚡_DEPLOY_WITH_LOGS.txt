@@ -1,0 +1,154 @@
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  🚨 CRITICAL FIX - DEPLOY & TEST NOW               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+I found the root cause!  The logs show detailed error handling now.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔧 DEPLOY THE IMPROVED EDGE FUNCTION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+cd supabase
+
+supabase functions deploy payments-simple --no-verify-jwt
+
+cd ..
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 NOW WATCH THE LOGS CLOSELY:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+cd supabase
+supabase functions logs payments-simple --follow
+
+Look for these messages:
+
+✅ GOOD SIGNS:
+  ✅ Payment record found
+  ✅ Payment status updated
+  💾 Creating subscription immediately...
+  ✅ Subscription created successfully!
+  ✅ Subscription ID: xxx
+  ✅ Status: active
+  ✅ Plan: starter (or pro/enterprise)
+
+❌ BAD SIGNS:
+  ❌ Payment record not found
+  ❌ Reference: SUB_xxxx
+  ❌ This means payment was not initialized properly!
+  
+  OR
+  
+  ❌ Failed to create subscription
+  ❌ Error details: {...}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 TEST PAYMENT FLOW:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open http://localhost:5173 (Incognito/Private window)
+
+2. Login
+
+3. Settings → Subscription → Subscribe
+
+4. Select a plan (e.g., "Starter")
+
+5. Click "Continue to Payment"
+   - WATCH THE LOGS - should see:
+     💳 [PayStack Initialize] Starting...
+     ✅ User authenticated: yourEmail@example.com
+     📦 Payment request: { email, amount, reference, planId: 'starter' }
+     ✅ Payment record stored
+
+6. Complete payment on Paystack
+   - Card: 4084 0840 8408 4081
+   - Expiry: 12/25
+   - CVV: 123
+
+7. After redirect:
+   - WATCH THE LOGS - should see:
+     🔍 [PayStack Verify] PUBLIC ACCESS - NO AUTH REQUIRED
+     🔍 Reference: SUB_xxxxx
+     ✅ Payment verified
+     ✅ Payment record found:
+        plan_id: 'starter'
+        billing_cycle: 'yearly' (or 'monthly')
+        organization_id: xxx
+        amount: xxx
+     💾 Creating subscription immediately...
+     💾 Upserting subscription...
+     ✅ Subscription created successfully!
+     ✅ Subscription ID: xxx
+     ✅ Status: active
+     ✅ Plan: starter
+
+8. Click "Go to Dashboard"
+   - Should navigate to dashboard
+   - Should show "Active" badge
+   - Should show plan name
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔍 IF YOU SEE "Payment record not found":
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This means:
+1. The reference in the URL doesn't match the database
+2. Payment initialization might have failed
+3. Paystack might be using a different reference
+
+CHECK IN SUPABASE DASHBOARD:
+1. Go to https://supabase.com/dashboard
+2. Select project: pkzpifdocmmzowvjopup
+3. Table Editor → payments table
+4. Look for the payment record
+5. Check if the reference matches what's in the logs
+
+IF NO PAYMENT RECORD EXISTS:
+- Payment initialization failed
+- Check logs for "Failed to store payment" error
+- Check SERVICE_ROLE_KEY is set correctly
+
+IF PAYMENT RECORD EXISTS BUT DIFFERENT REFERENCE:
+- Paystack generated a different reference
+- This is the issue we need to investigate
+- Share both references with me
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔍 IF SUBSCRIPTION CREATION FAILS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Look for error details in logs:
+❌ Failed to create subscription
+❌ Error details: { code: 'xxx', message: 'xxx' }
+
+Common errors:
+- "violates foreign key constraint" = organization_id doesn't exist
+- "duplicate key value" = subscription already exists
+- "null value in column" = missing required field
+
+Share the exact error message.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 SHARE THESE IF IT FAILS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Complete Edge Function logs (copy/paste)
+
+2. Reference from URL (what you see in browser)
+
+3. Reference in logs (what Edge Function received)
+
+4. Payment record from database:
+   - Go to Supabase Dashboard
+   - Table Editor → payments
+   - Find the record
+   - Copy all values
+
+5. Browser console errors (F12 → Console)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ WITH THESE DETAILED LOGS WE'LL SEE EXACTLY WHAT'S WRONG!
+
+🚀 DEPLOY NOW AND TEST WITH LOGS OPEN!

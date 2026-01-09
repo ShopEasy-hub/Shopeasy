@@ -1,0 +1,92 @@
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  ⚡ LOCAL TESTING - QUICK START                   ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Step 1: Deploy Edge Function to Supabase
+────────────────────────────────────────
+cd supabase
+supabase functions deploy payments-simple
+cd ..
+
+Step 2: Set Frontend URL for Localhost
+────────────────────────────────────────
+cd supabase
+supabase secrets set FRONTEND_URL=http://localhost:5173
+cd ..
+
+⚠️ NOTE: Port might be different - check npm run dev output!
+
+Step 3: Install Dependencies (First time only)
+────────────────────────────────────────
+npm install
+
+Step 4: Start Dev Server
+────────────────────────────────────────
+npm run dev
+
+(Keep this terminal open)
+
+Step 5: Watch Logs (Optional but recommended)
+────────────────────────────────────────
+Open NEW terminal:
+
+cd supabase
+supabase functions logs payments-simple --follow
+
+(Keep this terminal open too)
+
+Step 6: Test in Browser
+────────────────────────────────────────
+1. Open Incognito: Ctrl+Shift+N (Windows) or Cmd+Shift+N (Mac)
+2. Go to: http://localhost:5173
+3. Login → Settings → Subscription → Subscribe
+4. Test card: 4084 0840 8408 4081
+5. Expiry: 12/25, CVV: 123
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ WHAT SHOULD HAPPEN:
+
+✓ No blank page
+✓ Redirects to Paystack
+✓ Payment completes
+✓ Redirects back to localhost (NO 404!)
+✓ Shows "Verifying payment..."
+✓ Success message
+✓ Subscription activated
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🐛 IF ISSUES:
+
+Blank page?
+→ Check browser console (F12) for errors
+→ Redeploy: cd supabase && supabase functions deploy payments-simple
+
+404 error?
+→ Make sure you saved App.tsx
+→ Restart dev server: Ctrl+C then npm run dev
+
+Payment gateway not configured?
+→ cd supabase
+→ supabase secrets set PAYSTACK_SECRET_KEY=sk_test_YOUR_KEY
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 AFTER LOCAL TEST SUCCEEDS:
+
+Deploy to production:
+
+cd supabase
+supabase secrets set FRONTEND_URL=https://your-app.vercel.app
+cd ..
+
+git add .
+git commit -m "Production-ready payments"
+git push
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📚 FULL GUIDE: 🧪_LOCAL_TESTING_GUIDE.md
+
+START TESTING NOW! ⚡

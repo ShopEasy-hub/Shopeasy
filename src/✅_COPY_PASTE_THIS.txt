@@ -1,0 +1,65 @@
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  ✅ COPY & PASTE - FIX EVERYTHING NOW             ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+THE REAL PROBLEM:
+├─ Missing vite.config.ts (Figma Make uses it automatically)
+├─ Missing figma:asset aliases
+├─ Missing Tailwind config
+└─ Result: React loads but components fail → Only text shows
+
+THE FIX:
+✅ I created 6 configuration files
+✅ Changed CSS to Tailwind v3 (stable)
+✅ All with pinned versions
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 DEPLOY NOW (COPY & PASTE THIS):
+
+chmod +x DEPLOY_WITH_VITE_FIX.sh
+./DEPLOY_WITH_VITE_FIX.sh
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⏰ WAIT 2-3 MINUTES
+
+Vercel needs time to rebuild with new config.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🧪 TEST IN INCOGNITO
+
+1. Press Ctrl+Shift+N (Incognito mode)
+2. Go to your site
+3. Should see FULL UI with styling! ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💳 FOR PAYMENTS (IF STILL NOT WORKING):
+
+cd supabase
+supabase secrets set PAYSTACK_SECRET_KEY=sk_test_YOUR_KEY
+supabase secrets set FRONTEND_URL=https://your-app.vercel.app
+supabase functions logs payments-simple --follow
+
+Then test payment and watch logs!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 WHAT I CREATED:
+
+✅ vite.config.ts          - Vite build config
+✅ package.json            - Dependencies (pinned)
+✅ tsconfig.json           - TypeScript config
+✅ tailwind.config.js      - Tailwind CSS
+✅ postcss.config.js       - CSS processing
+✅ .gitignore              - Git rules
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 THAT'S IT!
+
+Run the script, wait 2 minutes, test in Incognito.
+
+Design should be back! ✅

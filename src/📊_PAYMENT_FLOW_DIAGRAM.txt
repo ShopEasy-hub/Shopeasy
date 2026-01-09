@@ -1,0 +1,216 @@
+╔═══════════════════════════════════════════════════════════════════════╗
+║              🎯 PAYMENT CALLBACK FLOW - HOW IT WORKS                  ║
+╚═══════════════════════════════════════════════════════════════════════╝
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 1: User Initiates Payment                                      │
+└─────────────────────────────────────────────────────────────────────┘
+
+  [Figma Make URL]
+  https://your-preview.figma-make.com
+         │
+         │ User selects plan
+         ↓
+  ┌──────────────┐
+  │ BillingCycle │
+  │    Page      │
+  └──────────────┘
+         │
+         │ Detects URL: window.location.origin
+         │ → https://your-preview.figma-make.com
+         │
+         │ Sends to Edge Function with:
+         │ - callback_url: "https://your-preview.figma-make.com"
+         │ - reference: "SUB_123456_ABC"
+         │ - amount, email, etc.
+         ↓
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 2: Edge Function Processes                                     │
+└─────────────────────────────────────────────────────────────────────┘
+
+  ┌─────────────────────────┐
+  │ Supabase Edge Function  │
+  │ payments-simple         │
+  └─────────────────────────┘
+         │
+         │ Receives: callback_url from request
+         │ → "https://your-preview.figma-make.com"
+         │
+         │ Calls Paystack API with:
+         │ - email, amount, reference
+         │ - callback_url: "https://your-preview.figma-make.com"
+         ↓
+  ┌─────────────────────────┐
+  │   Paystack API          │
+  └─────────────────────────┘
+         │
+         │ Returns: authorization_url
+         │ → "https://checkout.paystack.com/xyz..."
+         ↓
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 3: User Pays on Paystack                                       │
+└─────────────────────────────────────────────────────────────────────┘
+
+  [Redirects to Paystack]
+  https://checkout.paystack.com/xyz...
+         │
+         │ User enters card details
+         │ Card: 4084 0840 8408 4081
+         │ CVV: 123, Expiry: 12/25
+         │
+         │ Payment successful!
+         ↓
+  ┌─────────────────────────┐
+  │ Paystack processes      │
+  │ payment                 │
+  └─────────────────────────┘
+         │
+         │ Redirects back to callback_url with params:
+         │ → https://your-preview.figma-make.com/?trxref=SUB_123456_ABC&reference=SUB_123456_ABC
+         ↓
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 4: App Detects Payment Callback                                │
+└─────────────────────────────────────────────────────────────────────┘
+
+  [App.tsx - useEffect]
+  
+  🌐 APP INIT - URL INFO
+  ├─ href: "https://your-preview.figma-make.com/?trxref=SUB_123..."
+  ├─ search: "?trxref=SUB_123456_ABC&reference=SUB_123456_ABC"
+  └─ allParams: { trxref: "SUB_123...", reference: "SUB_123..." }
+         │
+         │ Checks for payment parameters:
+         │ ✅ urlParams.get('trxref') → "SUB_123456_ABC"
+         │ ✅ urlParams.get('reference') → "SUB_123456_ABC"
+         ↓
+  💳 ✅ Payment callback detected
+  setCurrentPage('payment-callback')
+         │
+         ↓
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 5: PaymentCallback Component                                   │
+└─────────────────────────────────────────────────────────────────────┘
+
+  [PaymentCallback.tsx]
+  
+  🔥 PaymentCallback component mounted
+         │
+         │ Extracts from URL:
+         │ - reference: "SUB_123456_ABC"
+         │ - provider: "paystack"
+         │
+         │ Checks sessionStorage:
+         │ - pendingPayment: { planId, billingCycle, ... }
+         ↓
+  Shows: "Processing Payment" screen
+  (Gray background, spinner, debug info)
+         │
+         │ Passes to PaymentVerification:
+         │ - reference
+         │ - provider
+         │ - planId
+         │ - billingCycle
+         ↓
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 6: PaymentVerification                                         │
+└─────────────────────────────────────────────────────────────────────┘
+
+  [PaymentVerification.tsx]
+  
+  🔍 Verifying payment...
+         │
+         │ Calls: verifyPayment(provider, reference)
+         │ → Edge Function: /paystack/verify
+         ↓
+  ┌─────────────────────────┐
+  │ Edge Function verifies  │
+  │ with Paystack           │
+  └─────────────────────────┘
+         │
+         │ Returns: { success: true, status: 'success', amount: 765 }
+         ↓
+  💾 Creating subscription in database...
+         │
+         │ Calls: supabase.from('subscriptions').insert(...)
+         ↓
+  ┌─────────────────────────┐
+  │ Subscription created!   │
+  │ Status: active          │
+  └─────────────────────────┘
+         │
+         │ Shows: "Payment Successful!" screen
+         │ - Green checkmark
+         │ - Reference, Plan, Billing cycle
+         │ - "Go to Dashboard" button
+         ↓
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 7: Back to Dashboard                                           │
+└─────────────────────────────────────────────────────────────────────┘
+
+  User clicks "Go to Dashboard"
+         │
+         │ window.location.href = '/'
+         ↓
+  [Dashboard]
+  - Shows "Active" badge
+  - Subscription valid
+  - Full access to features
+
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║                          🎯 KEY POINTS                                 ║
+╚═══════════════════════════════════════════════════════════════════════╝
+
+✅ Callback URL is DYNAMIC (window.location.origin)
+   → Works in Figma Make, localhost, production
+
+✅ Edge Function accepts callback_url from frontend
+   → No hardcoded URLs
+
+✅ App detects payment via URL parameters
+   → trxref, reference, tx_ref, status
+
+✅ Comprehensive logging at every step
+   → Easy to debug
+
+✅ Visual feedback on screen
+   → Never shows blank page
+
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║                    🔥 BLANK PAGE? CHECK THESE                          ║
+╚═══════════════════════════════════════════════════════════════════════╝
+
+1. Is Edge Function deployed? → See 🚀_DEPLOY_EDGE_FUNCTION.md
+2. Open browser console → Look for 💳 ✅ Payment callback detected
+3. See any errors? → Check error message in console
+4. URL has parameters? → Should see ?trxref=... or ?reference=...
+5. Still blank? → Should see gray background with "Processing Payment"
+
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║                          🧪 TEST IT NOW                                ║
+╚═══════════════════════════════════════════════════════════════════════╝
+
+Manual test URL:
+https://your-figma-make-url.com/?trxref=TEST123&reference=TEST123
+
+Expected:
+1. ✅ Gray screen with "Processing Payment"
+2. ✅ Console logs showing detection
+3. ✅ Payment verification screen appears
+
+Try it now! 🚀

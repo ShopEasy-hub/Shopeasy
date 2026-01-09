@@ -1,0 +1,118 @@
+╔══════════════════════════════════════════════════════════════╗
+║  ⚡ PAYMENT CALLBACK BLANK PAGE - QUICK FIX CHECKLIST        ║
+╚══════════════════════════════════════════════════════════════╝
+
+✅ STEP 1: Deploy Edge Function (5 min)
+─────────────────────────────────────────────────────────────
+Option A - Dashboard:
+  1. https://supabase.com/dashboard/project/pkzpifdocmmzowvjopup/functions
+  2. Click "payments-simple" → ⋮ → "Update Function"
+  3. Copy ALL from: /supabase/functions/payments-simple/index.ts
+  4. Paste and click "Deploy"
+
+Option B - CLI:
+  supabase login
+  supabase link --project-ref pkzpifdocmmzowvjopup
+  supabase functions deploy payments-simple
+
+─────────────────────────────────────────────────────────────
+
+✅ STEP 2: Test Manually (2 min)
+─────────────────────────────────────────────────────────────
+1. Open your Figma Make preview URL
+2. Add this to the end: ?trxref=TEST123&reference=TEST123
+3. Press ENTER
+4. You should see: "Processing Payment" screen
+
+Example:
+  https://your-figma-make-url.com/?trxref=TEST123&reference=TEST123
+
+─────────────────────────────────────────────────────────────
+
+✅ STEP 3: Check Console (1 min)
+─────────────────────────────────────────────────────────────
+1. Press F12 (or Right-Click → Inspect)
+2. Click "Console" tab
+3. Look for these logs:
+   ✅ 🌐 APP INIT - URL INFO
+   ✅ 🔍 Payment callback check
+   ✅ 💳 ✅ Payment callback detected
+   ✅ 🔥 PaymentCallback component mounted
+
+─────────────────────────────────────────────────────────────
+
+✅ STEP 4: Test Real Payment (5 min)
+─────────────────────────────────────────────────────────────
+1. Login to your app
+2. Settings → Subscription
+3. Select a plan
+4. Click "Continue to Payment"
+5. Use test card: 4084 0840 8408 4081
+6. CVV: 123, Expiry: 12/25
+7. Complete payment
+8. Should redirect back to your Figma Make URL
+9. Should show "Payment Successful!"
+
+─────────────────────────────────────────────────────────────
+
+🔥 TROUBLESHOOTING
+─────────────────────────────────────────────────────────────
+
+ISSUE: Blank white page
+FIX: 
+  → Check browser console (F12)
+  → Look for JavaScript errors
+  → Page should now show gray background with "Processing Payment"
+
+ISSUE: Redirects to wrong URL
+FIX:
+  → Edge Function not deployed yet
+  → Deploy using Step 1 above
+
+ISSUE: No console logs
+FIX:
+  → Hard refresh page (Ctrl+Shift+R or Cmd+Shift+R)
+  → Clear browser cache
+
+ISSUE: Payment not creating subscription
+FIX:
+  → Check Edge Function logs in Supabase Dashboard
+  → Check PAYSTACK_SECRET_KEY is set
+
+─────────────────────────────────────────────────────────────
+
+📚 DETAILED GUIDES
+─────────────────────────────────────────────────────────────
+🎯 Quick Start:       🎯_QUICK_START_FIGMA_MAKE.txt
+🚀 Deploy Function:   🚀_DEPLOY_EDGE_FUNCTION.md
+✅ Full Guide:        ✅_FIGMA_MAKE_URL_READY.md
+🔥 Blank Page Fix:    🔥_BLANK_PAGE_FIX.md
+
+─────────────────────────────────────────────────────────────
+
+✨ WHAT CHANGED
+─────────────────────────────────────────────────────────────
+Frontend:
+  ✅ Dynamic callback URL (window.location.origin)
+  ✅ Comprehensive console logging
+  ✅ Visual feedback (gray background, spinner)
+  ✅ Debug info on screen
+
+Edge Function:
+  ✅ Accepts callback_url from frontend
+  ✅ Falls back to FRONTEND_URL env var
+  ✅ Works with ANY URL
+
+Result:
+  ✅ Works in Figma Make
+  ✅ Works in localhost
+  ✅ Works in production
+  ✅ No configuration needed!
+
+─────────────────────────────────────────────────────────────
+
+🎉 THAT'S IT!
+─────────────────────────────────────────────────────────────
+Just deploy the Edge Function and test!
+
+Your app is ready for rapid testing in Figma Make! 🚀

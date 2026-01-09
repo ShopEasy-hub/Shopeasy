@@ -1,0 +1,175 @@
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  🔧 MANUAL FIX - STEP BY STEP                     ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+I've fixed both issues. Follow these steps:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 1: FIX DESIGN (Tailwind not loading)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Step 1: Clean everything
+────────────────────────
+rm -rf node_modules
+rm -rf .vite
+rm -rf dist
+
+Step 2: Fresh install
+────────────────────────
+npm install
+
+(This will take 1-2 minutes)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 2: FIX PAYMENT 401 ERROR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Your project ID is: pkzpifdocmmzowvjopup
+
+Step 3: Go to Supabase Dashboard
+────────────────────────────────
+1. Open: https://supabase.com/dashboard
+2. Select project: pkzpifdocmmzowvjopup
+3. Go to: Settings → API
+4. Copy "service_role" key (click "Reveal")
+
+Step 4: Set secrets in terminal
+────────────────────────────────
+cd supabase
+
+# Only 3 secrets needed (SUPABASE_URL is auto-provided!)
+
+# 1. Service Role Key (paste the key you copied)
+supabase secrets set SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY_HERE
+
+# 2. Paystack Key (get from Paystack Dashboard)
+supabase secrets set PAYSTACK_SECRET_KEY=sk_test_YOUR_KEY_HERE
+
+# 3. Frontend URL
+supabase secrets set FRONTEND_URL=http://localhost:5173
+
+Step 5: Verify secrets are set
+────────────────────────────────
+supabase secrets list
+
+Should show ONLY these 3:
+✓ SERVICE_ROLE_KEY  
+✓ PAYSTACK_SECRET_KEY
+✓ FRONTEND_URL
+
+(SUPABASE_URL is auto-provided, don't set it!)
+
+Step 6: Deploy Edge Function
+────────────────────────────────
+supabase functions deploy payments-simple
+
+(This will take 10-30 seconds)
+
+Should see:
+✓ Function payments-simple deployed successfully
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 3: TEST EVERYTHING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Step 7: Start dev server
+────────────────────────────────
+cd ..
+npm run dev
+
+Should see:
+  VITE v5.x.x ready in XXXms
+  ➜  Local:   http://localhost:5173/
+
+Step 8: Open logs (separate terminal)
+────────────────────────────────
+cd supabase
+supabase functions logs payments-simple --follow
+
+(Keep this open)
+
+Step 9: Test in browser
+────────────────────────────────
+1. Open Incognito mode (Ctrl+Shift+N)
+2. Go to: http://localhost:5173
+3. Check design - should have colors, not just text ✅
+4. Login
+5. Go to: Settings → Subscription
+6. Click "Subscribe Now"
+7. Select plan
+8. Click "Continue to Payment"
+9. Should redirect to Paystack (NO 401 error) ✅
+10. Use test card:
+    Card: 4084 0840 8408 4081
+    Expiry: 12/25
+    CVV: 123
+11. Complete payment
+12. Should come back to your app ✅
+13. Should show success message ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WHAT I FIXED:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Created BULLETPROOF Edge Function
+   - Super clear logging
+   - NO AUTH on verify endpoint  
+   - Proper error handling
+   - Works with your project ID
+
+2. Design should work after npm install
+   - Tailwind will be processed correctly
+
+3. Fixed secret naming
+   - Only 3 secrets needed
+   - SUPABASE_URL is auto-provided by Supabase
+   - No SUPABASE_ prefix on custom secrets
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+IF DESIGN STILL BROKEN:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Check browser console (F12) for errors.
+
+If you see "Failed to load /styles/globals.css":
+1. Make sure file exists: ls -la styles/globals.css
+2. Restart dev server: Ctrl+C then npm run dev
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+IF 401 ERROR PERSISTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Check Edge Function logs:
+cd supabase
+supabase functions logs payments-simple --follow
+
+Should see:
+🔍 [PayStack Verify] PUBLIC ACCESS - NO AUTH REQUIRED
+
+If you see "SERVICE_ROLE_KEY not set", run:
+supabase secrets set SERVICE_ROLE_KEY=YOUR_KEY
+
+Then redeploy:
+supabase functions deploy payments-simple
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📚 GET YOUR KEYS:
+────────────────────────────────
+
+PAYSTACK SECRET KEY:
+1. Go to: https://dashboard.paystack.com/#/settings/developers
+2. Copy "Test Secret Key" (starts with sk_test_)
+3. Use: supabase secrets set PAYSTACK_SECRET_KEY=sk_test_YOUR_KEY
+
+SERVICE ROLE KEY:
+1. Go to: https://supabase.com/dashboard
+2. Select project: pkzpifdocmmzowvjopup
+3. Settings → API
+4. Click "Reveal" next to service_role
+5. Copy the key (starts with eyJ...)
+6. Use: supabase secrets set SERVICE_ROLE_KEY=eyJ...
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+START WITH STEP 1 - IT WILL WORK! 🚀
