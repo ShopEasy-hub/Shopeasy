@@ -50,21 +50,21 @@
     "tailwind-merge": "*",
     "vaul": "^1.1.2"
   },
-  "devDependencies": {
-    "@types/node": "^20.10.0",
-    "@vitejs/plugin-react-swc": "^3.10.2",
-    "vite": "6.3.5"
-  },
-    "optionalDependencies": {
+  "optionalDependencies": {
     "@capacitor/core": "^5.7.8",
     "@capacitor/cli": "^5.7.8",
     "@capacitor/device": "^5.0.0",
     "@capacitor/haptics": "^5.0.0",
     "@capacitor/toast": "^5.0.0",
     "@capacitor-community/barcode-scanner": "^4.0.1"
-      },
-      "scripts": {
-          "dev": "vite",
-          "build": "vite build"
-      }
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@vitejs/plugin-react-swc": "^3.10.2",
+    "vite": "6.3.5"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
   }
+}
