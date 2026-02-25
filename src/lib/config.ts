@@ -25,7 +25,7 @@
 // - No trailing slash at the end
 // - Must match your deployed site exactly
 //
-const PRODUCTION_URL = 'https://your-production-domain.com';
+const PRODUCTION_URL = 'https://shopspot.com.ng';
 // ================================================================
 
 // Automatically detect if we're in production or development
@@ -37,16 +37,16 @@ export const SITE_URL = isDevelopment ? window.location.origin : PRODUCTION_URL;
 
 // App Configuration
 export const APP_CONFIG = {
-  name: 'ShopEasy',
-  companyName: 'ShopEasy POS',
-  supportEmail: 'support@shopeasy.com', // Update this!
-  supportPhone: '+234 800 000 0000', // Update this!
-  siteUrl: SITE_URL,
+  name: 'ShopSpot',
+  companyName: 'ShopSpot POS',
+  supportEmail: 'support@shopeasy.com.ng', // Update this!
+  supportPhone: '+234 7017080714', // Update this!
+  siteUrl: shopspot.com.ng,
   
   // Password Reset Configuration
   passwordReset: {
     // Where users are redirected after clicking email link
-    redirectUrl: `${SITE_URL}?reset-password=true`,
+    redirectUrl: `${shopspot.com.ng}?reset-password=true`,
     // How long reset links are valid (Supabase default: 1 hour)
     expiryHours: 1,
   },
@@ -54,8 +54,8 @@ export const APP_CONFIG = {
   // Email Configuration
   email: {
     fromName: 'ShopEasy Support',
-    fromEmail: 'noreply@shopeasy.com', // Update this!
-    replyTo: 'support@shopeasy.com', // Update this!
+    fromEmail: 'admin@shopspot.com.ng', // Update this!
+    replyTo: 'support@shopeasy.com.ng', // Update this!
   },
 };
 
