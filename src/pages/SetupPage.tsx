@@ -87,7 +87,7 @@ export function SetupPage({ onComplete, onLogin }: SetupPageProps) {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-xl mb-4">
             <Store className="w-8 h-8 text-primary-foreground" />
           </div>
-          <h1 className="mb-2">Welcome to shopeasy</h1>
+          <h1 className="mb-2">Welcome to shopspot</h1>
           <p className="text-muted-foreground">
             Let's set up your organization in just a few steps
           </p>
