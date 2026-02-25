@@ -62,7 +62,7 @@ export function LoginPage({ onSuccess, onSignUp, onForgotPassword }: LoginPagePr
               <Store className="w-8 h-8" />
             </div>
             <div>
-              <h1 className="text-3xl">ShopEasy</h1>
+              <h1 className="text-3xl">ShopSpot</h1>
               <p className="text-white/80 text-sm">Point of Sale System</p>
             </div>
           </div>
@@ -128,7 +128,7 @@ export function LoginPage({ onSuccess, onSignUp, onForgotPassword }: LoginPagePr
             <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl mb-4">
               <Store className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-2xl mb-1">ShopEasy</h1>
+            <h1 className="text-2xl mb-1">ShopSpot</h1>
             <p className="text-muted-foreground">Point of Sale System</p>
           </div>
 
