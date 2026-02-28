@@ -70,8 +70,6 @@ export default function App() {
     monthlyPrice: number;
   } | null>(null);
 
-  }, []);
-
   useEffect(() => {
     // Check if URL has special parameters
     const urlParams = new URLSearchParams(window.location.search);
