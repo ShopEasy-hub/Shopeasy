@@ -1,4 +1,4 @@
-# ShopEasy - Cloud POS System
+# ShopSpot - Cloud POS System
 
 ## 🚨 Having Issues? Start Here!
 
@@ -17,7 +17,7 @@
 3. **Test:** Create a product with stock → Verify it shows correctly
 4. **Done!** ✅
 
-## What is ShopEasy?
+## What is ShopSpot?
 
 A comprehensive cloud-based Point of Sale system for multi-branch supermarkets and pharmacies.
 

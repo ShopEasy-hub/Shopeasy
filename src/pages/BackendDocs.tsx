@@ -5,7 +5,7 @@ export function BackendDocs() {
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-6xl mx-auto">
-        <h1 className="mb-2">shopeasy - Backend Architecture</h1>
+        <h1 className="mb-2">ShopSpot - Backend Architecture</h1>
         <p className="text-muted-foreground mb-8">
           Technical documentation and system architecture diagrams
         </p>

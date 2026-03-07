@@ -434,7 +434,7 @@ Subject: Reset Your Password
 
 Hi,
 
-You requested to reset your password for ShopEasy.
+You requested to reset your password for ShopSpot.
 
 Click the button below to reset your password:
 
@@ -445,7 +445,7 @@ This link will expire in 1 hour.
 If you didn't request this, please ignore this email.
 
 Thanks,
-The ShopEasy Team
+The ShopSpot Team
 ```
 
 ---
@@ -556,7 +556,7 @@ The ShopEasy Team
    - SMTP User: `your-email@domain.com`
    - SMTP Password: `your-smtp-password`
    - Sender Email: `noreply@yourdomain.com`
-   - Sender Name: `ShopEasy Support`
+   - Sender Name: `ShopSpot Support`
 
 ---
 

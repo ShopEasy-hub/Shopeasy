@@ -99,7 +99,7 @@ Configure PayStack webhook in dashboard:
 Go to Supabase Dashboard → Functions → `payments-simple` → Update with latest code
 
 ### Step 2: Test Payment
-1. Login to ShopEasy
+1. Login to ShopSpot
 2. Go to Subscribe page
 3. Select a plan
 4. Choose billing cycle

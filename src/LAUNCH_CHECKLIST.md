@@ -1,4 +1,4 @@
-# 🚀 ShopEasy POS - Launch Checklist
+# 🚀 ShopSpot POS - Launch Checklist
 
 ## Critical Fixes Applied ✅
 

@@ -7,6 +7,8 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@awesome-cordova-plugins/core": "^8.1.0",
+    "@awesome-cordova-plugins/printer": "^8.1.0",
     "@capacitor-community/barcode-scanner": "4.0.1",
     "@capacitor/android": "^5.7.8",
     "@capacitor/app": "5.0.8",
@@ -47,6 +49,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "*",
     "cmdk": "^1.1.1",
+    "cordova-plugin-printer": "^0.8.0",
     "date-fns": "*",
     "embla-carousel-react": "^8.6.0",
     "hono": "*",

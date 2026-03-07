@@ -43,14 +43,40 @@ export function Receipt({
   onBackToHome,
   sale, 
   branch,
-  businessName = 'shopeasy',
+  businessName = 'ShopSpot',
   receiptType = 'thermal'
 }: ReceiptProps) {
-  const [currentType, setCurrentType] = useState<'thermal' | 'a4'>(receiptType);
-  
-  const handlePrint = () => {
-    window.print();
-  };
+  const [currentType, setCurrentType] = useState<'thermal' | 'a4'>(receiptType); 
+    const handlePrint = async () => {
+        try {
+            // Detect Capacitor (mobile)
+            const { Capacitor } = await import('@capacitor/core');
+
+            if (Capacitor.isNativePlatform()) {
+                // Mobile printing (Android / iOS)
+                const { Printer } = await import('@awesome-cordova-plugins/printer');
+
+                const content = document.getElementById('receipt-content')?.innerHTML;
+
+                if (!content) {
+                    alert('Nothing to print');
+                    return;
+                }
+
+                await Printer.print(content, {
+                    name: `Receipt-${sale.receiptNumber}`,
+                });
+
+            } else {
+                // Web / Desktop fallback
+                window.print();
+            }
+
+        } catch (error) {
+            console.error('Print error:', error);
+            alert('Printing failed. Please try again.');
+        }
+    };
 
   const handleDownloadPDF = () => {
     // In a real implementation, this would generate a PDF
@@ -173,7 +199,7 @@ export function Receipt({
             Thank you for your purchase!
           </p>
           <p className={`${isThermal ? 'text-[10px]' : 'text-xs'} text-gray-600`}>
-            Powered by shopeasy
+            Powered by ShopSpot
           </p>
           
           {/* QR Code Placeholder */}

@@ -134,7 +134,7 @@ Dashboard → Sidebar → 📊 Product History
 
 ```
 ┌─────────────────────────────────┐
-│     SHOPEASY DASHBOARD          │
+│     ShopSpot DASHBOARD          │
 ├─────────────────────────────────┤
 │ 📊 Dashboard                    │
 │ 🛒 POS Terminal                 │
@@ -536,4 +536,4 @@ Must return 'owner', 'admin', or 'auditor'
 
 *Last Updated: November 1, 2025*  
 *Version: 1.0*  
-*License: Part of ShopEasy POS System*
+*License: Part of ShopSpot POS System*

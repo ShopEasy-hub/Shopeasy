@@ -35,7 +35,7 @@
 
 ```bash
 # 1. Go to: https://vercel.com/dashboard
-# 2. Select your ShopEasy project
+# 2. Select your ShopSpot project
 # 3. Click: Settings → Environment Variables
 # 4. Add these variables:
 ```
@@ -93,7 +93,7 @@ VITE_APP_ENV=production
 ssh user@your-server.com
 
 # 2. Navigate to app directory
-cd /var/www/shopeasy
+cd /var/www/ShopSpot
 
 # 3. Create/Edit .env.production
 nano .env.production
@@ -114,9 +114,9 @@ cat .gitignore | grep .env.production
 
 # 7. Rebuild and restart
 npm run build
-pm2 restart shopeasy
+pm2 restart ShopSpot
 # or
-systemctl restart shopeasy
+systemctl restart ShopSpot
 ```
 
 ---
@@ -312,7 +312,7 @@ Before going live:
 - Live Chat: dashboard.paystack.com
 
 **Your Technical Team:**
-- Email: dev@shopeasy.ng
+- Email: dev@ShopSpot.ng
 - Phone: +234-XXX-XXX-XXXX
 
 ---

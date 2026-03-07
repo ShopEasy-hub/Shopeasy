@@ -20,7 +20,7 @@
 ### **What you'll see:**
 
 ```
-✅ ShopEasy HYBRID migration completed!
+✅ ShopSpot HYBRID migration completed!
 📊 Tables: organizations, branches, warehouses, products...
 🔒 RLS policies: ENABLED on all tables
 ⚙️ Triggers: inventory upsert, transfer completion...
@@ -251,7 +251,7 @@ npm run dev
 **15 minutes total.**
 **ALL stock issues fixed.**
 
-**Your ShopEasy POS is now production-ready!** 💪
+**Your ShopSpot POS is now production-ready!** 💪
 
 ---
 

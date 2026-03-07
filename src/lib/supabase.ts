@@ -68,7 +68,7 @@ export const supabase = createClient(
     },
     global: {
       headers: {
-        'x-client-info': 'shopeasy-pos',
+        'x-client-info': 'ShopSpot-pos',
       },
       fetch: async (url, options = {}) => {
         try {

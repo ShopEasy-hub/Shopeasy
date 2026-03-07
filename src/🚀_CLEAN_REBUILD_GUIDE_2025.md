@@ -99,7 +99,7 @@ pg_dump -h your-db.supabase.co -U postgres -d postgres > backup.sql
    - This may take 1-2 minutes
    - Watch for success message:
    ```
-   ✅ ShopEasy CLEAN REBUILD 2025 COMPLETE!
+   ✅ ShopSpot CLEAN REBUILD 2025 COMPLETE!
    📊 Tables Created: organizations, branches, warehouses...
    🔒 Security: RLS enabled on all tables
    ⚙️ Triggers: Inventory upsert, transfer auto-sync...
@@ -540,7 +540,7 @@ After migration, verify:
 
 ## 🚀 You're Done!
 
-Your ShopEasy POS is now running on a clean, fixed database with:
+Your ShopSpot POS is now running on a clean, fixed database with:
 
 ✅ **Zero conflicts** - All table issues resolved
 ✅ **Zero duplicates** - Impossible by database design
@@ -567,4 +567,4 @@ Your ShopEasy POS is now running on a clean, fixed database with:
 
 ---
 
-**Migration complete! Enjoy your fixed ShopEasy POS!** 🎉
+**Migration complete! Enjoy your fixed ShopSpot POS!** 🎉

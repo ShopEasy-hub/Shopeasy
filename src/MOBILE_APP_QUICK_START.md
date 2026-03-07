@@ -1,6 +1,6 @@
-# 🚀 ShopEasy Mobile App - Quick Start Guide
+# 🚀 ShopSpot Mobile App - Quick Start Guide
 
-This guide will help you build Android and iOS apps from your existing ShopEasy POS web app **without breaking anything**.
+This guide will help you build Android and iOS apps from your existing ShopSpot POS web app **without breaking anything**.
 
 ## ✅ Safety Guarantee
 
@@ -91,10 +91,10 @@ This creates an `ios/` folder with a complete Xcode project.
 
 ```xml
 <key>NSCameraUsageDescription</key>
-<string>ShopEasy needs camera access to scan product barcodes</string>
+<string>ShopSpot needs camera access to scan product barcodes</string>
 
 <key>NSPhotoLibraryUsageDescription</key>
-<string>ShopEasy needs photo library access to save receipts</string>
+<string>ShopSpot needs photo library access to save receipts</string>
 ```
 
 ---
@@ -195,8 +195,8 @@ Look for something like `192.168.1.100`
 **2. Edit `capacitor.config.ts`:**
 ```typescript
 const config: CapacitorConfig = {
-  appId: 'com.shopeasy.pos',
-  appName: 'ShopEasy POS',
+  appId: 'com.ShopSpot.pos',
+  appName: 'ShopSpot POS',
   webDir: 'dist',
   server: {
     url: 'http://192.168.1.100:5173',  // ← Your IP here

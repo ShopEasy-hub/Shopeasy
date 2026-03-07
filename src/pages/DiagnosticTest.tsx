@@ -55,7 +55,7 @@ export function DiagnosticTest() {
       const signupUrl = `https://${projectId}.supabase.co/functions/v1/make-server-088c2cd9/auth/signup`;
       addResult(`Testing: ${signupUrl}`);
       
-      const testEmail = `test_${Date.now()}@shopeasy.com`;
+      const testEmail = `test_${Date.now()}@ShopSpot.com`;
       const testData = {
         email: testEmail,
         password: 'test123456',
@@ -99,7 +99,7 @@ export function DiagnosticTest() {
   return (
     <div className="min-h-screen bg-background p-8">
       <Card className="max-w-4xl mx-auto p-6">
-        <h1 className="mb-4">shopeasy Diagnostic Test</h1>
+        <h1 className="mb-4">ShopSpot Diagnostic Test</h1>
         <p className="text-muted-foreground mb-6">
           This page tests the backend connectivity and endpoints
         </p>

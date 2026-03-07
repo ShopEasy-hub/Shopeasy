@@ -61,7 +61,7 @@ supabase projects list
 ┌────────────────────┬──────────────────┬──────────────────┐
 │ NAME               │ ORGANIZATION     │ REGION           │
 ├────────────────────┼──────────────────┼──────────────────┤
-│ ShopEasy           │ your-org         │ us-east-1        │
+│ ShopSpot           │ your-org         │ us-east-1        │
 └────────────────────┴──────────────────┴──────────────────┘
 ```
 
@@ -72,7 +72,7 @@ supabase projects list
 **Don't type this - just get the info:**
 
 1. Open Supabase Dashboard in browser
-2. Click on your ShopEasy project
+2. Click on your ShopSpot project
 3. Settings → General
 4. Find "Reference ID"
 5. Copy it (example: `abcdefghijklmnop`)
@@ -102,16 +102,16 @@ Linked to project abcdefghijklmnop
 ### **Command 7: Navigate to Your Project Directory**
 
 ```bash
-cd /path/to/your/shopeasy/project
+cd /path/to/your/ShopSpot/project
 ```
 
 **Examples:**
 ```bash
 # Mac/Linux
-cd ~/Desktop/shopeasy
+cd ~/Desktop/ShopSpot
 
 # Windows
-cd C:\Users\YourName\Projects\shopeasy
+cd C:\Users\YourName\Projects\ShopSpot
 ```
 
 **Verify you're in the right directory:**

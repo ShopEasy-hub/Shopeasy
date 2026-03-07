@@ -1,8 +1,8 @@
-# 🎯 ShopEasy Complete Backend Rebuild - Summary
+# 🎯 ShopSpot Complete Backend Rebuild - Summary
 
 ## 🔄 What Changed
 
-Your ShopEasy POS system has been **completely rebuilt** from the ground up to use **Supabase PostgreSQL** instead of Deno KV store.
+Your ShopSpot POS system has been **completely rebuilt** from the ground up to use **Supabase PostgreSQL** instead of Deno KV store.
 
 ---
 

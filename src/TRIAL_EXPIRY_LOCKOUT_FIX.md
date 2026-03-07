@@ -111,7 +111,7 @@ export function canAccessPageByPlan(
 - <p>Renew your plan to continue managing sales...</p>
 
 + <h1>Subscription Required</h1>
-+ <p>Your trial has ended. Subscribe now to continue using ShopEasy and access all your data.</p>
++ <p>Your trial has ended. Subscribe now to continue using ShopSpot and access all your data.</p>
 ```
 
 ---

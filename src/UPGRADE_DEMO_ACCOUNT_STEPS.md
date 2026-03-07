@@ -37,7 +37,7 @@ WHERE up.email = 'YOUR_EMAIL_HERE';
 
 Example:
 ```sql
-WHERE up.email = 'demo@shopeasy.com';
+WHERE up.email = 'demo@ShopSpot.com';
 ```
 
 **Click "Run" (or press F5)**
@@ -48,7 +48,7 @@ org_id: 550e8400-e29b-41d4-a716-446655440000
 org_name: Demo Company
 current_plan: starter
 current_status: trial
-owner_email: demo@shopeasy.com
+owner_email: demo@ShopSpot.com
 owner_name: John Doe
 ```
 
@@ -106,14 +106,14 @@ organization: Demo Company
 plan: enterprise ✅
 status: active ✅
 expires_on: 2025-12-04 (1 year from now) ✅
-owner_email: demo@shopeasy.com
+owner_email: demo@ShopSpot.com
 ```
 
 ---
 
 ### Step 5: Test in the App
 
-1. **Logout** from ShopEasy
+1. **Logout** from ShopSpot
 2. **Login again** with your email
 3. **Check the sidebar menu** - should see:
    - ✅ Dashboard
@@ -265,9 +265,9 @@ SET
 FROM user_profiles up
 WHERE o.owner_id = up.id
   AND up.email IN (
-    'demo1@shopeasy.com',
-    'demo2@shopeasy.com',
-    'demo3@shopeasy.com'
+    'demo1@ShopSpot.com',
+    'demo2@ShopSpot.com',
+    'demo3@ShopSpot.com'
   );
 ```
 

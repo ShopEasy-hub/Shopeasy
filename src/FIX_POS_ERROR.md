@@ -127,7 +127,7 @@ Then paste it and tell me.
 ### Supabase Dashboard
 ```
 1. Go to: https://app.supabase.com
-2. Select: Your ShopEasy project
+2. Select: Your ShopSpot project
 3. Click: SQL Editor (left sidebar)
 4. Paste SQL and click "Run"
 ```

@@ -1439,7 +1439,7 @@ app.post('/make-server-088c2cd9/payments/flutterwave/initialize', async (c) => {
           email,
         },
         customizations: {
-          title: 'shopeasy Subscription',
+          title: 'ShopSpot Subscription',
           description: `${metadata.planName} - ${metadata.billingCycle} billing`,
           logo: '',
         },

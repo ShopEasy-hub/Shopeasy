@@ -1,4 +1,4 @@
-# 📧 Email Customization Guide - ShopEasy Branding
+# 📧 Email Customization Guide - ShopSpot Branding
 
 ## 🚨 IMPORTANT: Two Steps Required
 
@@ -17,7 +17,7 @@
 **✅ FIXED:** Updated code to use proper production URL from `/lib/config.ts`
 
 ### Issue 2: ❌ Supabase Branding
-**Problem:** Email shows Supabase branding instead of ShopEasy
+**Problem:** Email shows Supabase branding instead of ShopSpot
 
 **Why it happens:** Default Supabase email template
 
@@ -37,7 +37,7 @@ const PRODUCTION_URL = 'https://your-production-domain.com';
 **Replace with YOUR actual production domain:**
 ```typescript
 // Examples:
-const PRODUCTION_URL = 'https://shopeasy.yourdomain.com';
+const PRODUCTION_URL = 'https://ShopSpot.yourdomain.com';
 // OR
 const PRODUCTION_URL = 'https://pos.yourdomain.com';
 // OR
@@ -57,7 +57,7 @@ const PRODUCTION_URL = 'https://yourdomain.com';
 
 1. Go to: https://supabase.com/dashboard
 2. Log in to your account
-3. Select your ShopEasy project
+3. Select your ShopSpot project
 4. Navigate to: **Authentication** → **Email Templates**
 
 ---
@@ -77,7 +77,7 @@ Click on **"Reset Password"**
 
 ### 2.3 Customize the Template
 
-You'll see an editor with variables. Here's the **COMPLETE CUSTOM TEMPLATE** for ShopEasy:
+You'll see an editor with variables. Here's the **COMPLETE CUSTOM TEMPLATE** for ShopSpot:
 
 #### 📝 Copy and Paste This Template:
 
@@ -87,7 +87,7 @@ You'll see an editor with variables. Here's the **COMPLETE CUSTOM TEMPLATE** for
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reset Your ShopEasy Password</title>
+  <title>Reset Your ShopSpot Password</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -206,7 +206,7 @@ You'll see an editor with variables. Here's the **COMPLETE CUSTOM TEMPLATE** for
     <!-- Header -->
     <div class="header">
       <div class="logo">🏪</div>
-      <h1>ShopEasy POS</h1>
+      <h1>ShopSpot POS</h1>
     </div>
 
     <!-- Content -->
@@ -214,7 +214,7 @@ You'll see an editor with variables. Here's the **COMPLETE CUSTOM TEMPLATE** for
       <p class="greeting">Hello,</p>
       
       <p class="message">
-        We received a request to reset your password for your ShopEasy account. 
+        We received a request to reset your password for your ShopSpot account. 
         If you made this request, click the button below to create a new password.
       </p>
 
@@ -251,16 +251,16 @@ You'll see an editor with variables. Here's the **COMPLETE CUSTOM TEMPLATE** for
 
     <!-- Footer -->
     <div class="footer">
-      <p><strong>ShopEasy - Cloud POS System</strong></p>
+      <p><strong>ShopSpot - Cloud POS System</strong></p>
       <p>
         Need help? Contact us at 
-        <a href="mailto:support@shopeasy.com">support@shopeasy.com</a>
+        <a href="mailto:support@ShopSpot.com">support@ShopSpot.com</a>
       </p>
       <p style="margin-top: 20px; color: #9ca3af; font-size: 12px;">
-        © 2024 ShopEasy. All rights reserved.
+        © 2024 ShopSpot. All rights reserved.
       </p>
       <p style="color: #9ca3af; font-size: 12px;">
-        This is an automated message from your ShopEasy POS system.
+        This is an automated message from your ShopSpot POS system.
       </p>
     </div>
   </div>
@@ -281,7 +281,7 @@ Reset Your Password
 
 **Change to:**
 ```
-Reset Your ShopEasy Password
+Reset Your ShopSpot Password
 ```
 
 ---
@@ -298,7 +298,7 @@ Still in Supabase Dashboard:
 
 Update these fields:
 - **Sender Email:** `noreply@mail.yourdomain.com` (if verified)
-- **Sender Name:** `ShopEasy Support`
+- **Sender Name:** `ShopSpot Support`
 
 #### Option B: Custom SMTP (Recommended for Production)
 
@@ -309,8 +309,8 @@ SMTP Host: smtp.your-email-provider.com
 SMTP Port: 587
 SMTP User: your-smtp-username
 SMTP Password: your-smtp-password
-Sender Email: noreply@shopeasy.com
-Sender Name: ShopEasy Support
+Sender Email: noreply@ShopSpot.com
+Sender Name: ShopSpot Support
 ```
 
 **Popular SMTP Providers:**
@@ -332,7 +332,7 @@ Sender Name: ShopEasy Support
 
 ### Test Your Changes:
 
-1. Go to your ShopEasy login page
+1. Go to your ShopSpot login page
 2. Click **"Reset password"**
 3. Enter your email address
 4. Click **"Send Reset Link"**
@@ -342,21 +342,21 @@ Sender Name: ShopEasy Support
 
 **Email Subject:**
 ```
-Reset Your ShopEasy Password
+Reset Your ShopSpot Password
 ```
 
 **From:**
 ```
-ShopEasy Support <noreply@shopeasy.com>
+ShopSpot Support <noreply@ShopSpot.com>
 ```
 
 **Email Content:**
-- 🏪 ShopEasy logo/icon at top
-- Green header with "ShopEasy POS"
+- 🏪 ShopSpot logo/icon at top
+- Green header with "ShopSpot POS"
 - Professional message
 - Green "Reset My Password" button
 - Security warnings
-- ShopEasy branding throughout
+- ShopSpot branding throughout
 - **NO Supabase branding** ✅
 
 ### ✅ What the Link Should Do:
@@ -381,7 +381,7 @@ Replace this line in the HTML template:
 With your actual logo:
 ```html
 <div class="logo">
-  <img src="https://your-domain.com/logo.png" alt="ShopEasy" style="width: 64px; height: 64px;">
+  <img src="https://your-domain.com/logo.png" alt="ShopSpot" style="width: 64px; height: 64px;">
 </div>
 ```
 
@@ -404,7 +404,7 @@ color: #3b82f6;
 
 In the footer section, update:
 ```html
-<a href="mailto:support@shopeasy.com">support@shopeasy.com</a>
+<a href="mailto:support@ShopSpot.com">support@ShopSpot.com</a>
 ```
 
 To your actual support email.
@@ -423,14 +423,14 @@ To your actual support email.
 ### Supabase Configuration:
 - [ ] Customized "Reset Password" email template
 - [ ] Updated email subject line
-- [ ] Changed sender name to "ShopEasy Support"
+- [ ] Changed sender name to "ShopSpot Support"
 - [ ] Configured custom SMTP (optional but recommended)
 - [ ] Updated sender email address
 - [ ] Saved all changes
 
 ### Testing:
 - [ ] Tested password reset on production site
-- [ ] Confirmed email shows ShopEasy branding
+- [ ] Confirmed email shows ShopSpot branding
 - [ ] Confirmed reset link opens production URL (not localhost)
 - [ ] Confirmed can successfully reset password
 - [ ] Tested from different email providers (Gmail, Outlook, etc.)
@@ -483,14 +483,14 @@ To your actual support email.
 ```
 ┌────────────────────────────────────────┐
 │    🏪 (Your Logo)                      │
-│    ShopEasy POS                        │
+│    ShopSpot POS                        │
 │  (Green gradient header)               │
 ├────────────────────────────────────────┤
 │                                        │
 │  Hello,                                │
 │                                        │
 │  We received a request to reset your  │
-│  password for your ShopEasy account.   │
+│  password for your ShopSpot account.   │
 │                                        │
 │  ┌──────────────────────────────┐     │
 │  │   Reset My Password          │     │
@@ -503,9 +503,9 @@ To your actual support email.
 │  You can safely ignore this email.     │
 │                                        │
 ├────────────────────────────────────────┤
-│  ShopEasy - Cloud POS System          │
-│  support@shopeasy.com                  │
-│  © 2024 ShopEasy. All rights reserved. │
+│  ShopSpot - Cloud POS System          │
+│  support@ShopSpot.com                  │
+│  © 2024 ShopSpot. All rights reserved. │
 └────────────────────────────────────────┘
 ```
 
@@ -523,8 +523,8 @@ To your actual support email.
 2. **Go to Supabase Dashboard:**
    - Authentication → Email Templates
    - Select "Reset Password"
-   - Copy/paste the ShopEasy template above
-   - Change subject to "Reset Your ShopEasy Password"
+   - Copy/paste the ShopSpot template above
+   - Change subject to "Reset Your ShopSpot Password"
    - Save
 
 3. **Test:**
@@ -559,13 +559,13 @@ https://supabase.com/docs/guides/auth/auth-email-templates
 
 After completing this guide:
 
-✅ Password reset emails show **ShopEasy branding**  
+✅ Password reset emails show **ShopSpot branding**  
 ✅ Reset links open **your production domain** (not localhost)  
 ✅ Professional, trustworthy email design  
 ✅ Clear instructions for users  
 ✅ Security warnings included  
 ✅ Mobile-responsive email template  
-✅ Branded from: "ShopEasy Support"  
+✅ Branded from: "ShopSpot Support"  
 
 **Your users will receive a professional, branded experience!** 🎉
 

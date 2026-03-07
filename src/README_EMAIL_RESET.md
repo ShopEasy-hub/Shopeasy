@@ -3,7 +3,7 @@
 ## 🚨 You Reported Two Issues:
 
 1. **"Reset link opened localhost instead of my production site"**
-2. **"Email shows Supabase branding instead of ShopEasy"**
+2. **"Email shows Supabase branding instead of ShopSpot"**
 
 ## ✅ Both Are Now Fixed! Here's What to Do:
 
@@ -25,8 +25,8 @@ const PRODUCTION_URL = 'https://your-actual-site.com';
 ```
 
 **Examples:**
-- Vercel: `'https://shopeasy-pos.vercel.app'`
-- Netlify: `'https://shopeasy-pos.netlify.app'`
+- Vercel: `'https://ShopSpot-pos.vercel.app'`
+- Netlify: `'https://ShopSpot-pos.netlify.app'`
 - Custom: `'https://pos.yourbusiness.com'`
 
 ---
@@ -39,16 +39,16 @@ const PRODUCTION_URL = 'https://your-actual-site.com';
 3. Click: **Authentication** → **Email Templates**
 4. Select: **"Reset Password"**
 
-**B. Paste ShopEasy Template:**
+**B. Paste ShopSpot Template:**
 1. Open file: `/EMAIL_CUSTOMIZATION_GUIDE.md`
 2. Copy lines 49-183 (the full HTML template)
 3. Paste into Supabase template editor
-4. Update Subject to: `Reset Your ShopEasy Password`
+4. Update Subject to: `Reset Your ShopSpot Password`
 5. Click **Save**
 
 **C. Update Sender Name (Optional):**
 1. Go to: **Project Settings** → **Auth**
-2. Change **Sender Name** to: `ShopEasy Support`
+2. Change **Sender Name** to: `ShopSpot Support`
 3. Save
 
 ✅ **Done!**
@@ -63,7 +63,7 @@ const PRODUCTION_URL = 'https://your-actual-site.com';
 4. Check inbox
 
 **You should see:**
-- ✅ Professional ShopEasy-branded email
+- ✅ Professional ShopSpot-branded email
 - ✅ Green header with 🏪 icon
 - ✅ Link opens your production site (not localhost when deployed)
 
@@ -85,14 +85,14 @@ const PRODUCTION_URL = 'https://your-actual-site.com';
 ```
 ┌────────────────────────────────┐
 │         🏪                     │
-│    ShopEasy POS                │
+│    ShopSpot POS                │
 │  (Green gradient header)       │
 ├────────────────────────────────┤
 │                                │
 │  Hello,                        │
 │                                │
 │  We received a request to      │
-│  reset your ShopEasy password. │
+│  reset your ShopSpot password. │
 │                                │
 │  ┌──────────────────────┐     │
 │  │ Reset My Password    │     │
@@ -105,9 +105,9 @@ const PRODUCTION_URL = 'https://your-actual-site.com';
 │  Ignore this email safely.     │
 │                                │
 ├────────────────────────────────┤
-│  ShopEasy - Cloud POS System  │
-│  support@shopeasy.com          │
-│  © 2024 ShopEasy               │
+│  ShopSpot - Cloud POS System  │
+│  support@ShopSpot.com          │
+│  © 2024 ShopSpot               │
 └────────────────────────────────┘
 ```
 
@@ -160,7 +160,7 @@ Design: Plain text ❌
 
 **After:**
 ```
-From: ShopEasy Support ✅
+From: ShopSpot Support ✅
 Link: https://your-domain.com ✅
 Design: Professional HTML ✅
 ```

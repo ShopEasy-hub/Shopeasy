@@ -178,7 +178,7 @@ BEGIN
     RAISE NOTICE '✅ gen_salt literal is explicitly cast to text';
     RAISE NOTICE '✅ Function ready to use';
     RAISE NOTICE '';
-    RAISE NOTICE 'Test by creating a user in ShopEasy:';
+    RAISE NOTICE 'Test by creating a user in ShopSpot:';
     RAISE NOTICE '→ Go to Users page';
     RAISE NOTICE '→ Click "Add User"';
     RAISE NOTICE '→ Fill in details and submit';

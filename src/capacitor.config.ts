@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.shopeasy.pos',
-  appName: 'ShopEasy POS',
+  appId: 'com.shopspot.pos',
+  appName: 'ShopSpot POS',
   webDir: 'dist',
   server: {
     androidScheme: 'https',

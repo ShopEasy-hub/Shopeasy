@@ -56,7 +56,7 @@ export default function App() {
     userRole: null,
     currentBranchId: null,
     currentWarehouseId: null,
-    companyName: 'ShopEasy',
+    companyName: 'ShopSpot',
     subscriptionStatus: 'trial',
     trialStartDate: null,
     subscriptionPlan: null,
@@ -70,22 +70,6 @@ export default function App() {
     monthlyPrice: number;
   } | null>(null);
 
-  // Show helpful console message on load
-  useEffect(() => {
-    console.log('%c🏪 ShopEasy POS System', 'font-size: 20px; color: #10b981; font-weight: bold;');
-    console.log('%c📋 Having issues?', 'font-size: 14px; color: #f59e0b; font-weight: bold;');
-    console.log('');
-    console.log('🔒 Getting "Invalid JWT" errors?');
-    console.log('   → Just refresh the page (F5) or login again');
-    console.log('   → Read: JWT_ERROR_FIX.md');
-    console.log('');
-    console.log('❌ Stock showing zero or delete not working?');
-    console.log('   → Read: START_HERE.md for 2-minute fix');
-    console.log('   → Or go to "Database Status" page in sidebar');
-    console.log('');
-    console.log('📚 All documentation files available in project root');
-    console.log('');
-  }, []);
 
   useEffect(() => {
     // Check if URL has special parameters

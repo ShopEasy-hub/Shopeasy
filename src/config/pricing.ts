@@ -1,6 +1,6 @@
 /**
  * =====================================================
- * SHOPEASY SUBSCRIPTION PRICING CONFIGURATION
+ * ShopSpot SUBSCRIPTION PRICING CONFIGURATION
  * =====================================================
  * 
  * PRODUCTION PRICING - December 2024

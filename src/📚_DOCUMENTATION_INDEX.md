@@ -1,4 +1,4 @@
-# 📚 ShopEasy Migration Documentation Index
+# 📚 ShopSpot Migration Documentation Index
 
 ## 🎯 Start Here
 
@@ -124,7 +124,7 @@
 ## 📋 File Structure Overview
 
 ```
-ShopEasy/
+ShopSpot/
 ├── 📚 Documentation (START HERE)
 │   ├── 🎯 FINAL_MIGRATION_STEPS.md ⭐ Main guide
 │   ├── ✅ WHICH_SQL_TO_USE.md

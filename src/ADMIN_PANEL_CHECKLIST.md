@@ -2,7 +2,7 @@
 
 ## 🎯 Quick Implementation Guide
 
-Follow this checklist to fully implement the Admin Panel in your ShopEasy POS.
+Follow this checklist to fully implement the Admin Panel in your ShopSpot POS.
 
 ---
 

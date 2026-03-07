@@ -1,6 +1,6 @@
-# 📖 ShopEasy Documentation Index
+# 📖 ShopSpot Documentation Index
 
-Complete guide to all documentation files in your ShopEasy POS system.
+Complete guide to all documentation files in your ShopSpot POS system.
 
 ---
 

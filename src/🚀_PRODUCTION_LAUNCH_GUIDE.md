@@ -1,8 +1,8 @@
-# 🚀 ShopEasy Production Launch Guide
+# 🚀 ShopSpot Production Launch Guide
 
 ## 🎉 Welcome to Production!
 
-This guide will walk you through deploying ShopEasy with **LIVE PAYSTACK API KEYS** and updated pricing.
+This guide will walk you through deploying ShopSpot with **LIVE PAYSTACK API KEYS** and updated pricing.
 
 **Last Updated:** December 15, 2024  
 **Status:** Ready for Production Launch
@@ -285,7 +285,7 @@ VITE_PAYSTACK_PUBLIC_KEY=pk_live_xxxxx
 - Docs: https://supabase.com/docs
 - Community: https://github.com/supabase/supabase/discussions
 
-### ShopEasy Internal
+### ShopSpot Internal
 - Developer: [Your contact]
 - Support: support@yourdomain.com
 

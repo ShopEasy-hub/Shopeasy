@@ -2,7 +2,7 @@
 
 ## Overview
 
-Your ShopEasy POS now has a **centralized Admin Panel** that consolidates all administrative functions in one place with proper role-based access control.
+Your ShopSpot POS now has a **centralized Admin Panel** that consolidates all administrative functions in one place with proper role-based access control.
 
 ---
 
@@ -585,7 +585,7 @@ The Admin Panel provides:
 ✅ **Quick access** - Common tasks one click away
 ✅ **Professional UI** - Enterprise-grade interface
 
-**Your ShopEasy POS now has enterprise-level administration capabilities!** 🎯
+**Your ShopSpot POS now has enterprise-level administration capabilities!** 🎯
 
 ---
 

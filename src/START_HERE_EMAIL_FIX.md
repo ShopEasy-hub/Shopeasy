@@ -4,7 +4,7 @@
 
 You reported:
 1. **"Password reset link tried to open localhost"**
-2. **"Email shows Supabase branding not ShopEasy"**
+2. **"Email shows Supabase branding not ShopSpot"**
 
 ---
 
@@ -25,13 +25,13 @@ const PRODUCTION_URL = 'https://your-production-domain.com';
 **To your actual deployed URL:**
 ```typescript
 // Example if deployed on Vercel:
-const PRODUCTION_URL = 'https://shopeasy-pos.vercel.app';
+const PRODUCTION_URL = 'https://ShopSpot-pos.vercel.app';
 
 // Example if you have custom domain:
 const PRODUCTION_URL = 'https://pos.yourbusiness.com';
 
 // Example if deployed on Netlify:
-const PRODUCTION_URL = 'https://shopeasy-pos.netlify.app';
+const PRODUCTION_URL = 'https://ShopSpot-pos.netlify.app';
 ```
 
 💡 **Don't have a production URL yet?** Skip this for now, but come back before deploying!
@@ -43,7 +43,7 @@ const PRODUCTION_URL = 'https://shopeasy-pos.netlify.app';
 #### A. Open Supabase Dashboard
 1. Go to: https://supabase.com/dashboard
 2. Login
-3. Select your ShopEasy project
+3. Select your ShopSpot project
 
 #### B. Navigate to Email Templates
 1. Click **"Authentication"** in left sidebar
@@ -61,13 +61,13 @@ const PRODUCTION_URL = 'https://shopeasy-pos.netlify.app';
 #### D. Update Subject
 At top of template editor:
 - Find **Subject** field
-- Change to: `Reset Your ShopEasy Password`
+- Change to: `Reset Your ShopSpot Password`
 - Click **Save**
 
 #### E. Update Sender (Optional)
 1. Go to **Project Settings** → **Auth**
 2. Find **Email Settings** section
-3. Change **Sender Name** to: `ShopEasy Support`
+3. Change **Sender Name** to: `ShopSpot Support`
 4. Click **Save**
 
 ✅ **Done!**
@@ -78,7 +78,7 @@ At top of template editor:
 
 ### From Your Computer:
 
-1. Open your ShopEasy login page
+1. Open your ShopSpot login page
 2. Click **"Reset password"** link
 3. Enter your email
 4. Click **"Send Reset Link"**
@@ -87,8 +87,8 @@ At top of template editor:
 ### ✅ What You Should See:
 
 **Email:**
-- Subject: "Reset Your ShopEasy Password"
-- From: "ShopEasy Support"
+- Subject: "Reset Your ShopSpot Password"
+- From: "ShopSpot Support"
 - Green header with 🏪 icon
 - Professional HTML layout
 - **NO Supabase branding!**
@@ -120,11 +120,11 @@ http://localhost:3000?reset-password=true
 
 **Email:**
 ```
-From: ShopEasy Support <noreply@shopeasy.com>
-Subject: Reset Your ShopEasy Password
+From: ShopSpot Support <noreply@ShopSpot.com>
+Subject: Reset Your ShopSpot Password
 
 ┌─────────────────────┐
-│   🏪 ShopEasy POS   │
+│   🏪 ShopSpot POS   │
 │  (Green branded)    │
 │  Professional HTML  │
 │  [Reset Password]   │
@@ -266,7 +266,7 @@ If production URL not configured, you'll see:
 After following this guide:
 
 ✅ **Email branding:**
-- Shows ShopEasy (not Supabase)
+- Shows ShopSpot (not Supabase)
 - Professional HTML design
 - Green branded header
 
@@ -290,7 +290,7 @@ After following this guide:
 **Result:** Professional password reset system!
 
 Now your users can reset their passwords with:
-- ✅ Branded ShopEasy emails
+- ✅ Branded ShopSpot emails
 - ✅ Links that open the correct site
 - ✅ Professional, trustworthy experience
 

@@ -8,7 +8,7 @@ Account creation failed because of **email confirmation** settings in Supabase.
 ### Step 1: Disable Email Confirmation
 
 1. Open **Supabase Dashboard**: https://supabase.com/dashboard
-2. Select your **ShopEasy project**
+2. Select your **ShopSpot project**
 3. Click **Authentication** (left sidebar)
 4. Click **Providers**
 5. Click **Email** provider
@@ -38,7 +38,7 @@ If you get errors like "relation does not exist", you need to run the migration:
 
 ### Step 3: Test Account Creation
 
-1. Go to your ShopEasy app
+1. Go to your ShopSpot app
 2. Click "Create Account" 
 3. Fill in:
    - Organization: **Test Pharmacy**

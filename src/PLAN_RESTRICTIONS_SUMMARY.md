@@ -2,7 +2,7 @@
 
 ## 📋 Summary
 
-ShopEasy now enforces subscription plan limits for branches, warehouses, and feature access.
+ShopSpot now enforces subscription plan limits for branches, warehouses, and feature access.
 
 ---
 

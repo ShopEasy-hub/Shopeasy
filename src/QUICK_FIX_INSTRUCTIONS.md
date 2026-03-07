@@ -81,7 +81,7 @@ $$ LANGUAGE plpgsql;
 2. Wait for "Success" message
 
 ### Step 4: Test
-1. Go back to your ShopEasy app
+1. Go back to your ShopSpot app
 2. Try to receive a transfer
 3. ✅ It should work now!
 

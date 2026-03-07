@@ -5,7 +5,7 @@
 ### 1. ❌ Reset link opened localhost instead of production site
 **Status:** ✅ **FIXED**
 
-### 2. ❌ Email shows Supabase branding instead of ShopEasy
+### 2. ❌ Email shows Supabase branding instead of ShopSpot
 **Status:** ⏳ **NEEDS YOUR ACTION** (5 minutes in Supabase Dashboard)
 
 ---
@@ -39,7 +39,7 @@
 const PRODUCTION_URL = 'https://your-production-domain.com';
 
 // To your actual URL:
-const PRODUCTION_URL = 'https://shopeasy-pos.vercel.app';
+const PRODUCTION_URL = 'https://ShopSpot-pos.vercel.app';
 // (or whatever your deployed URL is)
 ```
 
@@ -63,12 +63,12 @@ const PRODUCTION_URL = 'https://shopeasy-pos.vercel.app';
 1. **Delete** all content in the template editor
 2. **Copy** the full HTML template from `/EMAIL_CUSTOMIZATION_GUIDE.md` (lines 49-183)
 3. **Paste** into Supabase
-4. **Update Subject** to: `Reset Your ShopEasy Password`
+4. **Update Subject** to: `Reset Your ShopSpot Password`
 5. **Click Save**
 
 **Optional but recommended:**
 - Go to **Project Settings** → **Auth**
-- Change **Sender Name** to: `ShopEasy Support`
+- Change **Sender Name** to: `ShopSpot Support`
 - Save
 
 **Guide:** See `/EMAIL_CUSTOMIZATION_GUIDE.md` for complete instructions with screenshots
@@ -108,8 +108,8 @@ const PRODUCTION_URL = 'https://shopeasy-pos.vercel.app';
 ### ✅ Expected Results:
 
 **Email Should Show:**
-- Subject: "Reset Your ShopEasy Password"
-- From: "ShopEasy Support"
+- Subject: "Reset Your ShopSpot Password"
+- From: "ShopSpot Support"
 - Green header with 🏪 icon
 - Professional HTML design
 - "Reset My Password" button (green)
@@ -140,19 +140,19 @@ Subject: Reset Your Password
 
 **AFTER:**
 ```
-From: ShopEasy Support <noreply@shopeasy.com>
-Subject: Reset Your ShopEasy Password
+From: ShopSpot Support <noreply@ShopSpot.com>
+Subject: Reset Your ShopSpot Password
 
 ┌────────────────────────┐
 │    🏪                  │
-│    ShopEasy POS        │
+│    ShopSpot POS        │
 │  (Green header)        │
 ├────────────────────────┤
 │  Professional HTML     │
 │  [Reset My Password]   │
 │  Green button          │
 │  Security info         │
-│  ShopEasy branding     │
+│  ShopSpot branding     │
 └────────────────────────┘
 ```
 
@@ -194,7 +194,7 @@ Production:
 
 #### Testing:
 - [ ] Requested password reset from production site
-- [ ] Received email with ShopEasy branding
+- [ ] Received email with ShopSpot branding
 - [ ] Link opened production URL (not localhost)
 - [ ] Successfully reset password
 - [ ] Can login with new password

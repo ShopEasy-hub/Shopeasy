@@ -1,6 +1,6 @@
 # 🚀 START HERE FIRST!
 
-## Welcome to ShopEasy Migration! 👋
+## Welcome to ShopSpot Migration! 👋
 
 You're about to fix **ALL** your stock management issues in just **15 minutes**!
 

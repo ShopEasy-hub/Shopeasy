@@ -1,4 +1,4 @@
-# 💰 ShopEasy POS - Subscription Pricing
+# 💰 ShopSpot POS - Subscription Pricing
 
 ## 🎯 Production Pricing (Effective December 15, 2024)
 
@@ -251,7 +251,7 @@ No setup fees! You only pay for your chosen subscription plan.
 Yes, cancel anytime. No cancellation fees. Your data is retained for 30 days after cancellation.
 
 ### Do you offer refunds?
-Refunds are handled on a case-by-case basis within the first 14 days. Contact support@shopeasy.com.
+Refunds are handled on a case-by-case basis within the first 14 days. Contact support@ShopSpot.com.
 
 ### What payment methods do you accept?
 We accept all major cards (Visa, Mastercard, Verve), bank transfers, and USSD through Paystack.
@@ -265,10 +265,10 @@ Yes! We use enterprise-grade encryption and security. All data is stored securel
 
 Need a custom plan? Have questions?
 
-- 📧 Email: sales@shopeasy.com
+- 📧 Email: sales@ShopSpot.com
 - 📱 Phone: +234 XXX XXX XXXX
 - 💬 WhatsApp: +234 XXX XXX XXXX
-- 🌐 Website: www.shopeasy.com
+- 🌐 Website: www.ShopSpot.com
 
 **Business Hours:** Monday - Friday, 9 AM - 6 PM WAT
 
@@ -298,4 +298,4 @@ Need a custom plan? Have questions?
 
 ---
 
-*ShopEasy - The Complete Point of Sale Solution for Nigerian Businesses*
+*ShopSpot - The Complete Point of Sale Solution for Nigerian Businesses*

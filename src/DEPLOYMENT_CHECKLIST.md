@@ -202,11 +202,11 @@ ORDER BY warehouse_count DESC;
 
 ### Email Template Points
 ```
-Subject: Important Update: ShopEasy Plan Changes & New Features
+Subject: Important Update: ShopSpot Plan Changes & New Features
 
 Dear [Customer],
 
-We're excited to announce improvements to ShopEasy's subscription plans:
+We're excited to announce improvements to ShopSpot's subscription plans:
 
 ✨ What's New:
 - Enhanced warehouse management for Standard+ plans
@@ -221,7 +221,7 @@ We're excited to announce improvements to ShopEasy's subscription plans:
 
 🎁 Current customers: 30-day grace period before changes take effect
 
-Questions? Contact support@shopeasy.com
+Questions? Contact support@ShopSpot.com
 ```
 
 ### After Deployment

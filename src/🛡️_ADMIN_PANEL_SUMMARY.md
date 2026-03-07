@@ -2,7 +2,7 @@
 
 ## ✅ **YES, Your App Needs an Admin Panel!**
 
-I've built a complete Admin Panel for your ShopEasy POS system.
+I've built a complete Admin Panel for your ShopSpot POS system.
 
 ---
 
@@ -290,7 +290,7 @@ Includes:
 
 ## 🎉 Result
 
-Your ShopEasy POS now has:
+Your ShopSpot POS now has:
 
 ✅ **Enterprise-grade admin panel**
 ✅ **Role-based security**

@@ -22,7 +22,7 @@ You edited:
 
 ✅ **Success when you see:**
 ```
-✅ ShopEasy database rebuild complete!
+✅ ShopSpot database rebuild complete!
 📊 12 tables created
 🔒 RLS enabled
 ⚙️ 10 triggers created
@@ -36,7 +36,7 @@ You edited:
 2. Find line 78-83:
    ```typescript
    const SUPER_ADMIN_EMAILS = [
-     'admin@shopeasy.com',
+     'admin@ShopSpot.com',
    ];
    ```
 3. Change to **your email**:

@@ -37,7 +37,7 @@ scoop install supabase
 supabase login
 
 # Navigate to your project root
-cd /path/to/your/shopeasy/project
+cd /path/to/your/ShopSpot/project
 
 # Link your Supabase project (first time only)
 supabase link --project-ref pkzpifdocmmzowvjopup
@@ -125,7 +125,7 @@ You should see:
 ```json
 {
   "status": "ok",
-  "service": "ShopEasy Payment Service",
+  "service": "ShopSpot Payment Service",
   "version": "2.0.0",
   "message": "Payments API is running. No KV store dependencies."
 }
@@ -133,7 +133,7 @@ You should see:
 
 ### 2. Test Payment Flow
 
-1. Open your ShopEasy app
+1. Open your ShopSpot app
 2. Click "Upgrade Plan"
 3. Select a plan and billing cycle
 4. Click "Continue to Payment"

@@ -21,13 +21,13 @@ const PRODUCTION_URL = 'https://your-production-domain.com';
 
 **To your actual domain:**
 ```typescript
-const PRODUCTION_URL = 'https://shopeasy.mydomain.com';
+const PRODUCTION_URL = 'https://ShopSpot.mydomain.com';
 // OR whatever your actual deployed URL is
 ```
 
 **Example:**
-- If deployed on Vercel: `https://shopeasy-pos.vercel.app`
-- If deployed on Netlify: `https://shopeasy-pos.netlify.app`
+- If deployed on Vercel: `https://ShopSpot-pos.vercel.app`
+- If deployed on Netlify: `https://ShopSpot-pos.netlify.app`
 - If custom domain: `https://pos.yourbusiness.com`
 
 **💡 Tip:** Don't know your production URL yet? Leave it for now, but update before deploying!
@@ -40,7 +40,7 @@ const PRODUCTION_URL = 'https://shopeasy.mydomain.com';
 
 1. Open: https://supabase.com/dashboard
 2. Login
-3. Select your ShopEasy project
+3. Select your ShopSpot project
 4. Click: **Authentication** (left sidebar)
 5. Click: **Email Templates** (top tabs)
 
@@ -58,7 +58,7 @@ At the top of the template editor:
 
 **Subject field:** Change to:
 ```
-Reset Your ShopEasy Password
+Reset Your ShopSpot Password
 ```
 
 Click **Save**
@@ -67,7 +67,7 @@ Click **Save**
 
 1. Go to: **Project Settings** → **Auth**
 2. Find: **Email Settings** section
-3. Change **Sender Name** to: `ShopEasy Support`
+3. Change **Sender Name** to: `ShopSpot Support`
 4. Click **Save**
 
 ---
@@ -79,7 +79,7 @@ Click **Save**
 3. Enter your email
 4. Check your inbox
 5. Email should now:
-   - ✅ Show "ShopEasy" branding (not Supabase)
+   - ✅ Show "ShopSpot" branding (not Supabase)
    - ✅ Have green header with 🏪 icon
    - ✅ Link opens your production URL (not localhost in production)
 
@@ -91,8 +91,8 @@ Click **Save**
 
 | Issue | Before | After |
 |-------|--------|-------|
-| Email branding | Supabase | ShopEasy 🏪 |
-| Email from name | Supabase Auth | ShopEasy Support |
+| Email branding | Supabase | ShopSpot 🏪 |
+| Email from name | Supabase Auth | ShopSpot Support |
 | Reset link URL | localhost:3000 | your-domain.com ✅ |
 | Email design | Plain text | Professional HTML ✨ |
 
@@ -124,9 +124,9 @@ Before deploying to production:
 - [ ] Updated `PRODUCTION_URL` in `/lib/config.ts`
 - [ ] Customized Supabase email template
 - [ ] Updated email subject line
-- [ ] Changed sender name to "ShopEasy Support"
+- [ ] Changed sender name to "ShopSpot Support"
 - [ ] Tested password reset flow
-- [ ] Email shows ShopEasy branding ✅
+- [ ] Email shows ShopSpot branding ✅
 
 ---
 

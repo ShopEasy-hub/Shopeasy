@@ -64,7 +64,7 @@ Benefits:
 ## 🗂️ New Table Structure
 
 ```
-ShopEasy Database
+ShopSpot Database
 ├── 👥 organizations      (Multi-tenant orgs)
 ├── 🏢 branches           (Store locations)
 ├── 🏭 warehouses         (Storage facilities)
@@ -105,7 +105,7 @@ ShopEasy Database
 
 ## ✅ What You Should Do
 
-### If You're New to ShopEasy
+### If You're New to ShopSpot
 1. Go to Supabase Dashboard → SQL Editor
 2. Run: `/supabase/migrations/000_CLEAN_REBUILD_2025.sql`
 3. Done! All tables will be created

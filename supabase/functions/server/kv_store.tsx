@@ -1,7 +1,7 @@
 /* ========================================
  * DEPRECATED - DO NOT USE
  * ========================================
- * This file is NO LONGER USED in ShopEasy.
+ * This file is NO LONGER USED in ShopSpot.
  * 
  * The system has been migrated from:
  * ❌ OLD: Deno KV store (kv_store_088c2cd9 table)

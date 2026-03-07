@@ -2,7 +2,7 @@
 
 ## ⚠️ IMPORTANT: Complete Migration Guide
 
-Your ShopEasy POS system is being migrated from **Deno KV Store** to **Supabase PostgreSQL** for better stability, reliability, and scalability.
+Your ShopSpot POS system is being migrated from **Deno KV Store** to **Supabase PostgreSQL** for better stability, reliability, and scalability.
 
 ---
 
@@ -26,7 +26,7 @@ Before starting the migration:
 3. Click **New Query**
 4. Copy and paste the contents of `/supabase/migrations/001_complete_database_setup.sql`
 5. Click **Run** or press `Ctrl/Cmd + Enter`
-6. Wait for success message: ✅ ShopEasy database migration completed successfully!
+6. Wait for success message: ✅ ShopSpot database migration completed successfully!
 
 ### Option B: Using Supabase CLI
 
@@ -426,4 +426,4 @@ If you encounter issues during migration:
 
 ---
 
-**🎉 Congratulations!** Your ShopEasy POS is now running on a robust, scalable Supabase PostgreSQL backend with automatic stock management, zero duplicates, and real-time synchronization!
+**🎉 Congratulations!** Your ShopSpot POS is now running on a robust, scalable Supabase PostgreSQL backend with automatic stock management, zero duplicates, and real-time synchronization!

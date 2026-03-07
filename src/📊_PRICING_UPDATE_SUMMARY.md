@@ -1,6 +1,6 @@
 # 📊 PRICING UPDATE SUMMARY
 
-## ShopEasy POS System - New Pricing Structure
+## ShopSpot POS System - New Pricing Structure
 
 **Update Date:** December 15, 2024  
 **Version:** 2.0.0  
@@ -441,7 +441,7 @@ Everything is configured and ready for production deployment!
 ---
 
 **Questions?**  
-Contact: dev@shopeasy.ng
+Contact: dev@ShopSpot.ng
 
 **Need Help?**  
 See: `/🚀_PRODUCTION_DEPLOYMENT_CHECKLIST.md`

@@ -24,7 +24,7 @@ SELECT * FROM inventory;
 1. Open: Supabase Dashboard → SQL Editor
 2. Copy: `/supabase/migrations/000_CLEAN_REBUILD_2025.sql`
 3. Paste & RUN
-4. Wait for: "✅ ShopEasy CLEAN REBUILD 2025 COMPLETE!"
+4. Wait for: "✅ ShopSpot CLEAN REBUILD 2025 COMPLETE!"
 
 ### **Step 3: Create Super Admin (1 min)**
 ```sql

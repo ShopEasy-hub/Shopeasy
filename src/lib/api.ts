@@ -1,5 +1,5 @@
 /**
- * ShopEasy API - Re-exports from Supabase implementation
+ * ShopSpot API - Re-exports from Supabase implementation
  * This file maintains backward compatibility by re-exporting from api-supabase.ts
  * 
  * All files importing from './lib/api' will now use the new PostgreSQL backend

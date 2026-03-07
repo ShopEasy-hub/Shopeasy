@@ -44,9 +44,9 @@ Located in `/pages/SuperAdminPanel.tsx` (lines 78-83):
 
 ```typescript
 const SUPER_ADMIN_EMAILS = [
-  'admin@shopeasy.com',
-  'tech@shopeasy.com',
-  'support@shopeasy.com',
+  'admin@ShopSpot.com',
+  'tech@ShopSpot.com',
+  'support@ShopSpot.com',
   // Add your team's emails here
 ];
 ```
@@ -59,9 +59,9 @@ const SUPER_ADMIN_EMAILS = [
 
 ```typescript
 const SUPER_ADMIN_EMAILS = [
-  'admin@shopeasy.com',
-  'tech@shopeasy.com',
-  'support@shopeasy.com',
+  'admin@ShopSpot.com',
+  'tech@ShopSpot.com',
+  'support@ShopSpot.com',
   'your-email@example.com',  // ← Add your email here
   // Add your team's emails here
 ];
@@ -528,9 +528,9 @@ Schedule weekly checks:
 ```typescript
 // Line 78-83
 const SUPER_ADMIN_EMAILS = [
-  'admin@shopeasy.com',
-  'tech@shopeasy.com',
-  'support@shopeasy.com',
+  'admin@ShopSpot.com',
+  'tech@ShopSpot.com',
+  'support@ShopSpot.com',
   'YOUR_EMAIL@example.com',  // ← Add here
 ];
 ```

@@ -76,9 +76,9 @@ export default function SuperAdminPanel({ appState, onNavigate }: SuperAdminPane
 
   // List of authorized super admin emails
   const SUPER_ADMIN_EMAILS = [
-    'admin@shopeasy.com',
-    'tech@shopeasy.com',
-    'support@shopeasy.com',
+    'admin@ShopSpot.com',
+    'tech@ShopSpot.com',
+    'support@ShopSpot.com',
     // Add your team's emails here
   ];
 
@@ -396,7 +396,7 @@ export default function SuperAdminPanel({ appState, onNavigate }: SuperAdminPane
             <Alert variant="destructive">
               <AlertTriangle className="h-4 w-4" />
               <AlertDescription>
-                This panel is restricted to ShopEasy technical support team only.
+                This panel is restricted to ShopSpot technical support team only.
               </AlertDescription>
             </Alert>
             <Button className="w-full mt-4" onClick={() => onNavigate('dashboard')}>

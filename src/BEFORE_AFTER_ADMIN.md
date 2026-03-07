@@ -403,7 +403,7 @@ Result: ✅ Increased confidence
 
 # **ABSOLUTELY YES!**
 
-Your ShopEasy POS is:
+Your ShopSpot POS is:
 - ✅ Multi-tenant (multiple organizations)
 - ✅ Role-based (owner, manager, cashier, auditor)
 - ✅ Complex system (POS, inventory, transfers, warehouses)

@@ -326,7 +326,7 @@ if (!actionCheck.allowed) {
 
 ### Email on Downgrade
 ```
-Subject: Your ShopEasy subscription has changed
+Subject: Your ShopSpot subscription has changed
 
 Hi [Name],
 

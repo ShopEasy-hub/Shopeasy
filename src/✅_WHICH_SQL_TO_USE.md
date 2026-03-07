@@ -62,7 +62,7 @@ The SQL you shared (edited with Supabase AI) is a **migration approach** that's 
 
 You should see:
 ```
-✅ ShopEasy HYBRID migration completed!
+✅ ShopSpot HYBRID migration completed!
 📊 Tables: organizations, branches, warehouses, products...
 🔒 RLS policies: ENABLED on all tables
 ⚙️ Triggers: inventory upsert, transfer completion...
@@ -219,7 +219,7 @@ WHERE branch_id = (SELECT id FROM branches LIMIT 1)
 
 ### **Result:**
 
-Your ShopEasy POS will have:
+Your ShopSpot POS will have:
 - **Zero duplicate stock** (impossible by design)
 - **Persistent stock** (never resets)
 - **Automatic sync** (warehouse ↔ branch)

@@ -31,9 +31,9 @@ const SAMPLE_PRODUCTS = [
 ];
 
 const SAMPLE_USERS = [
-  { name: 'John Manager', email: 'manager@shopeasy.com', password: 'test123', role: 'manager' },
-  { name: 'Jane Cashier', email: 'cashier@shopeasy.com', password: 'test123', role: 'cashier' },
-  { name: 'Bob Auditor', email: 'auditor@shopeasy.com', password: 'test123', role: 'auditor' },
+  { name: 'John Manager', email: 'manager@ShopSpot.com', password: 'test123', role: 'manager' },
+  { name: 'Jane Cashier', email: 'cashier@ShopSpot.com', password: 'test123', role: 'cashier' },
+  { name: 'Bob Auditor', email: 'auditor@ShopSpot.com', password: 'test123', role: 'auditor' },
 ];
 
 export function TestSetup() {
@@ -53,8 +53,8 @@ export function TestSetup() {
 
   const getTestEmail = () => {
     if (customEmail) return customEmail;
-    if (useUniqueEmail) return `test${timestamp}@shopeasy.com`;
-    return 'test@shopeasy.com';
+    if (useUniqueEmail) return `test${timestamp}@ShopSpot.com`;
+    return 'test@ShopSpot.com';
   };
 
   const getTestCredentials = () => ({
@@ -153,7 +153,7 @@ export function TestSetup() {
       for (const userData of SAMPLE_USERS) {
         try {
           const userEmail = useUniqueEmail 
-            ? `${userData.email.split('@')[0]}${timestamp}@shopeasy.com`
+            ? `${userData.email.split('@')[0]}${timestamp}@ShopSpot.com`
             : userData.email;
           
           await createUser(orgId, {
@@ -265,7 +265,7 @@ export function TestSetup() {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-xl mb-4">
             <Store className="w-8 h-8 text-primary-foreground" />
           </div>
-          <h1 className="mb-2">shopeasy Test Account Setup</h1>
+          <h1 className="mb-2">ShopSpot Test Account Setup</h1>
           <p className="text-muted-foreground">
             Create a test account with sample data for demonstration
           </p>
@@ -300,13 +300,13 @@ export function TestSetup() {
                   className="w-4 h-4"
                 />
                 <Label htmlFor="uniqueEmail" className="text-sm cursor-pointer">
-                  Use unique email (recommended if test@shopeasy.com already exists)
+                  Use unique email (recommended if test@ShopSpot.com already exists)
                 </Label>
               </div>
 
               {useUniqueEmail && (
                 <div className="pl-6 text-xs text-muted-foreground">
-                  Email will be: <span className="font-mono text-foreground">test{timestamp}@shopeasy.com</span>
+                  Email will be: <span className="font-mono text-foreground">test{timestamp}@ShopSpot.com</span>
                 </div>
               )}
 
@@ -339,7 +339,7 @@ export function TestSetup() {
                 <div className="flex items-start gap-2 text-xs text-muted-foreground">
                   <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
                   <span>
-                    Default credentials: <span className="font-mono">test@shopeasy.com / test123</span>
+                    Default credentials: <span className="font-mono">test@ShopSpot.com / test123</span>
                   </span>
                 </div>
               )}

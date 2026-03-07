@@ -238,7 +238,7 @@ app.post('/flutterwave/initialize', async (c) => {
           email,
         },
         customizations: {
-          title: 'ShopEasy Subscription',
+          title: 'ShopSpot Subscription',
           description: `${metadata.planName} - ${metadata.billingCycle} billing`,
           logo: '',
         },
@@ -390,7 +390,7 @@ app.get('/flutterwave/verify/:transactionId', async (c) => {
 app.get('/', (c) => {
   return c.json({ 
     status: 'ok', 
-    service: 'ShopEasy Payment Service',
+    service: 'ShopSpot Payment Service',
     version: '2.0.0',
     message: 'Payments API is running. No KV store dependencies.'
   });

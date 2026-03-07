@@ -15,7 +15,7 @@
 
 ### Step 2️⃣: Refresh Your App
 
-1. Go back to your ShopEasy app
+1. Go back to your ShopSpot app
 2. Press **Ctrl+Shift+R** (hard refresh) or **Cmd+Shift+R** on Mac
 3. Wait for page to reload
 

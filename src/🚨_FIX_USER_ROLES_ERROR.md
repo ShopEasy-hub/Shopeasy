@@ -234,4 +234,4 @@ Once you run the SQL, you'll be able to:
 ✅ Add Auditors (for compliance/reporting)  
 ✅ Full team management capability!
 
-Your ShopEasy POS system will have complete role-based access control! 🚀
+Your ShopSpot POS system will have complete role-based access control! 🚀

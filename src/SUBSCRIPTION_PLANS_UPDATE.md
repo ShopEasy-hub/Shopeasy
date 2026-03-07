@@ -344,7 +344,7 @@ No database changes required - all limits enforced in frontend validation and UI
 ## 📞 Support
 
 For questions about the new pricing:
-- Contact: support@shopeasy.com
+- Contact: support@ShopSpot.com
 - Documentation: [pricing page]
 - Sales: [contact sales team]
 

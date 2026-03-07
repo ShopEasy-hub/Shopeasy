@@ -42,7 +42,7 @@ This means:
 
 6. **Wait for success message:** "Success. No rows returned"
 
-7. **Refresh your ShopEasy app** - Everything should work!
+7. **Refresh your ShopSpot app** - Everything should work!
 
 ### Option B: Manual Fix via Dashboard (If SQL doesn't work)
 

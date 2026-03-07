@@ -57,7 +57,7 @@ This will open a browser window. Login with your Supabase account.
 
 ```bash
 # Navigate to your project directory
-cd /path/to/your/shopeasy/project
+cd /path/to/your/ShopSpot/project
 
 # Link to Supabase
 supabase link --project-ref YOUR_REFERENCE_ID

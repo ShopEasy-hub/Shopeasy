@@ -81,17 +81,17 @@ supabase link --project-ref abcdefghijklmnop
 
 ### **STEP 5: Navigate to Project Directory** (10 seconds)
 
-**Go to your ShopEasy project folder:**
+**Go to your ShopSpot project folder:**
 
 ```bash
-cd /path/to/your/shopeasy/project
+cd /path/to/your/ShopSpot/project
 ```
 
 **Example:**
 ```bash
-cd ~/Desktop/shopeasy
+cd ~/Desktop/ShopSpot
 # or
-cd C:\Users\YourName\Projects\shopeasy
+cd C:\Users\YourName\Projects\ShopSpot
 ```
 
 ✅ **In the right folder? Move to Step 6**

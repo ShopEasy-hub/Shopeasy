@@ -141,9 +141,9 @@ Displays confirmation with stats and next steps.
 **Email-Based Authorization:**
 ```typescript
 const SUPER_ADMIN_EMAILS = [
-  'admin@shopeasy.com',
-  'tech@shopeasy.com',
-  'support@shopeasy.com',
+  'admin@ShopSpot.com',
+  'tech@ShopSpot.com',
+  'support@ShopSpot.com',
   // Add your team's emails here
 ];
 ```
@@ -263,7 +263,7 @@ const SUPER_ADMIN_EMAILS = [
 
 **Success looks like:**
 ```
-✅ ShopEasy database rebuild complete!
+✅ ShopSpot database rebuild complete!
 📊 12 tables created
 🔒 RLS enabled on all tables
 ⚙️ 10 triggers created
@@ -280,9 +280,9 @@ Edit `/pages/SuperAdminPanel.tsx`:
 
 ```typescript
 const SUPER_ADMIN_EMAILS = [
-  'admin@shopeasy.com',     // Replace with your email
-  'tech@shopeasy.com',      // Your tech team
-  'support@shopeasy.com',   // Your support team
+  'admin@ShopSpot.com',     // Replace with your email
+  'tech@ShopSpot.com',      // Your tech team
+  'support@ShopSpot.com',   // Your support team
   'youremail@company.com',  // Add as many as needed
 ];
 ```
@@ -721,7 +721,7 @@ You now have:
 ✅ **Data Export** - Easy auditing
 ✅ **Security** - Email-based access control
 
-**Your ShopEasy POS now has enterprise-grade technical support capabilities!** 🎉
+**Your ShopSpot POS now has enterprise-grade technical support capabilities!** 🎉
 
 ---
 

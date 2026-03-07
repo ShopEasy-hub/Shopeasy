@@ -12,15 +12,15 @@ This file tells the system where to send them.
 
 ### Step 1: Find Your Production URL
 
-**Where is your ShopEasy app deployed?**
+**Where is your ShopSpot app deployed?**
 
 | Platform | Example URL |
 |----------|-------------|
-| **Vercel** | `https://shopeasy-pos.vercel.app` |
-| **Netlify** | `https://shopeasy-pos.netlify.app` |
+| **Vercel** | `https://ShopSpot-pos.vercel.app` |
+| **Netlify** | `https://ShopSpot-pos.netlify.app` |
 | **Custom Domain** | `https://pos.yourbusiness.com` |
-| **Heroku** | `https://shopeasy-pos.herokuapp.com` |
-| **AWS** | `https://shopeasy.yourdomain.com` |
+| **Heroku** | `https://ShopSpot-pos.herokuapp.com` |
+| **AWS** | `https://ShopSpot.yourdomain.com` |
 | **Other** | Whatever your deployed URL is |
 
 **Don't know yet?** That's okay! You can update this later before deploying.
@@ -38,7 +38,7 @@ const PRODUCTION_URL = 'https://your-production-domain.com';
 
 **Replace with your actual URL:**
 ```typescript
-const PRODUCTION_URL = 'https://shopeasy-pos.vercel.app';
+const PRODUCTION_URL = 'https://ShopSpot-pos.vercel.app';
 ```
 
 **Save the file.** Done! ✅
@@ -51,7 +51,7 @@ const PRODUCTION_URL = 'https://shopeasy-pos.vercel.app';
 
 ```typescript
 // If deployed to Vercel
-const PRODUCTION_URL = 'https://shopeasy-pos.vercel.app';
+const PRODUCTION_URL = 'https://ShopSpot-pos.vercel.app';
 ```
 
 ### Example 2: Custom Domain
@@ -65,7 +65,7 @@ const PRODUCTION_URL = 'https://pos.mybusiness.com';
 
 ```typescript
 // If deployed to Netlify
-const PRODUCTION_URL = 'https://shopeasy-pos.netlify.app';
+const PRODUCTION_URL = 'https://ShopSpot-pos.netlify.app';
 ```
 
 ---
@@ -135,7 +135,7 @@ const PRODUCTION_URL = 'www.mydomain.com';              // Missing https://
 ```typescript
 const PRODUCTION_URL = 'https://mydomain.com';
 const PRODUCTION_URL = 'https://pos.mydomain.com';
-const PRODUCTION_URL = 'https://shopeasy-pos.vercel.app';
+const PRODUCTION_URL = 'https://ShopSpot-pos.vercel.app';
 ```
 
 ---
@@ -146,7 +146,7 @@ const PRODUCTION_URL = 'https://shopeasy-pos.vercel.app';
 
 ```typescript
 // Your production URL
-const PRODUCTION_URL = 'https://shopeasy-pos.vercel.app';
+const PRODUCTION_URL = 'https://ShopSpot-pos.vercel.app';
 
 // Auto-detect environment
 const isDevelopment = window.location.hostname === 'localhost';

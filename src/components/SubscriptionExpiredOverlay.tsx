@@ -20,7 +20,7 @@ export function SubscriptionExpiredOverlay({
         <div className="space-y-2">
           <h1 className="text-2xl">Subscription Required</h1>
           <p className="text-muted-foreground">
-            Your trial has ended. Subscribe now to continue using ShopEasy and access all your data.
+            Your trial has ended. Subscribe now to continue using ShopSpot and access all your data.
           </p>
         </div>
 

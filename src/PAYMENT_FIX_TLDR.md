@@ -40,7 +40,7 @@ Visit: `https://pkzpifdocmmzowvjopup.supabase.co/functions/v1/payments`
 
 Should see:
 ```json
-{"status": "ok", "service": "ShopEasy Payment Service"}
+{"status": "ok", "service": "ShopSpot Payment Service"}
 ```
 
 Then try upgrading a plan in your app. No more errors! ✅

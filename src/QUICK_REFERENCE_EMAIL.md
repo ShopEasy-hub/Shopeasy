@@ -29,7 +29,7 @@ const PRODUCTION_URL = 'https://your-production-domain.com';
 
 **Change to:**
 ```typescript
-const PRODUCTION_URL = 'https://shopeasy-pos.vercel.app';
+const PRODUCTION_URL = 'https://ShopSpot-pos.vercel.app';
 // ↑ Your actual deployed URL
 ```
 
@@ -50,7 +50,7 @@ const PRODUCTION_URL = 'https://shopeasy-pos.vercel.app';
 3. Click "Reset Password"
 4. Delete all content
 5. Paste template from `/EMAIL_CUSTOMIZATION_GUIDE.md` (lines 49-183)
-6. Subject: `Reset Your ShopEasy Password`
+6. Subject: `Reset Your ShopSpot Password`
 7. Save
 
 ✅ **Done!** Test by requesting reset.
@@ -67,7 +67,7 @@ const PRODUCTION_URL = 'https://shopeasy-pos.vercel.app';
 → Click "Send Reset Link"
 
 # 3. Check inbox
-→ Should see ShopEasy branded email ✅
+→ Should see ShopSpot branded email ✅
 
 # 4. Click button in email
 → Should open your site (not localhost) ✅
@@ -83,13 +83,13 @@ const PRODUCTION_URL = 'https://shopeasy-pos.vercel.app';
 ### Email From:
 ```
 BEFORE: Supabase Auth <noreply@supabase.io>
-AFTER:  ShopEasy Support <noreply@shopeasy.com> ✅
+AFTER:  ShopSpot Support <noreply@ShopSpot.com> ✅
 ```
 
 ### Email Subject:
 ```
 BEFORE: Reset Your Password
-AFTER:  Reset Your ShopEasy Password ✅
+AFTER:  Reset Your ShopSpot Password ✅
 ```
 
 ### Email Design:
@@ -161,8 +161,8 @@ QUICK_REFERENCE_EMAIL.md         ← This file!
 
 ## 🎯 Success = All These True
 
-- ✅ Email subject: "Reset Your ShopEasy Password"
-- ✅ Email from: "ShopEasy Support"
+- ✅ Email subject: "Reset Your ShopSpot Password"
+- ✅ Email from: "ShopSpot Support"
 - ✅ Email has green header with 🏪
 - ✅ Email is professional HTML
 - ✅ No Supabase branding visible
@@ -236,7 +236,7 @@ After 7 minutes of work:
 
 ```
 Professional password reset system ✅
-ShopEasy branding throughout ✅
+ShopSpot branding throughout ✅
 Correct URLs everywhere ✅
 Happy users ✅
 ```

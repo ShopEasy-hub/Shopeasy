@@ -1,8 +1,8 @@
-# 📱 ShopEasy POS - Mobile App Setup
+# 📱 ShopSpot POS - Mobile App Setup
 
 ## 🎯 Quick Summary
 
-Your ShopEasy POS web app can now become **Android and iOS apps** using Capacitor, with **camera-based barcode scanning** on mobile devices.
+Your ShopSpot POS web app can now become **Android and iOS apps** using Capacitor, with **camera-based barcode scanning** on mobile devices.
 
 ### ✅ Guarantees
 - **Web app remains 100% functional** - No changes to existing features
@@ -243,7 +243,7 @@ npx cap open ios
 ### App Name
 Edit `capacitor.config.ts`:
 ```ts
-appName: 'ShopEasy POS'  // Change this
+appName: 'ShopSpot POS'  // Change this
 ```
 
 ---

@@ -12,7 +12,7 @@ Fix ALL your issues in 2 minutes:
 
 ### STEP 1: Delete All Stock (1 minute)
 
-- [ ] **Login** to your ShopEasy app
+- [ ] **Login** to your ShopSpot app
 - [ ] **Click "Database Status"** in the left sidebar (second from bottom)
 - [ ] **Click the red "Delete All Stock" button** at the top of the page
 - [ ] **Read the confirmation dialog**
@@ -47,7 +47,7 @@ Success. No rows returned
 
 ### STEP 3: Verify Fix (30 seconds)
 
-- [ ] **Go back** to your ShopEasy app tab
+- [ ] **Go back** to your ShopSpot app tab
 - [ ] **Refresh the page** (F5 or Ctrl+R)
 - [ ] **Go to "Database Status"** page
 - [ ] **Click "Refresh"** button

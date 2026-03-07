@@ -20,9 +20,9 @@ You want to access the **Super Admin Panel** to monitor all organizations on you
 
 ```typescript
 const SUPER_ADMIN_EMAILS = [
-  'admin@shopeasy.com',
-  'tech@shopeasy.com',
-  'support@shopeasy.com',
+  'admin@ShopSpot.com',
+  'tech@ShopSpot.com',
+  'support@ShopSpot.com',
   'your-actual-email@example.com',  // ← Put your email here
 ];
 ```
@@ -51,7 +51,7 @@ Full URL examples:
 │  1. Edit SuperAdminPanel.tsx                │
 │                                             │
 │  const SUPER_ADMIN_EMAILS = [               │
-│    'admin@shopeasy.com',                    │
+│    'admin@ShopSpot.com',                    │
 │    'your-email@example.com', ← Add this     │
 │  ];                                         │
 └─────────────────────────────────────────────┘
@@ -151,9 +151,9 @@ Once you access the Super Admin Panel, you can:
 ```typescript
 // Lines 78-83
 const SUPER_ADMIN_EMAILS = [
-  'admin@shopeasy.com',
-  'tech@shopeasy.com',
-  'support@shopeasy.com',
+  'admin@ShopSpot.com',
+  'tech@ShopSpot.com',
+  'support@ShopSpot.com',
   // Add your team's emails here ← Edit this section
 ];
 ```

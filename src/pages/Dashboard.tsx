@@ -283,7 +283,7 @@ export function Dashboard({ appState, onNavigate, updateAppState }: DashboardPro
               <ShoppingBag className="w-6 h-6 text-primary-foreground" />
             </div>
             <div>
-              <h2 className="text-sm">shopeasy</h2>
+              <h2 className="text-sm">ShopSpot</h2>
               <p className="text-xs text-muted-foreground">Multi-Branch System</p>
             </div>
           </div>
@@ -379,7 +379,7 @@ export function Dashboard({ appState, onNavigate, updateAppState }: DashboardPro
                 {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </Button>
               <div className="min-w-0 flex-1">
-                <h1 className="truncate">ShopEasy POS Dashboard</h1>
+                <h1 className="truncate">ShopSpot POS Dashboard</h1>
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
                   <Building2 className="w-3 h-3 flex-shrink-0" />
                   <span className="truncate">Company: {appState.companyName}</span>
@@ -499,7 +499,7 @@ export function Dashboard({ appState, onNavigate, updateAppState }: DashboardPro
                       Free Trial Active - {Math.max(0, 7 - Math.floor((new Date().getTime() - new Date(appState.trialStartDate).getTime()) / (1000 * 60 * 60 * 24)))} days remaining
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Enjoying ShopEasy? Upgrade now to continue after your trial ends.
+                      Enjoying ShopSpot? Upgrade now to continue after your trial ends.
                     </p>
                   </div>
                 </div>

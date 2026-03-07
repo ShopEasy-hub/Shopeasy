@@ -1,4 +1,4 @@
-# 📊 ShopEasy Subscription Plans - Complete Comparison
+# 📊 ShopSpot Subscription Plans - Complete Comparison
 
 ## 🎯 Quick Reference Table
 
@@ -296,13 +296,13 @@ Add as many users as needed
 
 ### ROI Example: 2-Location Business
 
-**Without ShopEasy:**
+**Without ShopSpot:**
 - Manual inventory tracking: ₦50,000/mo (staff time)
 - Stock discrepancies: ₦30,000/mo (losses)
 - Slow checkout: Lost sales opportunity
 - **Total Cost:** ₦80,000+/month
 
-**With ShopEasy Standard (₦20,000/mo):**
+**With ShopSpot Standard (₦20,000/mo):**
 - Automated inventory: ✅
 - Real-time stock sync: ✅
 - Fast POS checkout: ✅

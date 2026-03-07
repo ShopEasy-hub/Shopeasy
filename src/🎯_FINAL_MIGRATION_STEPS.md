@@ -3,7 +3,7 @@
 ## ✅ Your Current Situation
 
 You have:
-- ✅ ShopEasy POS system running on Deno KV
+- ✅ ShopSpot POS system running on Deno KV
 - ⚠️ Stock duplication issues
 - ⚠️ Stock reset to zero after refresh
 - ⚠️ Broken warehouse-branch sync
@@ -35,7 +35,7 @@ You have:
 4. **Wait for Success Message**
    You should see:
    ```
-   ✅ ShopEasy HYBRID migration completed!
+   ✅ ShopSpot HYBRID migration completed!
    📊 Tables: organizations, branches, warehouses...
    🔒 RLS policies: ENABLED on all tables
    ⚙️ Triggers: inventory upsert, transfer completion...
@@ -576,7 +576,7 @@ Once migration is complete:
 
 ## 🎯 Final Result
 
-Your ShopEasy POS now has:
+Your ShopSpot POS now has:
 
 ✅ **Enterprise-grade database** (PostgreSQL)
 ✅ **Zero stock duplicates** (impossible by design)

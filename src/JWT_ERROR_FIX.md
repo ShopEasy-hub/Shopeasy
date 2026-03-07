@@ -19,13 +19,13 @@ You're seeing **"Invalid JWT"** errors everywhere because your authentication to
 
 ### Option 2: Re-login (Always Works)
 
-1. **Close all ShopEasy tabs**
+1. **Close all ShopSpot tabs**
 2. **Clear browser cache:**
    - Press `Ctrl+Shift+Delete` (Windows/Linux)
    - Press `Cmd+Shift+Delete` (Mac)
    - Select "Cookies and other site data"
    - Click "Clear data"
-3. **Open ShopEasy again**
+3. **Open ShopSpot again**
 4. **Login with your credentials**
 5. ✅ All fixed!
 
@@ -35,7 +35,7 @@ You're seeing **"Invalid JWT"** errors everywhere because your authentication to
    - Chrome: `Ctrl+Shift+N`
    - Firefox: `Ctrl+Shift+P`
    - Safari: `Cmd+Shift+N`
-2. **Go to ShopEasy**
+2. **Go to ShopSpot**
 3. **Login again**
 4. ✅ Should work perfectly!
 
@@ -123,7 +123,7 @@ This is normal and expected:
 
 The app now handles this automatically, but you can also:
 
-1. **Stay logged in:** Keep a ShopEasy tab open
+1. **Stay logged in:** Keep a ShopSpot tab open
 2. **Activity:** Regular use keeps session fresh
 3. **No action needed:** The auto-refresh handles it
 

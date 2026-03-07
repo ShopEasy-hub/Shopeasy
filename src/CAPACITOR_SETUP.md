@@ -1,6 +1,6 @@
 # Capacitor Mobile App Setup Guide
 
-This guide will help you convert ShopEasy POS to Android and iOS apps using Capacitor **without breaking the web version**.
+This guide will help you convert ShopSpot POS to Android and iOS apps using Capacitor **without breaking the web version**.
 
 ## Prerequisites
 
@@ -87,10 +87,10 @@ Edit `ios/App/App/Info.plist` and add these permissions:
 <dict>
     <!-- Add these entries -->
     <key>NSCameraUsageDescription</key>
-    <string>ShopEasy needs camera access to scan product barcodes</string>
+    <string>ShopSpot needs camera access to scan product barcodes</string>
     
     <key>NSPhotoLibraryUsageDescription</key>
-    <string>ShopEasy needs photo library access to save receipts</string>
+    <string>ShopSpot needs photo library access to save receipts</string>
     
     <!-- Your existing plist entries -->
 </dict>

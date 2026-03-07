@@ -1,5 +1,5 @@
 /**
- * ShopEasy API Layer - Supabase PostgreSQL Version
+ * ShopSpot API Layer - Supabase PostgreSQL Version
  * This replaces the Deno KV store implementation
  */
 

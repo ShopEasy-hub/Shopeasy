@@ -2,7 +2,7 @@
 
 ## Problem Diagnosis
 
-Your ShopEasy POS application was experiencing persistent crashes due to **three critical issues**:
+Your ShopSpot POS application was experiencing persistent crashes due to **three critical issues**:
 
 ### 1. **No Error Boundary** ❌
 - React crashes completely when any component throws an unhandled error

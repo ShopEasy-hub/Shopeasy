@@ -4,7 +4,7 @@
 
 **You Reported:**
 1. Password reset link tried to open localhost (instead of your production site)
-2. Email shows Supabase branding (instead of ShopEasy)
+2. Email shows Supabase branding (instead of ShopSpot)
 
 **Status:** ✅ Both fixed! Ready for you to configure.
 
@@ -164,7 +164,7 @@ const PRODUCTION_URL = 'https://your-actual-domain.com';
 ### Testing:
 - [ ] Requested password reset
 - [ ] Received email
-- [ ] Email shows ShopEasy branding
+- [ ] Email shows ShopSpot branding
 - [ ] Clicked reset link
 - [ ] Link opened correct URL
 - [ ] Successfully reset password
@@ -181,18 +181,18 @@ You're ready for production! 🎉
 
 ```
 ┌────────────────────────────────────────┐
-│ From: ShopEasy Support                 │
-│ Subject: Reset Your ShopEasy Password  │
+│ From: ShopSpot Support                 │
+│ Subject: Reset Your ShopSpot Password  │
 ├────────────────────────────────────────┤
 │                                        │
 │           🏪                           │
-│      ShopEasy POS                      │
+│      ShopSpot POS                      │
 │   (Green gradient header)              │
 │                                        │
 │  Hello,                                │
 │                                        │
 │  We received a request to reset        │
-│  your password for your ShopEasy       │
+│  your password for your ShopSpot       │
 │  account.                              │
 │                                        │
 │  ┌──────────────────────────┐         │
@@ -205,9 +205,9 @@ You're ready for production! 🎉
 │  ⚠️ Didn't request this?               │
 │  You can safely ignore this email.     │
 │                                        │
-│  ShopEasy - Cloud POS System          │
-│  support@shopeasy.com                  │
-│  © 2024 ShopEasy                       │
+│  ShopSpot - Cloud POS System          │
+│  support@ShopSpot.com                  │
+│  © 2024 ShopSpot                       │
 └────────────────────────────────────────┘
 ```
 
@@ -215,7 +215,7 @@ You're ready for production! 🎉
 
 1. User clicks "Reset password" on login
 2. Enters email address
-3. Receives branded ShopEasy email ✅
+3. Receives branded ShopSpot email ✅
 4. Clicks green "Reset My Password" button
 5. Opens: `https://your-domain.com?reset-password=true` ✅
 6. Creates new password
@@ -280,7 +280,7 @@ Add this to your team's testing checklist:
 ### Solutions Implemented:
 1. ✅ Created `/lib/config.ts` for environment-aware URLs
 2. ✅ Updated password reset to use config
-3. ✅ Created custom ShopEasy email template
+3. ✅ Created custom ShopSpot email template
 4. ✅ Added forgot password pages
 5. ✅ Integrated everything into app routing
 
@@ -335,7 +335,7 @@ Add this to your team's testing checklist:
 This is now a **complete, production-ready** password reset system with:
 
 ✅ Email-based password recovery  
-✅ Professional ShopEasy branding  
+✅ Professional ShopSpot branding  
 ✅ Secure token-based authentication  
 ✅ Auto-environment detection  
 ✅ Mobile-responsive design  

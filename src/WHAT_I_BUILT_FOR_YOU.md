@@ -98,7 +98,7 @@ After using the Database Status page + SQL fix:
 
 **Step 1: Delete Stock**
 ```
-1. Login to ShopEasy
+1. Login to ShopSpot
 2. Click "Database Status" in sidebar
 3. Click red "Delete All Stock" button
 4. Confirm deletion

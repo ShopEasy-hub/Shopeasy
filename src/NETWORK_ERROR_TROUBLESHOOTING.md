@@ -24,7 +24,7 @@ Common culprits:
 Steps:
 1. Open browser extensions (chrome://extensions or about:addons)
 2. Temporarily disable ALL extensions
-3. Refresh the ShopEasy app
+3. Refresh the ShopSpot app
 4. If it works, re-enable extensions one by one to find the culprit
 ```
 
@@ -300,4 +300,4 @@ If you don't see these in console, there's a network issue.
 ---
 
 **Last Updated:** December 2024  
-**App Version:** ShopEasy POS v2.0
+**App Version:** ShopSpot POS v2.0

@@ -1,5 +1,5 @@
 -- =====================================================
--- ShopEasy - Supabase Row Level Security (RLS) Setup
+-- ShopSpot - Supabase Row Level Security (RLS) Setup
 -- =====================================================
 -- 
 -- This file contains SQL commands to set up proper database tables

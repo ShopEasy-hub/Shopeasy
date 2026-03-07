@@ -1,4 +1,4 @@
-# 🚀 START HERE - Complete Fix for ShopEasy POS
+# 🚀 START HERE - Complete Fix for ShopSpot POS
 
 ## ⚡ Quick Summary
 

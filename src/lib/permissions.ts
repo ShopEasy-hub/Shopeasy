@@ -1,4 +1,4 @@
-// Role-based permission system for ShopEasy POS
+// Role-based permission system for ShopSpot POS
 
 export type UserRole = 'owner' | 'admin' | 'manager' | 'warehouse_manager' | 'auditor' | 'cashier';
 export type SubscriptionPlan = 'starter' | 'standard' | 'growth' | 'enterprise';

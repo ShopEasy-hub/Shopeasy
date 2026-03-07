@@ -1,4 +1,4 @@
-# ShopEasy Implementation Checklist
+# ShopSpot Implementation Checklist
 
 ## ✅ COMPLETED FIXES
 

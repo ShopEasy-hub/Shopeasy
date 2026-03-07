@@ -1,8 +1,8 @@
-# ShopEasy - Comprehensive Fixes User Guide
+# ShopSpot - Comprehensive Fixes User Guide
 
 ## 🎉 Welcome!
 
-All critical issues with your ShopEasy POS system have been resolved. This guide explains what was fixed and how to use the improved system.
+All critical issues with your ShopSpot POS system have been resolved. This guide explains what was fixed and how to use the improved system.
 
 ---
 

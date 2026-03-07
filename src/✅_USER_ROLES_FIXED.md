@@ -12,7 +12,7 @@
 
 ## 👥 Available User Roles
 
-Your ShopEasy POS system now correctly displays ALL available roles:
+Your ShopSpot POS system now correctly displays ALL available roles:
 
 ### 1. **Owner** 🏢
 - Full system access

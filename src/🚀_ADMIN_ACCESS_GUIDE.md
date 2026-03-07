@@ -149,7 +149,7 @@ Once you're in, you'll see:
 
 Expected output:
 ```
-✅ ShopEasy HYBRID migration completed!
+✅ ShopSpot HYBRID migration completed!
 📊 Tables: organizations, branches, warehouses, products...
 🔒 RLS policies: ENABLED on all tables
 ⚙️ Triggers: inventory upsert, transfer completion...

@@ -11,9 +11,9 @@
 3. Add your email:
    ```typescript
    const SUPER_ADMIN_EMAILS = [
-     'admin@shopeasy.com',
-     'tech@shopeasy.com',
-     'support@shopeasy.com',
+     'admin@ShopSpot.com',
+     'tech@ShopSpot.com',
+     'support@ShopSpot.com',
      'your-email@example.com',  // ← Add your email
    ];
    ```

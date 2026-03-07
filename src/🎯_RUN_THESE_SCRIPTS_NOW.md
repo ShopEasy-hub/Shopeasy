@@ -212,7 +212,7 @@ SELECT email, role FROM user_profiles;
 
 ```
 === ORGANIZATIONS ===
-ShopEasy Pharmacy | starter | 2024-12-15
+ShopSpot Pharmacy | starter | 2024-12-15
 
 === AUTH.USERS ===
 owner@shop.com | confirmed ✅ | password valid ✅

@@ -1,6 +1,6 @@
 # 📋 FINAL PRODUCTION LAUNCH CHECKLIST
 
-## ShopEasy POS System - Ready for Launch! 🚀
+## ShopSpot POS System - Ready for Launch! 🚀
 
 **Date:** December 15, 2024  
 **Version:** 2.0.0  
@@ -259,7 +259,7 @@ netlify deploy --prod
 **Manual:**
 ```bash
 # Upload dist/ folder to server
-rsync -avz dist/ user@server:/var/www/shopeasy/
+rsync -avz dist/ user@server:/var/www/ShopSpot/
 ```
 
 ### Step 4: Switch to Live Keys
@@ -305,11 +305,11 @@ rsync -avz dist/ user@server:/var/www/shopeasy/
 ### Internal Team:
 
 **Technical Lead:**
-- Email: dev@shopeasy.ng
+- Email: dev@ShopSpot.ng
 - Phone: +234-XXX-XXX-XXXX
 
 **Product Manager:**
-- Email: product@shopeasy.ng
+- Email: product@ShopSpot.ng
 
 ### External Support:
 
@@ -351,7 +351,7 @@ rsync -avz dist/ user@server:/var/www/shopeasy/
 **Announcement Post Template:**
 
 ```
-🎉 ShopEasy POS is Now LIVE!
+🎉 ShopSpot POS is Now LIVE!
 
 Manage your supermarket, pharmacy, or retail business with:
 ✅ Multi-branch POS system
@@ -367,18 +367,18 @@ Plans starting from just ₦7,500/month!
 
 Start your free trial today: [your-domain.com]
 
-#ShopEasy #POSSystem #RetailTech #NigeriaBusiness
+#ShopSpot #POSSystem #RetailTech #NigeriaBusiness
 ```
 
 ### Email Campaign:
 
-**Subject:** 🚀 ShopEasy POS - Your Complete Retail Management Solution
+**Subject:** 🚀 ShopSpot POS - Your Complete Retail Management Solution
 
 **Body:**
 ```
 Dear Business Owner,
 
-We're excited to announce the official launch of ShopEasy POS!
+We're excited to announce the official launch of ShopSpot POS!
 
 Transform your retail operations with:
 • Cloud-based POS system
@@ -403,7 +403,7 @@ Pricing:
 Questions? WhatsApp us: +234-XXX-XXX-XXXX
 
 Best regards,
-ShopEasy Team
+ShopSpot Team
 ```
 
 ---

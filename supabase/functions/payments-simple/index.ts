@@ -77,7 +77,7 @@ Deno.serve(async (req) => {
       return new Response(
         JSON.stringify({
           status: 'ok',
-          service: 'ShopEasy Payment Service',
+          service: 'ShopSpot Payment Service',
           version: '6.0.0-BULLETPROOF',
           message: 'Simplified version - guaranteed to work!',
           timestamp: new Date().toISOString(),

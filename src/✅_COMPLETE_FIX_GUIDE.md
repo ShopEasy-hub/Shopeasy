@@ -43,7 +43,7 @@ Based on Supabase AI diagnosis, I've created the complete fix for all issues:
 
 After running the SQL:
 
-1. **Go to ShopEasy → Users page**
+1. **Go to ShopSpot → Users page**
 2. **Click "Add User" button**
 3. **Fill in the form:**
    ```
@@ -114,7 +114,7 @@ if (subscriptionStatus === 'trial') return true; // ✅ Check this FIRST
 **Change:** Fixed trial banner text
 ```typescript
 // OLD: "Enjoying Border POS?"
-// NEW: "Enjoying ShopEasy?"
+// NEW: "Enjoying ShopSpot?"
 ```
 
 ### 3. `/pages/Users.tsx` ✅ Already Applied

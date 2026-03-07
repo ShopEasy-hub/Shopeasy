@@ -159,7 +159,7 @@ Need more details? See:
 
 ---
 
-**Questions?** Email: dev@shopeasy.ng  
+**Questions?** Email: dev@ShopSpot.ng  
 **Emergency?** Call Paystack: +234-01-888-3000
 
 ---

@@ -1,8 +1,8 @@
-# ShopEasy Database Structure 2025
+# ShopSpot Database Structure 2025
 
 ## 🎯 Current Database Architecture
 
-ShopEasy has been **completely migrated** from a KV store to proper PostgreSQL tables.
+ShopSpot has been **completely migrated** from a KV store to proper PostgreSQL tables.
 
 ### ❌ OLD System (DEPRECATED)
 - **Table**: `kv_store_088c2cd9`

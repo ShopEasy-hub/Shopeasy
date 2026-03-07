@@ -1,7 +1,7 @@
 # Payment System Setup Instructions
 
 ## Overview
-The ShopEasy payment system has been migrated from the deprecated KV store to proper PostgreSQL tables. This document explains how to set up payment gateways (PayStack and Flutterwave).
+The ShopSpot payment system has been migrated from the deprecated KV store to proper PostgreSQL tables. This document explains how to set up payment gateways (PayStack and Flutterwave).
 
 ## What Was Fixed
 

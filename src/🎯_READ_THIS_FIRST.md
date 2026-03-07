@@ -1,4 +1,4 @@
-# 🎯 ShopEasy - Read This First!
+# 🎯 ShopSpot - Read This First!
 
 ## ⚡ Quick Answer
 
@@ -19,7 +19,7 @@
 
 ## 🎯 What's Happening?
 
-Your ShopEasy POS system has been **completely rebuilt** from the ground up!
+Your ShopSpot POS system has been **completely rebuilt** from the ground up!
 
 ### Before (OLD) ❌
 ```

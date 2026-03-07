@@ -15,8 +15,8 @@
 // UPDATE THIS BEFORE DEPLOYING TO PRODUCTION!
 //
 // Examples:
-// - Vercel: 'https://shopeasy-pos.vercel.app'
-// - Netlify: 'https://shopeasy-pos.netlify.app'
+// - Vercel: 'https://ShopSpot-pos.vercel.app'
+// - Netlify: 'https://ShopSpot-pos.netlify.app'
 // - Custom domain: 'https://pos.yourbusiness.com'
 // - Custom domain: 'https://yourdomain.com'
 //
@@ -37,9 +37,9 @@ export const SITE_URL = isDevelopment ? window.location.origin : PRODUCTION_URL;
 
 // App Configuration
 export const APP_CONFIG = {
-  name: 'ShopEasy',
-  companyName: 'ShopEasy POS',
-  supportEmail: 'support@shopeasy.com', // Update this!
+  name: 'ShopSpot',
+  companyName: 'ShopSpot POS',
+  supportEmail: 'support@ShopSpot.com', // Update this!
   supportPhone: '+234 800 000 0000', // Update this!
   siteUrl: SITE_URL,
   
@@ -53,9 +53,9 @@ export const APP_CONFIG = {
   
   // Email Configuration
   email: {
-    fromName: 'ShopEasy Support',
-    fromEmail: 'noreply@shopeasy.com', // Update this!
-    replyTo: 'support@shopeasy.com', // Update this!
+    fromName: 'ShopSpot Support',
+    fromEmail: 'noreply@ShopSpot.com', // Update this!
+    replyTo: 'support@ShopSpot.com', // Update this!
   },
 };
 
