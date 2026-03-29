@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { button } from "@/components/ui/button";
 
 interface ReceiptItem {
     name: string;
@@ -143,9 +143,9 @@ export default function Receipt({
             </div>
 
             {/* PRINT BUTTON */}
-            <Button onClick={handlePrint} className="w-full mt-4">
+            <button onClick={handlePrint} className="w-full mt-4">
                 Print Receipt
-            </Button>
+            </button>
         </div>
     );
 }
