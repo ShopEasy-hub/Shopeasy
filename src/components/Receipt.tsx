@@ -1,151 +1,257 @@
-import { button } from "@/components/ui/button";
-
-interface ReceiptItem {
-    name: string;
-    price: number;
-    quantity: number;
-}
+import { useState } from 'react';
+import { Button } from './ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Download, Printer, Home, Receipt as ReceiptIcon, FileText } from 'lucide-react';
 
 interface ReceiptProps {
-    items: ReceiptItem[];
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onBackToHome?: () => void;
+  sale: {
+    id: string;
+    receiptNumber: string;
+    date: string;
+    customer: string;
+    customerPhone?: string;
+    customerBirthDate?: string;
+    cashierName?: string;
+    items: Array<{
+      name: string;
+      sku: string;
+      quantity: number;
+      price: number;
+      total: number;
+    }>;
+    subtotal: number;
+    discount: number;
     total: number;
-    cashier?: string;
-    date?: string;
+    paymentMethod: string;
+  };
+  branch?: {
+    name: string;
+    address?: string;
+    phone?: string;
+  };
+  businessName?: string;
+  receiptType?: 'thermal' | 'a4';
 }
 
-export default function Receipt({
-    items,
-    total,
-    cashier = "Admin",
-    date = new Date().toLocaleString(),
+export function Receipt({
+  open,
+  onOpenChange,
+  onBackToHome,
+  sale,
+  branch,
+  businessName = 'ShopSpot',
+  receiptType = 'thermal'
 }: ReceiptProps) {
 
-    const handlePrint = () => {
-        const content = document.getElementById("receipt-content");
+  const [currentType, setCurrentType] = useState<'thermal' | 'a4'>(receiptType);
 
-        if (!content) {
-            alert("Nothing to print");
-            return;
-        }
+  // ✅ FIXED PRINT FUNCTION
+  const handlePrint = () => {
+    const activeContent = document.querySelector(
+      `[data-receipt="${currentType}"]`
+    ) as HTMLElement;
 
-        const printWindow = window.open("", "", "width=350,height=600");
+    if (!activeContent) {
+      alert('Nothing to print');
+      return;
+    }
 
-        if (!printWindow) {
-            alert("Popup blocked. Allow popups to print.");
-            return;
-        }
+    const printWindow = window.open('', '', 'width=400,height=600');
 
-        printWindow.document.write(`
+    if (!printWindow) return;
+
+    printWindow.document.write(`
       <html>
         <head>
-          <title>Receipt</title>
+          <title>Receipt-${sale.receiptNumber}</title>
           <style>
             body {
-              margin: 0;
-              padding: 10px;
               font-family: monospace;
-              background: #fff;
-              color: #000;
-              width: 280px;
-            }
-
-            @page {
-              size: 80mm auto;
+              padding: 10px;
               margin: 0;
             }
-
-            h2 {
-              text-align: center;
-              margin-bottom: 5px;
+            table {
+              width: 100%;
+              border-collapse: collapse;
             }
-
-            .center {
-              text-align: center;
-            }
-
-            .line {
-              border-top: 1px dashed #000;
-              margin: 6px 0;
-            }
-
-            .row {
-              display: flex;
-              justify-content: space-between;
+            th, td {
+              padding: 4px 0;
               font-size: 12px;
-              margin: 2px 0;
             }
-
-            .bold {
-              font-weight: bold;
-            }
-
-            .small {
-              font-size: 11px;
-            }
+            .text-center { text-align: center; }
+            .text-right { text-align: right; }
+            .font-bold { font-weight: bold; }
+            .border-b { border-bottom: 1px dashed #000; margin-bottom: 6px; }
           </style>
         </head>
         <body>
-          ${content.innerHTML}
+          ${activeContent.innerHTML}
         </body>
       </html>
     `);
 
-        printWindow.document.close();
-        printWindow.focus();
-        printWindow.print();
-        printWindow.close();
-    };
+    printWindow.document.close();
+    printWindow.focus();
+
+    setTimeout(() => {
+      printWindow.print();
+      printWindow.close();
+    }, 500);
+  };
+
+  const handleDownloadPDF = () => {
+    alert('PDF download coming soon');
+  };
+
+  const renderReceiptContent = (type: 'thermal' | 'a4') => {
+    const isThermal = type === 'thermal';
 
     return (
-        <div className="bg-white text-black p-4">
-            {/* RECEIPT CONTENT */}
-            <div id="receipt-content" style={{ width: "280px" }}>
+      <div
+        data-receipt={type} // ✅ IMPORTANT FIX
+        className={`bg-white text-black ${isThermal ? 'p-4 text-xs' : 'p-8 text-sm'}`}
+      >
+        {/* Header */}
+        <div className="text-center border-b pb-2 mb-2">
+          <h1 className="font-bold">{businessName}</h1>
 
-                {/* Header */}
-                <h2 className="text-center font-bold text-lg">SHOPSPOT</h2>
-                <p className="text-center text-xs">Sales Receipt</p>
-
-                <div className="text-xs mt-2">
-                    <p>Date: {date}</p>
-                    <p>Cashier: {cashier}</p>
-                </div>
-
-                <div className="border-t border-dashed my-2"></div>
-
-                {/* Items */}
-                {items.map((item, index) => (
-                    <div key={index} className="text-xs mb-1">
-                        <div className="flex justify-between">
-                            <span>{item.name}</span>
-                            <span>₦{item.price * item.quantity}</span>
-                        </div>
-                        <div className="flex justify-between text-[10px]">
-                            <span>{item.quantity} x ₦{item.price}</span>
-                        </div>
-                    </div>
-                ))}
-
-                <div className="border-t border-dashed my-2"></div>
-
-                {/* Total */}
-                <div className="flex justify-between font-bold text-sm">
-                    <span>Total</span>
-                    <span>₦{total}</span>
-                </div>
-
-                <div className="border-t border-dashed my-2"></div>
-
-                {/* Footer */}
-                <p className="text-center text-xs mt-2">
-                    Thank you for your purchase!
-                </p>
-
-            </div>
-
-            {/* PRINT BUTTON */}
-            <button onClick={handlePrint} className="w-full mt-4">
-                Print Receipt
-            </button>
+          {branch && (
+            <>
+              <p>{branch.name}</p>
+              {branch.address && <p>{branch.address}</p>}
+              {branch.phone && <p>{branch.phone}</p>}
+            </>
+          )}
         </div>
+
+        {/* Info */}
+        <div className="mb-2">
+          <div className="flex justify-between">
+            <span>Receipt:</span>
+            <span>{sale.receiptNumber}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Date:</span>
+            <span>{new Date(sale.date).toLocaleString()}</span>
+          </div>
+        </div>
+
+        {/* Items */}
+        <table>
+          <thead>
+            <tr className="border-b">
+              <th className="text-left">Item</th>
+              <th>Qty</th>
+              <th className="text-right">Price</th>
+              <th className="text-right">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sale.items.map((item, i) => (
+              <tr key={i}>
+                <td>{item.name}</td>
+                <td>{item.quantity}</td>
+                <td className="text-right">₦{item.price.toFixed(2)}</td>
+                <td className="text-right">₦{item.total.toFixed(2)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* Totals */}
+        <div className="mt-2 border-b pb-2">
+          <div className="flex justify-between">
+            <span>Subtotal:</span>
+            <span>₦{sale.subtotal.toFixed(2)}</span>
+          </div>
+
+          {sale.discount > 0 && (
+            <div className="flex justify-between">
+              <span>Discount:</span>
+              <span>-₦{sale.discount.toFixed(2)}</span>
+            </div>
+          )}
+
+          <div className="flex justify-between font-bold">
+            <span>TOTAL:</span>
+            <span>₦{sale.total.toFixed(2)}</span>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-2">
+          <p>Thank you!</p>
+        </div>
+      </div>
     );
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-auto">
+        <DialogHeader>
+          <div className="flex justify-between">
+            <DialogTitle>Receipt</DialogTitle>
+
+            <div className="flex gap-2">
+              <Button size="sm" onClick={handlePrint}>
+                <Printer className="w-4 h-4 mr-2" />
+                Print
+              </Button>
+
+              <Button size="sm" onClick={handleDownloadPDF}>
+                <Download className="w-4 h-4 mr-2" />
+                PDF
+              </Button>
+            </div>
+          </div>
+        </DialogHeader>
+
+        <Tabs value={currentType} onValueChange={(v) => setCurrentType(v as any)}>
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="thermal">
+              <ReceiptIcon className="w-4 h-4 mr-2" />
+              Thermal
+            </TabsTrigger>
+
+            <TabsTrigger value="a4">
+              <FileText className="w-4 h-4 mr-2" />
+              A4
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="thermal">
+            <div className="max-w-sm mx-auto">
+              {renderReceiptContent('thermal')}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="a4">
+            {renderReceiptContent('a4')}
+          </TabsContent>
+        </Tabs>
+
+        <div className="flex gap-2 mt-4">
+          {onBackToHome && (
+            <Button className="flex-1" onClick={onBackToHome}>
+              <Home className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+          )}
+
+          <Button
+            variant="outline"
+            className="flex-1"
+            onClick={() => onOpenChange(false)}
+          >
+            Close
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 }
