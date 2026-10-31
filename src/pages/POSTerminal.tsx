@@ -9,6 +9,14 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Card } from '../components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../components/ui/dialog';
+import { SyncStatusIndicator } from '../components/SyncStatusIndicator';
+import { getCachedCatalog, saveCatalog } from '../lib/offline-db';
+import {
+  createTransactionIdentity,
+  getDeviceId,
+  saveCashSaleLocally,
+} from '../lib/offline-sales';
+import { synchronizePendingOperations } from '../lib/sync-engine';
 import {
   ArrowLeft,
   Plus,
@@ -58,6 +66,18 @@ export function POSTerminal({ appState, onNavigate }: POSTerminalProps) {
   const [showReceipt, setShowReceipt] = useState(false);
   const [lastSale, setLastSale] = useState<any>(null);
   const [showScanner, setShowScanner] = useState(false);
+  const [catalogSyncedAt, setCatalogSyncedAt] = useState<string | null>(null);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() => {
+    const updateConnectivity = () => setIsOnline(navigator.onLine);
+    window.addEventListener('online', updateConnectivity);
+    window.addEventListener('offline', updateConnectivity);
+    return () => {
+      window.removeEventListener('online', updateConnectivity);
+      window.removeEventListener('offline', updateConnectivity);
+    };
+  }, []);
 
   useEffect(() => {
     if (appState.orgId && appState.currentBranchId) {
@@ -103,9 +123,29 @@ export function POSTerminal({ appState, onNavigate }: POSTerminalProps) {
       
       console.log('🛒 POS: DEDUPLICATED STOCK:', stockData);
       setStockLevels(stockData);
+      const syncedAt = new Date().toISOString();
+      setCatalogSyncedAt(syncedAt);
+      await saveCatalog(
+        appState.orgId,
+        appState.currentBranchId,
+        productsArray,
+        Object.entries(stockData).map(([productId, quantity]) => ({ productId, quantity })),
+      );
     } catch (error) {
       console.error('Error loading products:', error);
-      alert(`Error loading products: ${error?.message || error}`);
+      try {
+        const cached = await getCachedCatalog(appState.orgId, appState.currentBranchId);
+        if (cached.products.length > 0) {
+          setProducts(cached.products);
+          setStockLevels(cached.stockLevels);
+          setCatalogSyncedAt(cached.syncedAt);
+        } else {
+          alert('Products are not available offline yet. Connect once to initialize this branch.');
+        }
+      } catch (cacheError) {
+        console.error('Error loading cached POS data:', cacheError);
+        alert(`Error loading products: ${error?.message || error}`);
+      }
     } finally {
       setLoading(false);
     }
@@ -244,7 +284,12 @@ export function POSTerminal({ appState, onNavigate }: POSTerminalProps) {
   const total = subtotal - itemDiscounts - cartDiscountAmount;
 
   async function handleConfirmSale() {
-    if (!appState.orgId || !appState.currentBranchId) return;
+    if (!appState.orgId || !appState.currentBranchId || !appState.userId) return;
+
+    if (!isOnline && paymentMethod !== 'cash') {
+      alert('Only cash payments can be completed offline. Card/POS and transfer payments require a live connection.');
+      return;
+    }
 
     setProcessing(true);
 
@@ -295,19 +340,39 @@ export function POSTerminal({ appState, onNavigate }: POSTerminalProps) {
         change: 0,
       };
 
-      const result = await createSale(saleData);
+      let result: any;
+      let pendingSync = false;
+
+      if (paymentMethod === 'cash') {
+        const identity = createTransactionIdentity();
+        const createdAt = new Date().toISOString();
+        result = await saveCashSaleLocally({
+          ...saleData,
+          ...identity,
+          userId: appState.userId,
+          deviceId: getDeviceId(),
+          paymentMethod: 'cash',
+          pricingVersion: catalogSyncedAt || createdAt,
+          createdAt,
+        });
+        pendingSync = true;
+        if (isOnline) void synchronizePendingOperations();
+      } else {
+        result = await createSale(saleData);
+      }
 
       console.log('✅ Sale completed successfully:', result);
 
-      // Reload stock levels to reflect the sale
-      console.log('🔄 Reloading stock levels after sale...');
-      await loadProducts();
+      if (paymentMethod !== 'cash') {
+        console.log('🔄 Reloading stock levels after sale...');
+        await loadProducts();
+      }
 
       // Prepare receipt data
       const receiptData = {
-        id: result.sale?.id || Date.now().toString(),
-        receiptNumber: result.sale?.receipt_number || `#${Date.now().toString().slice(-6)}`, // Use receipt_number from database
-        date: new Date().toISOString(),
+        id: result.sale?.id || result.sale?.transactionId || Date.now().toString(),
+        receiptNumber: result.sale?.receipt_number || result.sale?.receiptNumber || `#${Date.now().toString().slice(-6)}`,
+        date: result.sale?.createdAt || new Date().toISOString(),
         customer: saleData.customer,
         customerPhone: saleData.customerPhone,
         customerBirthDate: saleData.customerBirthDate,
@@ -322,7 +387,8 @@ export function POSTerminal({ appState, onNavigate }: POSTerminalProps) {
         subtotal: saleData.subtotal,
         discount: saleData.discount,
         total: saleData.total,
-        paymentMethod: saleData.paymentMethod
+        paymentMethod: saleData.paymentMethod,
+        pendingSync,
       };
 
       console.log('📄 Receipt data prepared:', receiptData);
@@ -379,6 +445,7 @@ export function POSTerminal({ appState, onNavigate }: POSTerminalProps) {
         </div>
 
         <div className="flex items-center gap-3">
+          <SyncStatusIndicator />
           <div className="text-right hidden sm:block">
             <p className="text-sm text-muted-foreground">
               {appState.branches?.find(b => b.id === appState.currentBranchId)?.name || 'Branch'}
@@ -389,6 +456,13 @@ export function POSTerminal({ appState, onNavigate }: POSTerminalProps) {
           </div>
         </div>
       </header>
+
+      {catalogSyncedAt && !isOnline && (
+        <div className="bg-warning/10 border-b border-warning/20 px-4 py-2 text-xs text-warning text-center">
+          Inventory is based on the last branch sync from {new Date(catalogSyncedAt).toLocaleString()}.
+          Cash sales are saved safely on this device and will synchronize automatically.
+        </div>
+      )}
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
@@ -646,6 +720,7 @@ export function POSTerminal({ appState, onNavigate }: POSTerminalProps) {
                 </button>
                 <button
                   onClick={() => setPaymentMethod('pos')}
+                  disabled={!isOnline}
                   className={`p-4 rounded-lg border-2 transition-colors ${
                     paymentMethod === 'pos'
                       ? 'border-primary bg-primary/10 text-primary'
@@ -657,6 +732,7 @@ export function POSTerminal({ appState, onNavigate }: POSTerminalProps) {
                 </button>
                 <button
                   onClick={() => setPaymentMethod('transfer')}
+                  disabled={!isOnline}
                   className={`p-4 rounded-lg border-2 transition-colors ${
                     paymentMethod === 'transfer'
                       ? 'border-primary bg-primary/10 text-primary'
@@ -667,6 +743,11 @@ export function POSTerminal({ appState, onNavigate }: POSTerminalProps) {
                   <p className="text-sm font-medium">Transfer</p>
                 </button>
               </div>
+              {!isOnline && (
+                <p className="text-xs text-warning mt-2">
+                  Offline mode supports cash only. Electronic payments require provider authorization.
+                </p>
+              )}
             </div>
 
             {/* Customer Details (Optional) */}
