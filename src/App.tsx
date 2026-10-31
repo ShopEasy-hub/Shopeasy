@@ -30,6 +30,9 @@ import AdminPanel from './pages/AdminPanel';
 import SuperAdminPanel from './pages/SuperAdminPanel';
 import ProductHistory from './pages/ProductHistory';
 import { DiagnosticNetwork } from './pages/DiagnosticNetwork';
+import { getAppSnapshot, saveAppSnapshot } from './lib/offline-db';
+
+const OFFLINE_SESSION_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
 export type Page = 'setup' | 'login' | 'forgot-password' | 'reset-password' | 'dashboard' | 'pos' | 'inventory' | 'transfers' | 'reports' | 'users' | 'settings' | 'test-setup' | 'subscribe' | 'billing-cycle' | 'expenses' | 'returns' | 'return-history' | 'warehouses' | 'suppliers' | 'short-dated' | 'payment-callback' | 'data-viewer' | 'admin' | 'super-admin' | 'product-history' | 'diagnostic-network';
 
@@ -123,6 +126,13 @@ export default function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!appState.userId || !appState.orgId) return;
+    void saveAppSnapshot(appState as unknown as Record<string, unknown>).catch((error) => {
+      console.warn('Unable to cache offline app state:', error);
+    });
+  }, [appState]);
+
   async function checkSession() {
     try {
       console.log('🔍 Checking session...');
@@ -193,7 +203,15 @@ export default function App() {
           setCurrentPage('dashboard');
         } catch (profileError: any) {
           console.error('❌ Error restoring session:', profileError);
-          // If we can't restore the profile, force login
+          if (!navigator.onLine) {
+            const snapshot = await getAppSnapshot();
+            const snapshotAge = snapshot ? Date.now() - new Date(snapshot.cachedAt).getTime() : Infinity;
+            if (snapshot && snapshotAge <= OFFLINE_SESSION_MAX_AGE_MS) {
+              setAppState(snapshot.appState as unknown as AppState);
+              setCurrentPage('dashboard');
+              return;
+            }
+          }
           setCurrentPage('login');
         }
       } else {
@@ -201,6 +219,19 @@ export default function App() {
       }
     } catch (error: any) {
       console.error('❌ Session check error:', error);
+      if (!navigator.onLine) {
+        try {
+          const snapshot = await getAppSnapshot();
+          const snapshotAge = snapshot ? Date.now() - new Date(snapshot.cachedAt).getTime() : Infinity;
+          if (snapshot && snapshotAge <= OFFLINE_SESSION_MAX_AGE_MS) {
+            setAppState(snapshot.appState as unknown as AppState);
+            setCurrentPage('dashboard');
+            return;
+          }
+        } catch (offlineError) {
+          console.error('Unable to restore offline session:', offlineError);
+        }
+      }
       // Show error instead of just going to login
       setLoadingError(error?.message || 'Failed to connect to server');
       // Still allow user to try login
