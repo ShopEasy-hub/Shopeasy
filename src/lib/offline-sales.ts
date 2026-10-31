@@ -29,6 +29,7 @@ export function createTransactionIdentity() {
 export async function saveCashSaleLocally(payload: OfflineSalePayload) {
   const db = await openOfflineDb();
   const transaction = db.transaction(['sales', 'operations', 'inventory'], 'readwrite');
+  const completed = transactionDone(transaction);
   const operation: QueuedOperation = {
     id: payload.transactionId,
     organizationId: payload.orgId,
@@ -48,26 +49,30 @@ export async function saveCashSaleLocally(payload: OfflineSalePayload) {
   transaction.objectStore('operations').add(operation);
 
   const inventoryStore = transaction.objectStore('inventory');
-  for (const item of payload.items) {
+  let itemIndex = 0;
+  const updateNextInventoryItem = () => {
+    const item = payload.items[itemIndex];
+    if (!item) return;
     const key = `${payload.orgId}:${payload.branchId}:${item.productId}`;
-    const inventory = await new Promise<any>((resolve, reject) => {
-      const request = inventoryStore.get(key);
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
-    });
+    const request = inventoryStore.get(key);
+    request.onsuccess = () => {
+      const inventory = request.result;
+      inventoryStore.put({
+        id: key,
+        organizationId: payload.orgId,
+        branchId: payload.branchId,
+        productId: item.productId,
+        quantity: Math.max(0, (inventory?.quantity || 0) - item.quantity),
+        syncedAt: inventory?.syncedAt || payload.createdAt,
+        locallyModifiedAt: payload.createdAt,
+      });
+      itemIndex += 1;
+      updateNextInventoryItem();
+    };
+  };
+  updateNextInventoryItem();
 
-    inventoryStore.put({
-      id: key,
-      organizationId: payload.orgId,
-      branchId: payload.branchId,
-      productId: item.productId,
-      quantity: Math.max(0, (inventory?.quantity || 0) - item.quantity),
-      syncedAt: inventory?.syncedAt || payload.createdAt,
-      locallyModifiedAt: payload.createdAt,
-    });
-  }
-
-  await transactionDone(transaction);
+  await completed;
   notifySyncStatus();
   return { success: true, pendingSync: true, sale: payload };
 }
