@@ -68,6 +68,7 @@ export function POSTerminal({ appState, onNavigate }: POSTerminalProps) {
   const [showScanner, setShowScanner] = useState(false);
   const [catalogSyncedAt, setCatalogSyncedAt] = useState<string | null>(null);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [offlineCacheError, setOfflineCacheError] = useState<string | null>(null);
 
   useEffect(() => {
     const updateConnectivity = () => setIsOnline(navigator.onLine);
@@ -91,6 +92,30 @@ export function POSTerminal({ appState, onNavigate }: POSTerminalProps) {
       return;
     }
 
+    const loadCachedData = async () => {
+      const cached = await getCachedCatalog(appState.orgId!, appState.currentBranchId!);
+      if (cached.products.length === 0) return false;
+      setProducts(cached.products);
+      setStockLevels(cached.stockLevels);
+      setCatalogSyncedAt(cached.syncedAt);
+      return true;
+    };
+
+    if (!navigator.onLine) {
+      try {
+        const cacheLoaded = await loadCachedData();
+        if (!cacheLoaded) {
+          alert('Products are not available offline yet. Connect once, open this POS branch, and wait for the “Offline data ready” message.');
+        }
+      } catch (cacheError) {
+        console.error('Error loading cached POS data:', cacheError);
+        alert('Offline storage could not be opened on this device.');
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
     try {
       console.log('Loading products for org:', appState.orgId);
       const productsResponse = await getProducts(appState.orgId);
@@ -101,45 +126,60 @@ export function POSTerminal({ appState, onNavigate }: POSTerminalProps) {
       console.log('Loaded products array:', productsArray?.length || 0);
       setProducts(productsArray);
 
+      try {
+        await saveCatalog(
+          appState.orgId,
+          appState.currentBranchId,
+          productsArray,
+          [],
+        );
+        setCatalogSyncedAt(new Date().toISOString());
+        setOfflineCacheError(null);
+      } catch (cacheError) {
+        console.error('Unable to initialize offline product cache:', cacheError);
+        setOfflineCacheError('Products loaded, but offline storage could not be initialized.');
+      }
+
       // Load stock levels for current branch (using bulk method like Inventory)
-      console.log('🛒 POS: Loading stock levels for branch:', appState.currentBranchId);
-      const { stock } = await getBranchStock(appState.currentBranchId);
-      console.log('🛒 POS: RAW STOCK from API:', stock);
-      
-      // Deduplicate stock entries - keep only latest for each product
-      const stockMap = new Map();
-      (stock || []).forEach((item: any) => {
-        const existing = stockMap.get(item.productId);
-        if (!existing || new Date(item.lastUpdated || item.updatedAt || 0) > new Date(existing.lastUpdated || existing.updatedAt || 0)) {
-          stockMap.set(item.productId, item);
-        }
-      });
-      
-      // Convert to Record format for POS
-      const stockData: Record<string, number> = {};
-      stockMap.forEach((item, productId) => {
-        stockData[productId] = item.quantity || 0;
-      });
-      
-      console.log('🛒 POS: DEDUPLICATED STOCK:', stockData);
-      setStockLevels(stockData);
-      const syncedAt = new Date().toISOString();
-      setCatalogSyncedAt(syncedAt);
-      await saveCatalog(
-        appState.orgId,
-        appState.currentBranchId,
-        productsArray,
-        Object.entries(stockData).map(([productId, quantity]) => ({ productId, quantity })),
-      );
+      try {
+        console.log('🛒 POS: Loading stock levels for branch:', appState.currentBranchId);
+        const { stock } = await getBranchStock(appState.currentBranchId);
+        console.log('🛒 POS: RAW STOCK from API:', stock);
+        
+        // Deduplicate stock entries - keep only latest for each product
+        const stockMap = new Map();
+        (stock || []).forEach((item: any) => {
+          const existing = stockMap.get(item.productId);
+          if (!existing || new Date(item.lastUpdated || item.updatedAt || 0) > new Date(existing.lastUpdated || existing.updatedAt || 0)) {
+            stockMap.set(item.productId, item);
+          }
+        });
+        
+        // Convert to Record format for POS
+        const stockData: Record<string, number> = {};
+        stockMap.forEach((item, productId) => {
+          stockData[productId] = item.quantity || 0;
+        });
+        
+        console.log('🛒 POS: DEDUPLICATED STOCK:', stockData);
+        setStockLevels(stockData);
+        await saveCatalog(
+          appState.orgId,
+          appState.currentBranchId,
+          productsArray,
+          Object.entries(stockData).map(([productId, quantity]) => ({ productId, quantity })),
+        );
+        setCatalogSyncedAt(new Date().toISOString());
+        setOfflineCacheError(null);
+      } catch (inventoryError) {
+        console.error('Unable to cache current branch inventory:', inventoryError);
+        setOfflineCacheError('Products are cached, but current inventory could not be prepared for offline use.');
+      }
     } catch (error) {
       console.error('Error loading products:', error);
       try {
-        const cached = await getCachedCatalog(appState.orgId, appState.currentBranchId);
-        if (cached.products.length > 0) {
-          setProducts(cached.products);
-          setStockLevels(cached.stockLevels);
-          setCatalogSyncedAt(cached.syncedAt);
-        } else {
+        const cacheLoaded = await loadCachedData();
+        if (!cacheLoaded) {
           alert('Products are not available offline yet. Connect once to initialize this branch.');
         }
       } catch (cacheError) {
@@ -461,6 +501,16 @@ export function POSTerminal({ appState, onNavigate }: POSTerminalProps) {
         <div className="bg-warning/10 border-b border-warning/20 px-4 py-2 text-xs text-warning text-center">
           Inventory is based on the last branch sync from {new Date(catalogSyncedAt).toLocaleString()}.
           Cash sales are saved safely on this device and will synchronize automatically.
+        </div>
+      )}
+      {isOnline && catalogSyncedAt && !offlineCacheError && (
+        <div className="bg-success/10 border-b border-success/20 px-4 py-2 text-xs text-success text-center">
+          Offline data ready for this branch. Last prepared {new Date(catalogSyncedAt).toLocaleString()}.
+        </div>
+      )}
+      {offlineCacheError && (
+        <div className="bg-destructive/10 border-b border-destructive/20 px-4 py-2 text-xs text-destructive text-center">
+          {offlineCacheError} Keep this screen online and reload to try again.
         </div>
       )}
 
