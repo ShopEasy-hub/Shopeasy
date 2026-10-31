@@ -177,13 +177,19 @@ export async function saveCatalog(
 export async function getCachedCatalog(organizationId: string, branchId: string) {
   const db = await openOfflineDb();
   const transaction = db.transaction(['catalogs', 'inventory'], 'readonly');
-  const catalog = await requestResult<CachedCatalog | undefined>(
-    transaction.objectStore('catalogs').get(`${organizationId}:${branchId}`),
-  );
-  const inventory = await requestResult<CachedInventory[]>(
-    transaction.objectStore('inventory').index('organizationBranch').getAll([organizationId, branchId]),
-  );
-  await transactionDone(transaction);
+  const completed = transactionDone(transaction);
+  const catalogRequest = transaction
+    .objectStore('catalogs')
+    .get(`${organizationId}:${branchId}`);
+  const inventoryRequest = transaction
+    .objectStore('inventory')
+    .index('organizationBranch')
+    .getAll([organizationId, branchId]);
+  const [catalog, inventory] = await Promise.all([
+    requestResult<CachedCatalog | undefined>(catalogRequest),
+    requestResult<CachedInventory[]>(inventoryRequest),
+  ]);
+  await completed;
 
   return {
     products: catalog?.products || [],
@@ -238,10 +244,13 @@ export async function getPendingOperations(
 export async function updateOperation(id: string, updates: Partial<QueuedOperation>) {
   const db = await openOfflineDb();
   const transaction = db.transaction('operations', 'readwrite');
+  const completed = transactionDone(transaction);
   const store = transaction.objectStore('operations');
-  const current = await requestResult<QueuedOperation | undefined>(store.get(id));
-  if (current) store.put({ ...current, ...updates });
-  await transactionDone(transaction);
+  const request = store.get(id);
+  request.onsuccess = () => {
+    if (request.result) store.put({ ...request.result, ...updates });
+  };
+  await completed;
   notifySyncStatus();
 }
 
