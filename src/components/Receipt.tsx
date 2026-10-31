@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Download, Printer, Home, Receipt as ReceiptIcon, FileText } from 'lucide-react';
+import { Download, Printer, Home, Receipt as ReceiptIcon, FileText, CloudOff } from 'lucide-react';
+import { Badge } from './ui/badge';
 
 interface ReceiptProps {
   open: boolean;
@@ -27,6 +28,7 @@ interface ReceiptProps {
     discount: number;
     total: number;
     paymentMethod: string;
+    pendingSync?: boolean;
   };
   branch?: {
     name: string;
@@ -185,6 +187,9 @@ export function Receipt({
         {/* Footer */}
         <div className="text-center mt-2">
           <p>Thank you!</p>
+          {sale.pendingSync && (
+            <p className="font-bold mt-2">Saved locally — synchronization pending</p>
+          )}
         </div>
       </div>
     );
@@ -198,6 +203,12 @@ export function Receipt({
             <DialogTitle>Receipt</DialogTitle>
 
             <div className="flex gap-2">
+              {sale.pendingSync && (
+                <Badge variant="outline" className="bg-warning/10 text-warning border-warning/20">
+                  <CloudOff />
+                  Saved locally
+                </Badge>
+              )}
               <Button size="sm" onClick={handlePrint}>
                 <Printer className="w-4 h-4 mr-2" />
                 Print
