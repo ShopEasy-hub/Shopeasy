@@ -48,6 +48,9 @@ import {
   Area,
   AreaChart
 } from 'recharts';
+import { SaleDetailsDialog } from '../components/SaleDetailsDialog';
+import { getCachedSales } from '../lib/offline-records';
+import { OFFLINE_SYNC_EVENT } from '../lib/offline-db';
 
 interface ReportsProps {
   appState: AppState;
@@ -69,11 +72,21 @@ export function Reports({ appState, onNavigate }: ReportsProps) {
   const [paymentFilter, setPaymentFilter] = useState<string>('all');
   const [minAmount, setMinAmount] = useState('');
   const [maxAmount, setMaxAmount] = useState('');
+  const [selectedSale, setSelectedSale] = useState<any | null>(null);
 
   useEffect(() => {
     if (appState.orgId) {
       loadData();
     }
+  }, [appState.orgId]);
+
+  useEffect(() => {
+    if (!appState.orgId) return;
+    const refreshSalesStatus = () => {
+      void getCachedSales(appState.orgId!).then(setSales);
+    };
+    window.addEventListener(OFFLINE_SYNC_EVENT, refreshSalesStatus);
+    return () => window.removeEventListener(OFFLINE_SYNC_EVENT, refreshSalesStatus);
   }, [appState.orgId]);
 
   async function loadData() {
@@ -935,7 +948,19 @@ export function Reports({ appState, onNavigate }: ReportsProps) {
                       const saleProfit = saleRevenue - saleCost;
 
                       return (
-                        <tr key={sale.id} className="border-b hover:bg-muted/50">
+                        <tr
+                          key={sale.id}
+                          className="border-b hover:bg-muted/50 cursor-pointer"
+                          tabIndex={0}
+                          role="button"
+                          onClick={() => setSelectedSale(sale)}
+                          onKeyDown={(event) => {
+                            if (event.key === 'Enter' || event.key === ' ') {
+                              event.preventDefault();
+                              setSelectedSale(sale);
+                            }
+                          }}
+                        >
                           <td className="p-3 text-sm font-mono">
                             {sale.id.substring(0, 12)}...
                           </td>
@@ -981,6 +1006,19 @@ export function Reports({ appState, onNavigate }: ReportsProps) {
           </TabsContent>
         </Tabs>
       </div>
+      <SaleDetailsDialog
+        open={Boolean(selectedSale)}
+        onOpenChange={(open) => {
+          if (!open) setSelectedSale(null);
+        }}
+        sale={selectedSale}
+        branchName={
+          appState.branches?.find(
+            (branch) =>
+              branch.id === (selectedSale?.branchId || selectedSale?.branch_id),
+          )?.name
+        }
+      />
     </div>
   );
 }
