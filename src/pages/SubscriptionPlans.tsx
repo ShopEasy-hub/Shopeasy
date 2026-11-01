@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { Check, ArrowLeft, Sparkles } from 'lucide-react';
+import { Check, ArrowLeft } from 'lucide-react';
 import { AppState, Page } from '../App';
+import { getAllPlans } from '../config/pricing';
 
 interface SubscriptionPlansProps {
   appState: AppState;
@@ -11,80 +12,9 @@ interface SubscriptionPlansProps {
   onSelectPlan?: (planId: string) => void;
 }
 
-const plans = [
-  {
-    id: 'starter',
-    name: 'Starter Plan',
-    price: '₦7,500',
-    period: 'month',
-    description: 'For individual stores or small outlets.',
-    color: 'bg-blue-500',
-    features: [
-      '1 branch access',
-      'POS dashboard',
-      'Sales tracking & daily reports',
-      'Limited product catalog',
-      'No warehouse or supplier access',
-      'Great for startups or single-shop owners',
-    ],
-    popular: false,
-  },
-  {
-    id: 'standard',
-    name: 'Standard Plan',
-    price: '₦50,000',
-    period: 'month',
-    description: 'For growing businesses with multiple outlets.',
-    color: 'bg-green-500',
-    features: [
-      '2 branch access',
-      '1 warehouse access',
-      'Warehouse & supplier management',
-      'Unified sales reporting',
-      'Inventory sync between branches',
-      'Staff management',
-    ],
-    popular: true,
-  },
-  {
-    id: 'growth',
-    name: 'Growth / Pro Plan',
-    price: '₦95,000',
-    period: 'month',
-    description: 'For scaling businesses managing stock, warehouses, and branches.',
-    color: 'bg-primary',
-    features: [
-      '4 branch access',
-      '2 warehouse access',
-      'Full warehouse & supplier management',
-      'Advanced analytics',
-      'Expense tracking',
-      'Priority customer support',
-    ],
-    popular: false,
-  },
-  {
-    id: 'enterprise',
-    name: 'Enterprise Plan',
-    price: '₦250,000',
-    period: 'month',
-    description: 'For large-scale enterprises requiring full customization.',
-    color: 'bg-purple-600',
-    features: [
-      'Unlimited branches',
-      'Unlimited warehouses',
-      'Full warehouse & supplier management',
-      'API access & integration with ERP systems',
-      'Dedicated account manager',
-      'Custom deployment and branding',
-      '24/7 support',
-    ],
-    popular: false,
-  },
-];
-
 export function SubscriptionPlans({ appState, onNavigate, onSelectPlan }: SubscriptionPlansProps) {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const plans = getAllPlans();
 
   function handleChoosePlan(planId: string) {
     setSelectedPlan(planId);
@@ -120,7 +50,7 @@ export function SubscriptionPlans({ appState, onNavigate, onSelectPlan }: Subscr
         <div className="text-center mb-8">
           <h2 className="mb-2">Flexible Plans for Every Business Size</h2>
           <p className="text-muted-foreground">
-            All plans include a 7-day free trial. No credit card required.
+            All plans include a 30-day free trial. No credit card required.
           </p>
         </div>
 
@@ -156,8 +86,8 @@ export function SubscriptionPlans({ appState, onNavigate, onSelectPlan }: Subscr
                 {/* Pricing */}
                 <div className="border-t border-b py-4">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-3xl text-primary">{plan.price}</span>
-                    <span className="text-muted-foreground">/{plan.period}</span>
+                    <span className="text-3xl text-primary">{plan.displayPrice}</span>
+                    <span className="text-muted-foreground">/month</span>
                   </div>
                 </div>
 
