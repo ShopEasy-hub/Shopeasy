@@ -120,9 +120,10 @@ export type Database = {
           id: string;
           name: string;
           logo: string | null;
-          subscription_plan: 'starter' | 'professional' | 'enterprise' | 'ultimate';
-          subscription_status: 'active' | 'expired' | 'cancelled';
-          subscription_expires_at: string | null;
+          subscription_plan: 'starter' | 'standard' | 'growth' | 'enterprise' | null;
+          subscription_status: 'trial' | 'active' | 'expired' | 'canceled';
+          subscription_end_date: string | null;
+          trial_start_date: string | null;
           owner_id: string;
           created_at: string;
           updated_at: string;
