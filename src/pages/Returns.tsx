@@ -18,6 +18,12 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../components/ui/dialog';
+import {
+  getCachedSales,
+  saveDataset,
+  saveReturnLocally,
+} from '../lib/offline-records';
+import { synchronizePendingOperations } from '../lib/sync-engine';
 
 interface ReturnsProps {
   appState: AppState;
@@ -84,7 +90,15 @@ export function Returns({ appState, onNavigate }: ReturnsProps) {
       console.log('🔍 RETURNS: Searching for receipt:', receiptNumber);
       console.log('🔍 RETURNS: Organization ID:', appState.orgId);
       
-      const { sales } = await getSales(appState.orgId);
+      let sales: any[];
+      if (navigator.onLine) {
+        const response = await getSales(appState.orgId);
+        sales = response.sales || [];
+        await saveDataset(`sales:${appState.orgId}`, sales);
+        sales = await getCachedSales(appState.orgId);
+      } else {
+        sales = await getCachedSales(appState.orgId);
+      }
       
       console.log('📊 RETURNS: Sales data received:', sales);
       console.log('📊 RETURNS: Total sales found:', sales?.length || 0);
@@ -234,7 +248,7 @@ export function Returns({ appState, onNavigate }: ReturnsProps) {
       return;
     }
 
-    if (!sale || !appState.currentBranchId) {
+    if (!sale || !appState.currentBranchId || !appState.orgId || !appState.userId) {
       alert('Invalid sale or branch information');
       return;
     }
@@ -251,6 +265,24 @@ export function Returns({ appState, onNavigate }: ReturnsProps) {
     setProcessing(true);
 
     try {
+      if (!navigator.onLine) {
+        await saveReturnLocally({
+          organizationId: appState.orgId,
+          branchId: appState.currentBranchId,
+          userId: appState.userId,
+          saleId: sale.id,
+          receiptNumber: sale.receiptNumber,
+          reason: returnReason,
+          items: selectedItems.map((item) => ({
+            id: crypto.randomUUID(),
+            productId: item.productId,
+            productName: item.name,
+            sku: item.sku,
+            quantity: item.returnQuantity,
+            refundAmount: item.price * item.returnQuantity,
+          })),
+        });
+      } else {
       // Add stock back for returned items
       for (const item of selectedItems) {
         try {
@@ -286,6 +318,7 @@ export function Returns({ appState, onNavigate }: ReturnsProps) {
       }
       
       console.log('✅ All return records created successfully');
+      }
       
       // Generate return receipt number
       const returnReceiptNum = `R${sale.receiptNumber.replace('#', '').replace('RCP-', '')}`;
@@ -297,6 +330,7 @@ export function Returns({ appState, onNavigate }: ReturnsProps) {
       setReturnItems([]);
       setReceiptNumber('');
       setReturnReason('');
+      if (navigator.onLine) void synchronizePendingOperations();
     } catch (error) {
       console.error('Error processing return:', error);
       alert(`Error processing return: ${error.message || error}`);
