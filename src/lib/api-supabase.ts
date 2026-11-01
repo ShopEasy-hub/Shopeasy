@@ -173,6 +173,24 @@ export async function updateOrganization(orgId: string, updates: any) {
     return data;
 }
 
+export async function uploadOrganizationLogo(orgId: string, file: File) {
+    const extension = file.name.split('.').pop()?.toLowerCase() || 'png';
+    const path = `${orgId}/merchant-logo-${Date.now()}.${extension}`;
+
+    const { error } = await supabase.storage
+        .from('merchant-logos')
+        .upload(path, file, {
+            cacheControl: '3600',
+            contentType: file.type,
+            upsert: false,
+        });
+
+    if (error) throw error;
+
+    const { data } = supabase.storage.from('merchant-logos').getPublicUrl(path);
+    return data.publicUrl;
+}
+
 // =====================================================
 // BRANCHES
 // =====================================================
@@ -1247,7 +1265,7 @@ export async function getUserProfile(userId?: string) {
 
     const { data, error } = await supabase
         .from('user_profiles')
-        .select('*, organization:organizations(name, subscription_status, subscription_plan, subscription_end_date, trial_start_date)')
+        .select('*, organization:organizations(name, logo, subscription_status, subscription_plan, subscription_end_date, trial_start_date)')
         .eq('id', user.id)
         .single();
 
