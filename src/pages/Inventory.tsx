@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { AppState, Page } from '../App';
 import { getProducts, deleteProduct, updateProduct, createProduct, getBranchStock, updateStock } from '../lib/api';
 import { canDeleteFeature } from '../lib/permissions';
+import { getCachedCatalog, saveCatalog } from '../lib/offline-db';
 import { BarcodeScanner } from '../components/BarcodeScanner';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -84,7 +85,32 @@ export function Inventory({ appState, onNavigate }: InventoryProps) {
   }, [appState.orgId, appState.currentBranchId, appState.currentWarehouseId]);
 
   async function loadData() {
-    if (!appState.orgId) return;
+    if (!appState.orgId || !appState.currentBranchId) return;
+
+    const applyCachedInventory = async () => {
+      const cached = await getCachedCatalog(appState.orgId!, appState.currentBranchId!);
+      if (cached.products.length === 0) return false;
+      setProducts(cached.products);
+      setStockLevels(
+        Object.entries(cached.stockLevels).map(([productId, quantity]) => ({
+          productId,
+          branchId: appState.currentBranchId,
+          quantity,
+          lastUpdated: cached.syncedAt,
+        })),
+      );
+      return true;
+    };
+
+    if (!navigator.onLine) {
+      try {
+        const loaded = await applyCachedInventory();
+        if (!loaded) alert('Inventory has not been prepared for offline use on this branch.');
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
 
     try {
       const prods = await getProducts(appState.orgId);
@@ -109,12 +135,22 @@ export function Inventory({ appState, onNavigate }: InventoryProps) {
         console.log('📦 DEDUPLICATED STOCK:', uniqueStock);
         console.log('📦 Stock by ProductID:', Object.fromEntries(uniqueStock.map(s => [s.productId, s.quantity])));
         setStockLevels(uniqueStock);
+        await saveCatalog(
+          appState.orgId,
+          appState.currentBranchId,
+          prods?.products || [],
+          uniqueStock.map((item: any) => ({
+            productId: item.productId,
+            quantity: item.quantity || 0,
+          })),
+        );
       } else {
         setStockLevels([]);
       }
     } catch (error) {
       console.error('Error loading inventory:', error);
-      alert('Failed to load inventory: ' + (error.message || error));
+      const loaded = await applyCachedInventory();
+      if (!loaded) alert('Failed to load inventory: ' + (error.message || error));
     } finally {
       setLoading(false);
     }
