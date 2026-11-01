@@ -5,10 +5,12 @@ import {
   QueuedOperation,
   updateOperation,
 } from './offline-db';
+import { markOperationRecordsSynced } from './offline-records';
 
 const SYNC_INTERVAL_MS = 30_000;
 let syncing = false;
 let intervalId: number | null = null;
+let syncEngineClients = 0;
 
 function retryDelay(attempts: number) {
   const exponential = Math.min(5 * 60_000, 2 ** Math.min(attempts, 8) * 1_000);
@@ -21,13 +23,20 @@ async function processOperation(operation: QueuedOperation) {
     error: undefined,
   });
 
-  const { data, error } = await supabase.rpc('process_offline_sale', {
+  const rpcName =
+    operation.operationType === 'cash_sale'
+      ? 'process_offline_sale'
+      : operation.operationType === 'return_create'
+        ? 'process_offline_return'
+        : 'process_offline_expense';
+  const { data, error } = await supabase.rpc(rpcName, {
     p_operation_id: operation.id,
     p_payload: operation.payload,
   });
 
   if (error) throw error;
 
+  await markOperationRecordsSynced(operation);
   await updateOperation(operation.id, {
     status: 'synced',
     serverAcknowledgement: data,
@@ -53,7 +62,10 @@ export async function synchronizePendingOperations(includeDelayed = false) {
         await updateOperation(operation.id, {
           status: 'failed',
           attempts,
-          error: error instanceof Error ? error.message : 'Synchronization failed',
+          error:
+            error instanceof Error
+              ? error.message
+              : (error as any)?.message || 'Synchronization failed',
           nextAttemptAt: new Date(Date.now() + retryDelay(attempts)).toISOString(),
         });
 
@@ -71,19 +83,27 @@ export function isSynchronizing() {
 }
 
 export function startSyncEngine() {
-  if (intervalId !== null) return () => undefined;
+  syncEngineClients += 1;
+  if (intervalId !== null) {
+    return () => {
+      syncEngineClients = Math.max(0, syncEngineClients - 1);
+    };
+  }
 
-  const sync = () => void synchronizePendingOperations();
-  window.addEventListener('online', sync);
-  window.addEventListener('focus', sync);
-  document.addEventListener('visibilitychange', sync);
-  intervalId = window.setInterval(sync, SYNC_INTERVAL_MS);
-  sync();
+  const syncNow = () => void synchronizePendingOperations(true);
+  const syncScheduled = () => void synchronizePendingOperations();
+  window.addEventListener('online', syncNow);
+  window.addEventListener('focus', syncNow);
+  document.addEventListener('visibilitychange', syncNow);
+  intervalId = window.setInterval(syncScheduled, SYNC_INTERVAL_MS);
+  syncNow();
 
   return () => {
-    window.removeEventListener('online', sync);
-    window.removeEventListener('focus', sync);
-    document.removeEventListener('visibilitychange', sync);
+    syncEngineClients = Math.max(0, syncEngineClients - 1);
+    if (syncEngineClients > 0) return;
+    window.removeEventListener('online', syncNow);
+    window.removeEventListener('focus', syncNow);
+    document.removeEventListener('visibilitychange', syncNow);
     if (intervalId !== null) window.clearInterval(intervalId);
     intervalId = null;
   };
