@@ -1,5 +1,5 @@
 export const OFFLINE_DB_NAME = 'shopspot-offline';
-export const OFFLINE_DB_VERSION = 1;
+export const OFFLINE_DB_VERSION = 2;
 
 export type SyncOperationStatus = 'pending' | 'syncing' | 'failed' | 'synced';
 
@@ -39,9 +39,9 @@ export interface QueuedOperation {
   branchId: string;
   deviceId: string;
   userId: string;
-  operationType: 'cash_sale';
+  operationType: 'cash_sale' | 'return_create' | 'expense_create';
   recordId: string;
-  payload: OfflineSalePayload;
+  payload: any;
   createdAt: string;
   status: SyncOperationStatus;
   attempts: number;
@@ -120,6 +120,22 @@ export function openOfflineDb(): Promise<IDBDatabase> {
 
       if (!db.objectStoreNames.contains('appSnapshot')) {
         db.createObjectStore('appSnapshot', { keyPath: 'id' });
+      }
+
+      if (!db.objectStoreNames.contains('datasets')) {
+        db.createObjectStore('datasets', { keyPath: 'id' });
+      }
+
+      if (!db.objectStoreNames.contains('returns')) {
+        const store = db.createObjectStore('returns', { keyPath: 'id' });
+        store.createIndex('organizationBranch', ['organizationId', 'branchId']);
+        store.createIndex('createdAt', 'createdAt');
+      }
+
+      if (!db.objectStoreNames.contains('expenses')) {
+        const store = db.createObjectStore('expenses', { keyPath: 'id' });
+        store.createIndex('organizationBranch', ['organizationId', 'branchId']);
+        store.createIndex('createdAt', 'createdAt');
       }
     };
 
