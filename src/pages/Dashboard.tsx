@@ -6,6 +6,9 @@ import { KPICard } from '../components/KPICard';
 import { Card } from '../components/ui/card';
 import { BranchWarehouseSelector } from '../components/BranchWarehouseSelector';
 import { canAccessPage, isAdminOrOwner, canAccessPageFull } from '../lib/permissions';
+import { getCachedSales, getDataset, saveDataset } from '../lib/offline-records';
+import { SaleDetailsDialog } from '../components/SaleDetailsDialog';
+import { OFFLINE_SYNC_EVENT } from '../lib/offline-db';
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -84,6 +87,7 @@ export function Dashboard({ appState, onNavigate, updateAppState }: DashboardPro
   const [loading, setLoading] = useState(true);
   const [showContextSelector, setShowContextSelector] = useState(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [selectedSale, setSelectedSale] = useState<any | null>(null);
 
   useEffect(() => {
     if (appState.orgId && isInitialLoad) {
@@ -93,6 +97,15 @@ export function Dashboard({ appState, onNavigate, updateAppState }: DashboardPro
       setIsInitialLoad(false);
     }
   }, [appState.orgId, isInitialLoad]);
+
+  useEffect(() => {
+    if (!appState.orgId) return;
+    const refreshSalesStatus = () => {
+      void getCachedSales(appState.orgId!).then(setSales);
+    };
+    window.addEventListener(OFFLINE_SYNC_EVENT, refreshSalesStatus);
+    return () => window.removeEventListener(OFFLINE_SYNC_EVENT, refreshSalesStatus);
+  }, [appState.orgId]);
 
   async function loadUserInfo() {
     if (!appState.userId) return;
@@ -163,6 +176,27 @@ export function Dashboard({ appState, onNavigate, updateAppState }: DashboardPro
   async function loadData() {
     if (!appState.orgId) return;
 
+    const applyCachedDashboard = async () => {
+      const cached = await getDataset<any>(`dashboard:${appState.orgId}`);
+      const cachedSales = await getCachedSales(appState.orgId!);
+      if (!cached && cachedSales.length === 0) return false;
+      setBranches(cached?.branches || appState.branches || []);
+      setProducts(cached?.products || []);
+      setTransfers(cached?.transfers || []);
+      setSales(cachedSales);
+      if (cached?.branches) updateAppState({ branches: cached.branches });
+      return true;
+    };
+
+    if (!navigator.onLine) {
+      try {
+        await applyCachedDashboard();
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
     try {
       const [branchesRes, productsRes, salesRes, transfersRes] = await Promise.all([
         getBranches(appState.orgId),
@@ -175,6 +209,15 @@ export function Dashboard({ appState, onNavigate, updateAppState }: DashboardPro
       setProducts(productsRes.products || []);
       setSales(salesRes.sales || []);
       setTransfers(transfersRes.transfers || []);
+      await Promise.all([
+        saveDataset(`dashboard:${appState.orgId}`, {
+          branches: branchesRes.branches || [],
+          products: productsRes.products || [],
+          transfers: transfersRes.transfers || [],
+        }),
+        saveDataset(`sales:${appState.orgId}`, salesRes.sales || []),
+      ]);
+      setSales(await getCachedSales(appState.orgId));
 
       // Load supply records from localStorage
       const storedSupplies = localStorage.getItem(`supply_records_${appState.orgId}`);
@@ -191,6 +234,7 @@ export function Dashboard({ appState, onNavigate, updateAppState }: DashboardPro
       }
     } catch (error) {
       console.error('Error loading dashboard data:', error);
+      await applyCachedDashboard();
     } finally {
       setLoading(false);
     }
@@ -624,7 +668,23 @@ export function Dashboard({ appState, onNavigate, updateAppState }: DashboardPro
                       return (
                         <div
                           key={index}
-                          className="flex items-center justify-between py-3 border-b last:border-b-0"
+                          className={`flex items-center justify-between py-3 border-b last:border-b-0 ${
+                            isSale ? 'cursor-pointer hover:bg-muted/50 rounded-md px-2' : ''
+                          }`}
+                          tabIndex={isSale ? 0 : undefined}
+                          role={isSale ? 'button' : undefined}
+                          onClick={() => {
+                            if (isSale) setSelectedSale(activity);
+                          }}
+                          onKeyDown={(event) => {
+                            if (
+                              isSale &&
+                              (event.key === 'Enter' || event.key === ' ')
+                            ) {
+                              event.preventDefault();
+                              setSelectedSale(activity);
+                            }
+                          }}
                         >
                           <div className="flex items-center gap-3">
                             {isSale ? (
@@ -639,6 +699,26 @@ export function Dashboard({ appState, onNavigate, updateAppState }: DashboardPro
                               <p className="text-xs text-muted-foreground">
                                 {activityDate ? new Date(activityDate).toLocaleString() : 'N/A'}
                               </p>
+                              {isSale && (
+                                <p
+                                  className={`text-xs mt-1 ${
+                                    activity.sync_status === 'failed'
+                                      ? 'text-destructive'
+                                      : activity.sync_status &&
+                                          activity.sync_status !== 'synced'
+                                        ? 'text-warning'
+                                        : 'text-success'
+                                  }`}
+                                >
+                                  {activity.sync_status === 'failed'
+                                    ? 'Synchronization failed'
+                                    : activity.sync_status === 'syncing'
+                                      ? 'Synchronizing'
+                                      : activity.sync_status === 'pending'
+                                        ? 'Saved locally — sync pending'
+                                        : 'Fully synchronized'}
+                                </p>
+                              )}
                             </div>
                           </div>
                           <p className="text-sm">
@@ -665,6 +745,19 @@ export function Dashboard({ appState, onNavigate, updateAppState }: DashboardPro
         companyName={appState.companyName}
         userRole={appState.userRole}
         onSwitch={handleContextSwitch}
+      />
+      <SaleDetailsDialog
+        open={Boolean(selectedSale)}
+        onOpenChange={(open) => {
+          if (!open) setSelectedSale(null);
+        }}
+        sale={selectedSale}
+        branchName={
+          branches.find(
+            (branch) =>
+              branch.id === (selectedSale?.branchId || selectedSale?.branch_id),
+          )?.name
+        }
       />
     </div>
   );
