@@ -36,6 +36,7 @@ interface ReceiptProps {
     phone?: string;
   };
   businessName?: string;
+  businessLogo?: string | null;
   receiptType?: 'thermal' | 'a4';
 }
 
@@ -46,6 +47,7 @@ export function Receipt({
   sale,
   branch,
   businessName = 'ShopSpot',
+  businessLogo,
   receiptType = 'thermal'
 }: ReceiptProps) {
 
@@ -88,6 +90,7 @@ export function Receipt({
             .text-right { text-align: right; }
             .font-bold { font-weight: bold; }
             .border-b { border-bottom: 1px dashed #000; margin-bottom: 6px; }
+            img { display: block; max-width: 120px; max-height: 80px; object-fit: contain; margin: 0 auto 8px; }
           </style>
         </head>
         <body>
@@ -119,6 +122,13 @@ export function Receipt({
       >
         {/* Header */}
         <div className="text-center border-b pb-2 mb-2">
+          {businessLogo && (
+            <img
+              src={businessLogo}
+              alt=""
+              className={`mx-auto object-contain mb-2 ${isThermal ? 'h-12 max-w-32' : 'h-20 max-w-48'}`}
+            />
+          )}
           <h1 className="font-bold">{businessName}</h1>
 
           {branch && (
@@ -190,6 +200,7 @@ export function Receipt({
           {sale.pendingSync && (
             <p className="font-bold mt-2">Saved locally — synchronization pending</p>
           )}
+          <p className="mt-3 pt-2 border-t">Powered by ShopSpot</p>
         </div>
       </div>
     );
