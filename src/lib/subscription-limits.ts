@@ -9,14 +9,14 @@ export type SubscriptionStatus = 'trial' | 'active' | 'expired' | 'canceled';
 // Plan limits configuration - MATCHES SubscriptionPlans.tsx
 export const PLAN_LIMITS = {
   trial: {
-    // Trial gets FULL Enterprise access for 7 days
+    // Trial gets FULL Enterprise access for 30 days
     branches: 999,
     warehouses: 999,
     users: 999,
     products: 999999,
     features: ['all'],
     label: 'Trial (Full Access)',
-    price: 'Free for 7 days',
+    price: 'Free for 30 days',
   },
   starter: {
     branches: 1,       // 1 branch access
@@ -34,7 +34,7 @@ export const PLAN_LIMITS = {
     products: 2000,    // Expanded product catalog
     features: ['pos', 'inventory', 'warehouses', 'transfers', 'reports', 'sales', 'staff'],
     label: 'Standard Plan',
-    price: '₦20,000/month',
+    price: '₦30,000/month',
   },
   growth: {
     branches: 4,       // 4 branch access
@@ -43,7 +43,7 @@ export const PLAN_LIMITS = {
     products: 5000,    // Large product catalog
     features: ['pos', 'inventory', 'warehouses', 'transfers', 'reports', 'sales', 'staff', 'analytics', 'expenses'],
     label: 'Growth Plan',
-    price: '₦35,000/month',
+    price: '₦95,000/month',
   },
   enterprise: {
     branches: 999,     // Unlimited branches
@@ -52,7 +52,7 @@ export const PLAN_LIMITS = {
     products: 999999,  // Unlimited products
     features: ['all'], // All features
     label: 'Enterprise Plan',
-    price: '₦95,000/month',
+    price: '₦250,000/month',
   },
 } as const;
 
