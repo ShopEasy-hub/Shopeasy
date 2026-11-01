@@ -17,6 +17,10 @@ import {
   ChevronUp,
   FileText,
 } from 'lucide-react';
+import {
+  getCachedReturns,
+  saveDataset,
+} from '../lib/offline-records';
 
 interface ReturnHistoryProps {
   appState: AppState;
@@ -64,13 +68,22 @@ export function ReturnHistory({ appState, onNavigate }: ReturnHistoryProps) {
 
     setLoading(true);
     try {
-      const data = await getReturns(appState.orgId, appState.currentBranchId);
+      let data: any[];
+      if (navigator.onLine) {
+        const remote = await getReturns(appState.orgId);
+        await saveDataset(`returns:${appState.orgId}`, remote);
+        data = await getCachedReturns(appState.orgId, appState.currentBranchId);
+      } else {
+        data = await getCachedReturns(appState.orgId, appState.currentBranchId);
+      }
       console.log('📊 Returns loaded:', data);
       setReturns(data);
       setFilteredReturns(data);
     } catch (error) {
       console.error('Error loading returns:', error);
-      alert('Failed to load returns: ' + error.message);
+      const cached = await getCachedReturns(appState.orgId, appState.currentBranchId);
+      setReturns(cached);
+      setFilteredReturns(cached);
     } finally {
       setLoading(false);
     }
