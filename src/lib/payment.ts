@@ -64,6 +64,7 @@ export interface PaymentRequest {
     planId: string;
     billingCycle: 'monthly' | 'yearly';
     planName: string;
+    callbackUrl?: string;
   };
 }
 
