@@ -4,7 +4,8 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Card } from '../components/ui/card';
-import { Store, ShoppingCart, TrendingUp, Users, Shield, Zap } from 'lucide-react';
+import { BrandLogo } from '../components/BrandLogo';
+import { ShoppingCart, TrendingUp, Users, Shield, Zap } from 'lucide-react';
 
 interface LoginPageProps {
   onSuccess: (userId: string, orgId: string, userRole: string, userEmail: string, userName: string, userBranchId: string | null) => void;
@@ -58,8 +59,8 @@ export function LoginPage({ onSuccess, onSignUp, onForgotPassword }: LoginPagePr
         
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-              <Store className="w-8 h-8" />
+            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center p-2 shadow-sm">
+              <BrandLogo className="w-full h-full" />
             </div>
             <div>
               <h1 className="text-3xl">ShopSpot</h1>
@@ -125,8 +126,8 @@ export function LoginPage({ onSuccess, onSignUp, onForgotPassword }: LoginPagePr
         <div className="w-full max-w-md">
           {/* Mobile logo */}
           <div className="lg:hidden text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl mb-4">
-              <Store className="w-8 h-8 text-white" />
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-white border border-border rounded-2xl p-2.5 mb-4 shadow-sm">
+              <BrandLogo className="w-full h-full" />
             </div>
             <h1 className="text-2xl mb-1">ShopSpot</h1>
             <p className="text-muted-foreground">Point of Sale System</p>
