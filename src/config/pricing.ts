@@ -61,9 +61,9 @@ export const SUBSCRIPTION_PLANS: Record<string, SubscriptionPlan> = {
   standard: {
     id: 'standard',
     name: 'Standard Plan',
-    monthlyPrice: 50000,
-    displayPrice: '₦50,000',
-    yearlyPrice: Math.round(50000 * 12 * 0.85), // ₦510,000 (15% off)
+    monthlyPrice: 30000,
+    displayPrice: '₦30,000',
+    yearlyPrice: Math.round(30000 * 12 * 0.85), // ₦306,000 (15% off)
     description: 'For growing businesses with multiple outlets.',
     color: 'bg-green-600',
     popular: true,
