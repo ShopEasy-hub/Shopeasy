@@ -31,6 +31,7 @@ import SuperAdminPanel from './pages/SuperAdminPanel';
 import ProductHistory from './pages/ProductHistory';
 import { DiagnosticNetwork } from './pages/DiagnosticNetwork';
 import { getAppSnapshot, saveAppSnapshot } from './lib/offline-db';
+import { startSyncEngine } from './lib/sync-engine';
 
 const OFFLINE_SESSION_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
@@ -125,6 +126,8 @@ export default function App() {
       checkSession();
     }
   }, []);
+
+  useEffect(() => startSyncEngine(), []);
 
   useEffect(() => {
     if (!appState.userId || !appState.orgId) return;
