@@ -9,6 +9,8 @@ import { canAccessPage, isAdminOrOwner, canAccessPageFull } from '../lib/permiss
 import { getCachedSales, getDataset, saveDataset } from '../lib/offline-records';
 import { SaleDetailsDialog } from '../components/SaleDetailsDialog';
 import { OFFLINE_SYNC_EVENT } from '../lib/offline-db';
+import { BrandLogo } from '../components/BrandLogo';
+import { getTrialDaysRemaining } from '../lib/subscription';
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -20,7 +22,6 @@ import {
   LogOut,
   TrendingUp,
   TrendingDown,
-  ShoppingBag,
   AlertTriangle,
   UserCheck,
   Menu,
@@ -323,8 +324,8 @@ export function Dashboard({ appState, onNavigate, updateAppState }: DashboardPro
       >
         <div className="p-6 border-b">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <ShoppingBag className="w-6 h-6 text-primary-foreground" />
+            <div className="w-11 h-11 bg-white border border-border rounded-xl flex items-center justify-center p-1.5 shadow-sm">
+              <BrandLogo className="w-full h-full" />
             </div>
             <div>
               <h2 className="text-sm">ShopSpot</h2>
@@ -540,7 +541,7 @@ export function Dashboard({ appState, onNavigate, updateAppState }: DashboardPro
                   </div>
                   <div>
                     <p className="font-medium">
-                      Free Trial Active - {Math.max(0, 7 - Math.floor((new Date().getTime() - new Date(appState.trialStartDate).getTime()) / (1000 * 60 * 60 * 24)))} days remaining
+                      Free Trial Active - {getTrialDaysRemaining(appState.trialStartDate)} days remaining
                     </p>
                     <p className="text-sm text-muted-foreground">
                       Enjoying ShopSpot? Upgrade now to continue after your trial ends.
