@@ -911,6 +911,8 @@ export function POSTerminal({ appState, onNavigate }: POSTerminalProps) {
           }}
           sale={lastSale}
           branch={appState.branches?.find(b => b.id === appState.currentBranchId)}
+          businessName={appState.companyName}
+          businessLogo={appState.companyLogo}
           receiptType="thermal"
         />
       )}
