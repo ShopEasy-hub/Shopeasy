@@ -32,6 +32,8 @@ import ProductHistory from './pages/ProductHistory';
 import { DiagnosticNetwork } from './pages/DiagnosticNetwork';
 import { getAppSnapshot, saveAppSnapshot } from './lib/offline-db';
 import { startSyncEngine } from './lib/sync-engine';
+import { getPlanById } from './config/pricing';
+import { hasValidSubscriptionAccess } from './lib/subscription';
 
 const OFFLINE_SESSION_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
@@ -44,6 +46,7 @@ export interface AppState {
   currentBranchId: string | null;
   currentWarehouseId: string | null;
   companyName: string;
+  companyLogo?: string | null;
   user?: { name: string; email: string; role?: string } | null;
   branches?: any[];
   subscriptionStatus?: 'trial' | 'active' | 'expired';
@@ -196,8 +199,10 @@ export default function App() {
               role: userProfile.role 
             },
             currentBranchId: branchId,
-            subscriptionStatus: userProfile.organization?.subscription_status || 'trial',
-            trialStartDate: userProfile.organization?.trial_start_date || new Date().toISOString(),
+            companyName: userProfile.organization?.name || 'Merchant',
+            companyLogo: userProfile.organization?.logo || null,
+            subscriptionStatus: userProfile.organization?.subscription_status || 'expired',
+            trialStartDate: userProfile.organization?.trial_start_date || null,
             subscriptionEndDate: userProfile.organization?.subscription_end_date || null,
             subscriptionPlan: userProfile.organization?.subscription_plan || null,
           });
@@ -259,34 +264,11 @@ export default function App() {
   function checkSubscriptionStatus(): boolean {
     if (!appState.orgId) return true; // Allow access during setup
     
-    // If already has active subscription, allow access
-    if (appState.subscriptionStatus === 'active') {
-      return true;
-    }
-
-    // Check if trial period is still valid
-    if (appState.subscriptionStatus === 'trial' && appState.trialStartDate) {
-      const trialStart = new Date(appState.trialStartDate);
-      const now = new Date();
-      const daysSinceStart = Math.floor((now.getTime() - trialStart.getTime()) / (1000 * 60 * 60 * 24));
-      
-      if (daysSinceStart <= 7) {
-        return true; // Still in trial period
-      } else {
-        // Trial expired
-        if (appState.subscriptionStatus === 'trial') {
-          updateAppState({ subscriptionStatus: 'expired' });
-        }
-        return false;
-      }
-    }
-
-    // Subscription expired
-    if (appState.subscriptionStatus === 'expired') {
-      return false;
-    }
-
-    return true; // Default to allowing access
+    return hasValidSubscriptionAccess({
+      status: appState.subscriptionStatus,
+      trialStartDate: appState.trialStartDate,
+      subscriptionEndDate: appState.subscriptionEndDate,
+    });
   }
 
   // Check subscription on page navigation
@@ -297,7 +279,13 @@ export default function App() {
     } else {
       setShowSubscriptionExpired(false);
     }
-  }, [currentPage, appState.orgId, appState.subscriptionStatus]);
+  }, [
+    currentPage,
+    appState.orgId,
+    appState.subscriptionStatus,
+    appState.trialStartDate,
+    appState.subscriptionEndDate,
+  ]);
 
   if (loading) {
     return (
@@ -329,11 +317,12 @@ export default function App() {
 
       {currentPage === 'setup' && (
         <SetupPage
-          onComplete={(userId, orgId, userEmail, userName) => {
+          onComplete={(userId, orgId, userEmail, userName, companyName) => {
             updateAppState({ 
               userId, 
               orgId,
               user: { email: userEmail, name: userName },
+              companyName,
               subscriptionStatus: 'trial',
               trialStartDate: new Date().toISOString(),
             });
@@ -388,8 +377,10 @@ export default function App() {
               userRole,
               user: { email: userEmail, name: userName, role: userRole },
               currentBranchId: landingBranchId,
-              subscriptionStatus: orgData?.subscription_status || 'trial',
-              trialStartDate: orgData?.trial_start_date || new Date().toISOString(),
+              companyName: orgData?.name || 'Merchant',
+              companyLogo: orgData?.logo || null,
+              subscriptionStatus: orgData?.subscription_status || 'expired',
+              trialStartDate: orgData?.trial_start_date || null,
               subscriptionEndDate: orgData?.subscription_end_date || null,
               subscriptionPlan: orgData?.subscription_plan || null,
             });
@@ -459,6 +450,7 @@ export default function App() {
         <Settings
           appState={appState}
           onNavigate={(page) => setCurrentPage(page)}
+          updateAppState={updateAppState}
         />
       )}
 
@@ -467,15 +459,13 @@ export default function App() {
           appState={appState}
           onNavigate={(page) => setCurrentPage(page)}
           onSelectPlan={(planId) => {
-            // Map plan IDs to pricing
-            const planPricing = {
-              'starter': { id: 'starter', name: 'Starter Plan', monthlyPrice: 7500 },
-              'standard': { id: 'standard', name: 'Standard Plan', monthlyPrice: 50000 },
-              'growth': { id: 'growth', name: 'Growth / Pro Plan', monthlyPrice: 95000 },
-              'enterprise': { id: 'enterprise', name: 'Enterprise Plan', monthlyPrice: 250000 },
-            };
-            
-            setSelectedPlanForBilling(planPricing[planId as keyof typeof planPricing]);
+            const plan = getPlanById(planId);
+            if (!plan) return;
+            setSelectedPlanForBilling({
+              id: plan.id,
+              name: plan.name,
+              monthlyPrice: plan.monthlyPrice,
+            });
             setCurrentPage('billing-cycle');
           }}
         />
