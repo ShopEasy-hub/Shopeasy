@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Users,
     Building2,
@@ -22,6 +22,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs'
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import { Alert, AlertDescription } from '../components/ui/alert';
+import { getTrialDaysRemaining } from '../lib/subscription';
 
 interface AdminPanelProps {
     appState: {
@@ -151,14 +152,7 @@ export default function AdminPanel({ appState, onNavigate }: AdminPanelProps) {
                 daysUntilExpiry = 0;
             } else if (subStatus === 'trial') {
                 subscriptionStatus = 'trial';
-                // Calculate days remaining in trial (30 day trial)
-                if (trialStart) {
-                    const trialStartDate = new Date(trialStart);
-                    const trialEndDate = new Date(trialStartDate.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
-                    const now = new Date();
-                    const daysLeft = Math.ceil((trialEndDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-                    daysUntilExpiry = Math.max(0, daysLeft);
-                }
+                daysUntilExpiry = getTrialDaysRemaining(trialStart);
             } else if (subEndDate) {
                 // Active subscription - calculate days until end
                 subscriptionStatus = 'active';
