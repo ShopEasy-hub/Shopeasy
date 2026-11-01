@@ -1,10 +1,11 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { CheckCircle2, XCircle, Loader2, ArrowLeft } from 'lucide-react';
 import { AppState, Page } from '../App';
 import { verifyPayment, PaymentProvider } from '../lib/payment';
 import { supabase } from '../lib/supabase';
+import { getAccessToken } from '../lib/api';
 
 interface PaymentVerificationProps {
     appState: AppState;
@@ -49,7 +50,9 @@ export function PaymentVerification({
             await new Promise((resolve) => setTimeout(resolve, 2000));
 
             // Verify payment (the edge function also creates the subscription!)
-            const result = await verifyPayment(provider, reference);
+            const accessToken = await getAccessToken();
+            if (!accessToken) throw new Error('Your session has expired. Please log in again.');
+            const result = await verifyPayment(provider, reference, accessToken);
             console.log('📋 Verification result:', result);
 
             if (result.success && result.status === 'success') {
