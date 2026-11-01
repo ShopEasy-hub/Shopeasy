@@ -4,7 +4,8 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Card } from '../components/ui/card';
-import { Store, ArrowLeft, Mail, CheckCircle } from 'lucide-react';
+import { BrandLogo } from '../components/BrandLogo';
+import { ArrowLeft, Mail, CheckCircle } from 'lucide-react';
 
 interface ForgotPasswordProps {
   onBack: () => void;
@@ -87,8 +88,8 @@ export function ForgotPassword({ onBack }: ForgotPasswordProps) {
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5 flex items-center justify-center p-4">
       <Card className="w-full max-w-md p-8">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-xl mb-4">
-            <Store className="w-8 h-8 text-primary-foreground" />
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-white border border-border rounded-2xl p-2.5 mb-4 shadow-sm">
+            <BrandLogo className="w-full h-full" />
           </div>
           <h1 className="mb-2">Reset Password</h1>
           <p className="text-muted-foreground">
