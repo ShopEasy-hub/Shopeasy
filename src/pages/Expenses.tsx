@@ -19,6 +19,13 @@ import {
   Trash2,
   Edit,
 } from 'lucide-react';
+import { getExpenses } from '../lib/api';
+import {
+  getCachedExpenses,
+  saveDataset,
+  saveExpenseLocally,
+} from '../lib/offline-records';
+import { synchronizePendingOperations } from '../lib/sync-engine';
 
 interface Expense {
   id: string;
@@ -31,6 +38,7 @@ interface Expense {
   branchName: string;
   recordedBy: string;
   createdAt: string;
+  syncStatus?: 'pending' | 'synced';
 }
 
 interface ExpensesProps {
@@ -77,11 +85,18 @@ export function Expenses({ appState, onNavigate }: ExpensesProps) {
     if (!appState.orgId) return;
 
     try {
-      // In production, fetch from backend
-      // For now, load from localStorage
       const key = `expenses_${appState.orgId}`;
       const stored = localStorage.getItem(key);
-      const allExpenses = stored ? JSON.parse(stored) : [];
+      const legacyExpenses = stored ? JSON.parse(stored) : [];
+      if (navigator.onLine) {
+        const remote = await getExpenses(appState.orgId);
+        await saveDataset(`expenses:${appState.orgId}`, remote);
+      }
+      const cached = await getCachedExpenses(appState.orgId, appState.currentBranchId || undefined);
+      const allExpenses = [...cached, ...legacyExpenses].filter(
+        (expense, index, all) =>
+          all.findIndex((candidate) => candidate.id === expense.id) === index,
+      );
       setExpenses(allExpenses);
     } catch (error) {
       console.error('Error loading expenses:', error);
@@ -92,10 +107,10 @@ export function Expenses({ appState, onNavigate }: ExpensesProps) {
 
   async function handleAddExpense(e: React.FormEvent) {
     e.preventDefault();
-    if (!appState.orgId || !appState.currentBranchId) return;
+    if (!appState.orgId || !appState.currentBranchId || !appState.userId) return;
 
     const expense: Expense = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       date: newExpense.date,
       category: newExpense.category,
       description: newExpense.description,
@@ -105,6 +120,7 @@ export function Expenses({ appState, onNavigate }: ExpensesProps) {
       branchName: appState.branches?.find(b => b.id === appState.currentBranchId)?.name || 'Unknown',
       recordedBy: appState.user?.name || 'User',
       createdAt: new Date().toISOString(),
+      syncStatus: 'pending',
     };
 
     const updatedExpenses = [expense, ...expenses];
@@ -113,6 +129,13 @@ export function Expenses({ appState, onNavigate }: ExpensesProps) {
     // Save to localStorage (in production, save to backend)
     const key = `expenses_${appState.orgId}`;
     localStorage.setItem(key, JSON.stringify(updatedExpenses));
+    await saveExpenseLocally({
+      ...expense,
+      organizationId: appState.orgId,
+      userId: appState.userId,
+      syncStatus: 'pending',
+    });
+    if (navigator.onLine) void synchronizePendingOperations();
 
     setShowAddExpense(false);
     setNewExpense({
