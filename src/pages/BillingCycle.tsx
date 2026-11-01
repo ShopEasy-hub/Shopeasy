@@ -27,7 +27,7 @@ interface BillingCycleProps {
 
 export function BillingCycle({ appState, onNavigate, selectedPlan }: BillingCycleProps) {
   const [selectedCycle, setSelectedCycle] = useState<'monthly' | 'yearly'>('yearly');
-  const [selectedProvider, setSelectedProvider] = useState<PaymentProvider>('paystack');
+  const selectedProvider: PaymentProvider = 'paystack';
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -345,7 +345,7 @@ export function BillingCycle({ appState, onNavigate, selectedPlan }: BillingCycl
         {/* Payment Gateway Selection */}
         <Card className="p-6 mb-8">
           <h3 className="mb-4">Select Payment Method</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <Card
               className={`p-4 cursor-pointer transition-all ${
                 selectedProvider === 'paystack'
@@ -371,30 +371,6 @@ export function BillingCycle({ appState, onNavigate, selectedPlan }: BillingCycl
               </div>
             </Card>
 
-            <Card
-              className={`p-4 cursor-pointer transition-all ${
-                selectedProvider === 'flutterwave'
-                  ? 'border-primary ring-2 ring-primary/20'
-                  : 'hover:border-primary/50'
-              }`}
-              onClick={() => setSelectedProvider('flutterwave')}
-            >
-              <div className="flex items-center gap-3">
-                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                  selectedProvider === 'flutterwave' ? 'border-primary' : 'border-muted-foreground'
-                }`}>
-                  {selectedProvider === 'flutterwave' && (
-                    <div className="w-3 h-3 rounded-full bg-primary" />
-                  )}
-                </div>
-                <div>
-                  <p className="font-medium">Flutterwave</p>
-                  <p className="text-xs text-muted-foreground">
-                    Card, Bank Transfer, Mobile Money
-                  </p>
-                </div>
-              </div>
-            </Card>
           </div>
         </Card>
 
