@@ -1,25 +1,32 @@
 import { useState, useEffect } from 'react';
 import { AppState, Page } from '../App';
 import { getOrganization, updateOrganization, getBranches, createBranch } from '../lib/api';
+import { uploadOrganizationLogo } from '../lib/api-supabase';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Card } from '../components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../components/ui/dialog';
-import { ArrowLeft, Building2, Plus, CreditCard, Printer, Settings as SettingsIcon } from 'lucide-react';
+import { Alert, AlertDescription } from '../components/ui/alert';
+import { ArrowLeft, Building2, Plus, CreditCard, Printer, Settings as SettingsIcon, Upload, ImageIcon, Loader2 } from 'lucide-react';
 import { useSubscriptionLimits } from '../hooks/useSubscriptionLimits';
 import { LimitWarningBanner } from '../components/LimitWarningBanner';
+import { getTrialDaysRemaining } from '../lib/subscription';
 
 interface SettingsProps {
   appState: AppState;
   onNavigate: (page: Page) => void;
+  updateAppState: (updates: Partial<AppState>) => void;
 }
 
-export function Settings({ appState, onNavigate }: SettingsProps) {
+export function Settings({ appState, onNavigate, updateAppState }: SettingsProps) {
   const [org, setOrg] = useState<any>(null);
   const [branches, setBranches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddBranch, setShowAddBranch] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [logoError, setLogoError] = useState('');
+  const [savingOrganization, setSavingOrganization] = useState(false);
   const [newBranch, setNewBranch] = useState({
     name: '',
     address: '',
@@ -79,6 +86,55 @@ export function Settings({ appState, onNavigate }: SettingsProps) {
     }
   }
 
+  async function handleLogoUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file || !appState.orgId) return;
+
+    if (!['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'].includes(file.type)) {
+      setLogoError('Choose a PNG, JPG, WebP, or SVG image.');
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      setLogoError('Logo images must be 2 MB or smaller.');
+      return;
+    }
+
+    setUploadingLogo(true);
+    setLogoError('');
+
+    try {
+      const logo = await uploadOrganizationLogo(appState.orgId, file);
+      const updated = await updateOrganization(appState.orgId, { logo });
+      setOrg(updated);
+      updateAppState({ companyLogo: logo });
+    } catch (error: any) {
+      console.error('Error uploading organization logo:', error);
+      setLogoError(error.message || 'Logo upload failed. Apply the latest Supabase migration and try again.');
+    } finally {
+      setUploadingLogo(false);
+      event.target.value = '';
+    }
+  }
+
+  async function handleSaveOrganization() {
+    if (!appState.orgId || !org?.name) return;
+    setSavingOrganization(true);
+    try {
+      const updated = await updateOrganization(appState.orgId, {
+        name: org.name,
+        logo: org.logo || null,
+      });
+      setOrg(updated);
+      updateAppState({
+        companyName: updated.name,
+        companyLogo: updated.logo || null,
+      });
+    } finally {
+      setSavingOrganization(false);
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -135,7 +191,7 @@ export function Settings({ appState, onNavigate }: SettingsProps) {
                   {appState.subscriptionStatus === 'trial' && appState.trialStartDate && (
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/20 text-amber-700 rounded-lg">
                       <span className="text-sm">
-                        🎉 Free trial active - {7 - Math.floor((new Date().getTime() - new Date(appState.trialStartDate).getTime()) / (1000 * 60 * 60 * 24))} days remaining
+                        Free trial active — {getTrialDaysRemaining(appState.trialStartDate)} days remaining
                       </span>
                     </div>
                   )}
@@ -170,17 +226,48 @@ export function Settings({ appState, onNavigate }: SettingsProps) {
               </div>
 
               <div>
-                <Label htmlFor="orgLogo">Logo URL</Label>
-                <Input
-                  id="orgLogo"
-                  placeholder="https://example.com/logo.png"
-                  value={org?.logo || ''}
-                  onChange={(e) => setOrg({ ...org, logo: e.target.value })}
-                />
+                <Label htmlFor="orgLogo">Merchant Logo</Label>
+                <div className="mt-2 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                  <div className="size-24 rounded-xl border bg-muted/30 flex items-center justify-center overflow-hidden">
+                    {org?.logo ? (
+                      <img src={org.logo} alt={`${org.name || 'Merchant'} logo`} className="size-full object-contain p-2" />
+                    ) : (
+                      <ImageIcon className="size-8 text-muted-foreground" />
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <Input
+                      id="orgLogo"
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                      onChange={handleLogoUpload}
+                      disabled={uploadingLogo}
+                      className="max-w-sm"
+                    />
+                    <p className="text-xs text-muted-foreground">PNG, JPG, WebP, or SVG. Maximum 2 MB.</p>
+                    {uploadingLogo && (
+                      <p className="text-sm text-primary flex items-center gap-2">
+                        <Loader2 className="size-4 animate-spin" />
+                        Uploading logo…
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
 
-              <Button onClick={() => updateOrganization(appState.orgId!, { name: org.name, logo: org.logo })}>
-                Save Changes
+              {logoError && (
+                <Alert variant="destructive">
+                  <AlertDescription>{logoError}</AlertDescription>
+                </Alert>
+              )}
+
+              <Button onClick={handleSaveOrganization} disabled={savingOrganization || uploadingLogo}>
+                {savingOrganization ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <Upload className="size-4" />
+                )}
+                {savingOrganization ? 'Saving…' : 'Save Changes'}
               </Button>
             </div>
           </Card>
